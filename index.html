@@ -36,6 +36,21 @@
       --transition: 0.2s cubic-bezier(0.2, 0, 0, 1);
       --code-bg: #0d0b18;
     }
+    [data-theme="light"] {
+      --bg-primary: #f5f3ff;
+      --bg-secondary: #ede9fe;
+      --bg-panel: #ffffff;
+      --bg-glass: rgba(255, 255, 255, 0.85);
+      --border-subtle: #c4b5fd;
+      --text-primary: #1e1b2e;
+      --text-secondary: #4b4468;
+      --text-muted: #7b6f9e;
+      --accent: #7c3aed;
+      --accent-glow: rgba(124, 58, 237, 0.15);
+      --accent-hover: #6d28d9;
+      --code-bg: #f8f7ff;
+      --shadow: 0 12px 40px rgba(0,0,0,0.1);
+    }
     [data-theme="midnight"] {
       --bg-primary: #0b0d11;
       --bg-secondary: #12161c;
@@ -49,7 +64,9 @@
       --accent-glow: rgba(93, 155, 255, 0.18);
       --accent-hover: #7bb0ff;
       --code-bg: #0f131a;
+      --shadow: 0 12px 40px rgba(0,0,0,0.6);
     }
+    /* default aurora (dark violet) */
     body {
       background: var(--bg-primary);
       color: var(--text-primary);
@@ -523,7 +540,12 @@
         <span class="brand-sub">explore the code</span>
       </div>
       <div class="nav-actions">
-        <button class="desktop-only" id="themeToggle" aria-label="Switch theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></button>
+        <button class="desktop-only" id="themeToggle" aria-label="Switch theme">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+          </svg>
+        </button>
         <button id="aboutToggle" class="desktop-only" aria-label="About"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></button>
         <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
       </div>
@@ -730,14 +752,90 @@
       } catch { return null; }
     }
 
-    // ----- fetch source -----
+    // ----- fetch source with retry and fallback -----
     async function fetchSource(url) {
-      const proxy = 'https://api.allorigins.win/get?url=';
-      const resp = await fetch(proxy + encodeURIComponent(url));
-      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-      const data = await resp.json();
-      if (!data.contents) throw new Error('Empty response from proxy');
-      return data.contents;
+      // Try multiple proxy endpoints for reliability
+      const proxies = [
+        'https://api.allorigins.win/get?url=',
+        'https://api.allorigins.win/raw?url=',
+        'https://corsproxy.io/?'
+      ];
+      
+      let lastError = null;
+      for (const proxy of proxies) {
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 15000);
+          
+          let fullUrl;
+          if (proxy.includes('corsproxy.io')) {
+            fullUrl = proxy + encodeURIComponent(url);
+          } else {
+            fullUrl = proxy + encodeURIComponent(url);
+          }
+          
+          const resp = await fetch(fullUrl, { 
+            signal: controller.signal,
+            headers: { 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' }
+          });
+          clearTimeout(timeoutId);
+          
+          if (!resp.ok) {
+            throw new Error(`HTTP ${resp.status}`);
+          }
+          
+          let data;
+          if (proxy.includes('allorigins')) {
+            data = await resp.json();
+            if (data && data.contents) {
+              return data.contents;
+            } else {
+              throw new Error('Invalid response format');
+            }
+          } else {
+            // For corsproxy.io or other raw proxies
+            const text = await resp.text();
+            if (text && text.length > 0) {
+              return text;
+            } else {
+              throw new Error('Empty response');
+            }
+          }
+        } catch (err) {
+          lastError = err;
+          console.warn(`Proxy ${proxy} failed:`, err.message);
+          // Continue to next proxy
+          continue;
+        }
+      }
+      
+      // If all proxies fail, try a different approach - use fetch with no-cors mode
+      try {
+        const resp = await fetch(url, { 
+          mode: 'no-cors',
+          headers: { 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' }
+        });
+        // With no-cors we can't read the response, so we'll try one more time with a different method
+        throw new Error('No-cors mode not supported for reading');
+      } catch (err) {
+        // Fallback to the original method with a different endpoint
+        try {
+          const fallbackUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
+          const resp = await fetch(fallbackUrl, { 
+            headers: { 'Accept': 'application/json' }
+          });
+          if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+          const data = await resp.json();
+          if (data && data.contents) {
+            return data.contents;
+          }
+        } catch (fallbackErr) {
+          // If all fails, throw the last error
+          throw new Error('Failed to fetch source. Please check the URL and try again.');
+        }
+      }
+      
+      throw new Error('Unable to retrieve source. Please try again.');
     }
 
     // ----- render source -----
@@ -776,8 +874,13 @@
         return;
       }
       // html tab: highlight with Prism
-      const highlighted = Prism.highlight(html, Prism.languages.html, 'html');
-      codeContent.innerHTML = `<pre>${highlighted}</pre>`;
+      try {
+        const highlighted = Prism.highlight(html, Prism.languages.html, 'html');
+        codeContent.innerHTML = `<pre>${highlighted}</pre>`;
+      } catch (e) {
+        // Fallback to plain text if Prism fails
+        codeContent.innerHTML = `<pre>${escapeHtml(html)}</pre>`;
+      }
       lineNumbers.innerHTML = Array.from({length: state.lines}, (_,i) => `<span>${i+1}</span>`).join('');
       emptyState.classList.add('hidden');
       codeWrapper.classList.remove('hidden');
@@ -795,7 +898,6 @@
 
     // ----- search -----
     function performSearch(query) {
-      const container = codeContent;
       if (!query) { clearSearchHighlights(); return; }
       const text = state.rawSource;
       const matches = [];
@@ -814,7 +916,6 @@
 
     function highlightSearchMatch(index) {
       if (!state.searchResults.length) return;
-      const idx = state.searchResults[index];
       const query = searchInput.value;
       if (!query) return;
       const text = state.rawSource;
@@ -868,7 +969,8 @@
         showToast('Source retrieved successfully', 'success');
         addHistory(normalized);
       } catch (err) {
-        showError(`Unable to inspect this website. ${err.message || 'Unknown error'}`);
+        const errorMsg = err.message || 'Unknown error';
+        showError(`Unable to inspect this website. ${errorMsg}`);
         showToast('Failed to retrieve source', 'error');
         emptyState.classList.remove('hidden');
         codeWrapper.classList.add('hidden');
@@ -931,15 +1033,32 @@
     }
 
     // ----- theme -----
+    const themes = ['aurora', 'midnight', 'light'];
+    let currentThemeIndex = 0;
+    
     function toggleTheme() {
-      const current = document.documentElement.getAttribute('data-theme');
-      const next = current === 'midnight' ? 'aurora' : 'midnight';
-      document.documentElement.setAttribute('data-theme', next === 'aurora' ? '' : 'midnight');
-      localStorage.setItem('sv_theme', next);
+      currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+      const theme = themes[currentThemeIndex];
+      if (theme === 'aurora') {
+        document.documentElement.removeAttribute('data-theme');
+      } else {
+        document.documentElement.setAttribute('data-theme', theme);
+      }
+      localStorage.setItem('sv_theme', theme);
     }
+    
     function loadTheme() {
       const saved = localStorage.getItem('sv_theme') || 'aurora';
-      if (saved === 'midnight') document.documentElement.setAttribute('data-theme', 'midnight');
+      if (saved === 'aurora') {
+        document.documentElement.removeAttribute('data-theme');
+        currentThemeIndex = 0;
+      } else if (saved === 'midnight') {
+        document.documentElement.setAttribute('data-theme', 'midnight');
+        currentThemeIndex = 1;
+      } else if (saved === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        currentThemeIndex = 2;
+      }
     }
 
     // ----- init -----
