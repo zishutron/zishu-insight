@@ -110,12 +110,18 @@
       align-items: center;
       gap: 10px;
     }
-    .brand svg { width: 34px; height: 34px; flex-shrink: 0; }
+    .brand svg { 
+      width: 38px; 
+      height: 38px; 
+      flex-shrink: 0;
+      stroke: var(--accent);
+      fill: none;
+    }
     .brand-name {
       font-weight: 700;
-      font-size: 1.35rem;
+      font-size: 1.4rem;
       letter-spacing: -0.3px;
-      background: linear-gradient(135deg, var(--text-primary) 60%, var(--accent));
+      background: linear-gradient(135deg, var(--text-primary) 50%, var(--accent));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -527,14 +533,13 @@
   <header>
     <div class="header-inner">
       <div class="brand">
-        <!-- Upcodez logo: U + </> -->
-        <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 8 L12 32 L28 32 L28 8 L12 8 Z" />
-          <path d="M12 16 L28 16" />
-          <path d="M12 24 L28 24" />
-          <path d="M20 8 L20 16" />
-          <path d="M20 24 L20 32" />
-          <circle cx="20" cy="20" r="3" fill="currentColor" stroke="none" />
+        <!-- Upcodez logo: </> style code logo -->
+        <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 12 L6 16 L10 20" />
+          <path d="M30 12 L34 16 L30 20" />
+          <path d="M18 10 L14 22" />
+          <path d="M22 10 L26 22" />
+          <rect x="14" y="24" width="12" height="6" rx="1" />
         </svg>
         <span class="brand-name">Upcodez</span>
         <span class="brand-sub">explore the code</span>
@@ -754,7 +759,6 @@
 
     // ----- fetch source with retry and fallback -----
     async function fetchSource(url) {
-      // Try multiple proxy endpoints for reliability
       const proxies = [
         'https://api.allorigins.win/get?url=',
         'https://api.allorigins.win/raw?url=',
@@ -767,12 +771,7 @@
           const controller = new AbortController();
           const timeoutId = setTimeout(() => controller.abort(), 15000);
           
-          let fullUrl;
-          if (proxy.includes('corsproxy.io')) {
-            fullUrl = proxy + encodeURIComponent(url);
-          } else {
-            fullUrl = proxy + encodeURIComponent(url);
-          }
+          let fullUrl = proxy + encodeURIComponent(url);
           
           const resp = await fetch(fullUrl, { 
             signal: controller.signal,
@@ -793,7 +792,6 @@
               throw new Error('Invalid response format');
             }
           } else {
-            // For corsproxy.io or other raw proxies
             const text = await resp.text();
             if (text && text.length > 0) {
               return text;
@@ -804,38 +802,11 @@
         } catch (err) {
           lastError = err;
           console.warn(`Proxy ${proxy} failed:`, err.message);
-          // Continue to next proxy
           continue;
         }
       }
       
-      // If all proxies fail, try a different approach - use fetch with no-cors mode
-      try {
-        const resp = await fetch(url, { 
-          mode: 'no-cors',
-          headers: { 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' }
-        });
-        // With no-cors we can't read the response, so we'll try one more time with a different method
-        throw new Error('No-cors mode not supported for reading');
-      } catch (err) {
-        // Fallback to the original method with a different endpoint
-        try {
-          const fallbackUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
-          const resp = await fetch(fallbackUrl, { 
-            headers: { 'Accept': 'application/json' }
-          });
-          if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-          const data = await resp.json();
-          if (data && data.contents) {
-            return data.contents;
-          }
-        } catch (fallbackErr) {
-          // If all fails, throw the last error
-          throw new Error('Failed to fetch source. Please check the URL and try again.');
-        }
-      }
-      
-      throw new Error('Unable to retrieve source. Please try again.');
+      throw new Error('Unable to retrieve source. Please check the URL and try again.');
     }
 
     // ----- render source -----
@@ -878,7 +849,6 @@
         const highlighted = Prism.highlight(html, Prism.languages.html, 'html');
         codeContent.innerHTML = `<pre>${highlighted}</pre>`;
       } catch (e) {
-        // Fallback to plain text if Prism fails
         codeContent.innerHTML = `<pre>${escapeHtml(html)}</pre>`;
       }
       lineNumbers.innerHTML = Array.from({length: state.lines}, (_,i) => `<span>${i+1}</span>`).join('');
@@ -1032,7 +1002,7 @@
       localStorage.setItem('sv_history', JSON.stringify(hist));
     }
 
-    // ----- theme -----
+    // ----- theme with 3 modes: aurora (default dark), midnight, light -----
     const themes = ['aurora', 'midnight', 'light'];
     let currentThemeIndex = 0;
     
