@@ -147,7 +147,7 @@
     @media (max-width: 640px) {
       .mobile-menu-toggle { display: flex; }
       .nav-actions .desktop-only { display: none; }
-      .nav-actions .desktop-nav { display: none; }
+      .nav-actions .desktop-nav { display: none !important; }
       .nav-actions { gap: 2px; }
       .brand-sub { display: none; }
       .header-inner { flex-wrap: nowrap; }
@@ -497,25 +497,28 @@
     .modal p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.6; }
     .modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; font-size: 1.5rem; color: var(--text-muted); }
 
-    /* IP/DNS section */
-    .ip-section {
+    /* IP/DNS section - separate page */
+    .ip-page {
+      display: none;
       background: var(--bg-secondary);
       border-radius: var(--radius);
       border: 1px solid var(--border-subtle);
-      padding: 24px 28px;
+      padding: 36px 28px 32px;
       margin-bottom: 32px;
       box-shadow: var(--shadow);
       transition: background 0.2s;
     }
-    .ip-section h2 {
-      font-size: 1.3rem;
-      font-weight: 600;
+    .ip-page.active { display: block; }
+    .ip-page h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
       margin-bottom: 6px;
     }
-    .ip-section .sub {
+    .ip-page .sub {
       color: var(--text-secondary);
-      font-size: 0.9rem;
-      margin-bottom: 16px;
+      font-size: 0.95rem;
+      margin-bottom: 22px;
     }
     .ip-url-card {
       display: flex;
@@ -528,7 +531,7 @@
       background: var(--bg-panel);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-sm);
-      padding: 12px 18px;
+      padding: 14px 18px;
       font-size: 1rem;
       color: var(--text-primary);
       outline: none;
@@ -541,7 +544,7 @@
       background: var(--accent);
       color: #0a0812;
       font-weight: 600;
-      padding: 12px 24px;
+      padding: 14px 28px;
       border-radius: 40px;
       font-size: 0.95rem;
       display: flex;
@@ -556,15 +559,15 @@
     .ip-result {
       background: var(--bg-panel);
       border-radius: var(--radius-sm);
-      padding: 18px 22px;
+      padding: 20px 24px;
       border: 1px solid var(--border-subtle);
       font-family: var(--font-mono);
       font-size: 0.85rem;
       white-space: pre-wrap;
       word-break: break-all;
       color: var(--text-secondary);
-      min-height: 60px;
-      max-height: 300px;
+      min-height: 80px;
+      max-height: 400px;
       overflow: auto;
     }
     .ip-result .label { color: var(--text-muted); }
@@ -573,6 +576,46 @@
     @media (max-width: 480px) {
       .ip-url-card { flex-direction: column; }
       .ip-url-card button { width: 100%; justify-content: center; }
+      .ip-page { padding: 24px 16px; }
+      .ip-page h1 { font-size: 1.5rem; }
+    }
+
+    /* Mobile menu */
+    .mobile-menu {
+      display: none;
+      position: absolute;
+      top: 68px;
+      right: 10px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 8px;
+      z-index: 50;
+      box-shadow: var(--shadow);
+      flex-direction: column;
+      min-width: 160px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu button {
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: transparent;
+      border: none;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: 0.15s;
+    }
+    .mobile-menu button:hover { background: var(--bg-glass); color: var(--text-primary); }
+    .mobile-menu button svg { width: 18px; height: 18px; }
+    .mobile-menu .menu-divider {
+      height: 1px;
+      background: var(--border-subtle);
+      margin: 4px 8px;
     }
 
     /* responsiveness */
@@ -586,7 +629,6 @@
       .ws-toolbar button { padding: 8px 10px; }
       .stats-row { gap: 8px 16px; }
       .code-container { max-height: 60vh; }
-      .ip-section { padding: 18px 16px; }
     }
     @media (max-width: 480px) {
       .hero h1 { font-size: 1.3rem; }
@@ -607,6 +649,10 @@
     .flex-center { display: flex; align-items: center; gap: 8px; }
     .mt-8 { margin-top: 8px; }
     .gap-4 { gap: 4px; }
+
+    /* Page visibility */
+    .page { display: none; }
+    .page.active { display: block; }
   </style>
 </head>
 <body>
@@ -639,87 +685,93 @@
         <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
       </div>
     </div>
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+      <button id="mobileNavSource"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg> Source Inspector</button>
+      <button id="mobileNavIp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> IP & DNS</button>
+      <div class="menu-divider"></div>
+      <button id="mobileThemeToggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg> Switch Theme</button>
+      <button id="mobileAboutToggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg> About</button>
+    </div>
   </header>
 
-  <!-- Source Inspector Section -->
-  <section class="hero" id="sourceSection">
-    <h1>Explore the code behind the web</h1>
-    <p>Enter a website URL to retrieve and inspect its publicly accessible HTML source.</p>
-    <div class="url-card" id="urlCard">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-      <input type="text" id="urlInput" placeholder="https://example.com" value="" autofocus spellcheck="false">
-      <button class="inspect-btn" id="inspectBtn">
-        <span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>
-        <span class="btn-text">Inspect Source</span>
-        <span class="spinner"></span>
-      </button>
-    </div>
-    <div id="errorContainer"></div>
-    <div class="stats-row" id="statsRow">
-      <div class="stat-item"><strong id="statLines">—</strong> Lines</div>
-      <div class="stat-item"><strong id="statChars">—</strong> Characters</div>
-      <div class="stat-item"><strong id="statSize">—</strong> Size</div>
-      <div class="stat-item"><strong id="statTags">—</strong> Tags</div>
-      <div class="stat-item"><strong id="statWords">—</strong> Words</div>
-    </div>
-  </section>
+  <!-- Page: Source Inspector -->
+  <div class="page active" id="pageSource">
+    <section class="hero">
+      <h1>Explore the code behind the web</h1>
+      <p>Enter a website URL to retrieve and inspect its publicly accessible HTML source.</p>
+      <div class="url-card" id="urlCard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        <input type="text" id="urlInput" placeholder="https://example.com" value="" autofocus spellcheck="false">
+        <button class="inspect-btn" id="inspectBtn">
+          <span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>
+          <span class="btn-text">Inspect Source</span>
+          <span class="spinner"></span>
+        </button>
+      </div>
+      <div id="errorContainer"></div>
+      <div class="stats-row" id="statsRow">
+        <div class="stat-item"><strong id="statLines">—</strong> Lines</div>
+        <div class="stat-item"><strong id="statChars">—</strong> Characters</div>
+        <div class="stat-item"><strong id="statSize">—</strong> Size</div>
+        <div class="stat-item"><strong id="statTags">—</strong> Tags</div>
+        <div class="stat-item"><strong id="statWords">—</strong> Words</div>
+      </div>
+    </section>
 
-  <!-- IP & DNS Section -->
-  <section class="ip-section" id="ipSection">
-    <h2>🌐 IP & DNS Lookup</h2>
+    <div class="workspace" id="workspace">
+      <div class="workspace-header">
+        <div class="ws-left">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
+          <span class="host" id="sourceHost">example.com</span>
+          <span class="badge">HTML SOURCE</span>
+          <span class="badge" style="background:var(--bg-panel);color:var(--text-muted)" id="sourceSizeBadge">—</span>
+        </div>
+        <div class="ws-toolbar" id="wsToolbar">
+          <button id="copyBtn" aria-label="Copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copy</span></button>
+          <button id="downloadBtn" aria-label="Download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Download</span></button>
+          <button id="fullscreenBtn" aria-label="Fullscreen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg><span>Fullscreen</span></button>
+          <button id="refreshBtn" aria-label="Refresh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg><span>Refresh</span></button>
+          <button id="findBtn" aria-label="Find"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>Find</span></button>
+        </div>
+      </div>
+      <div class="search-overlay" id="searchOverlay">
+        <input type="text" id="searchInput" placeholder="Search source…" aria-label="Search in source">
+        <span class="match-count" id="matchCount">0 / 0</span>
+        <div class="search-nav">
+          <button id="searchPrev" aria-label="Previous match"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <button id="searchNext" aria-label="Next match"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg></button>
+          <button id="searchClose" aria-label="Close search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        </div>
+      </div>
+      <div class="tabs" id="tabsContainer">
+        <div class="tab active" data-tab="html">HTML</div>
+        <div class="tab" data-tab="raw">Raw</div>
+        <div class="tab" data-tab="info">Info</div>
+      </div>
+      <div class="code-container" id="codeContainer">
+        <div class="empty-state" id="emptyState">
+          <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="12" y="18" width="56" height="44" rx="4"/><path d="M28 8v10M52 8v10M12 36h56"/><circle cx="22" cy="28" r="3"/><circle cx="36" cy="28" r="3"/><circle cx="50" cy="28" r="3"/><path d="M20 50l12-8 12 8 12-8 12 8"/></svg>
+          <h3>Your source workspace is ready</h3>
+          <p style="max-width:360px;color:var(--text-muted)">Enter a public website URL above to begin inspecting its HTML source.</p>
+        </div>
+        <div class="code-wrapper hidden" id="codeWrapper">
+          <div class="line-numbers" id="lineNumbers"></div>
+          <div class="code-content" id="codeContent"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page: IP & DNS -->
+  <div class="page ip-page" id="pageIp">
+    <h1>🌐 IP & DNS Lookup</h1>
     <p class="sub">Enter a website URL to get its IP address and DNS information.</p>
     <div class="ip-url-card">
       <input type="text" id="ipInput" placeholder="example.com" value="">
       <button id="ipBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg> Lookup</button>
     </div>
     <div class="ip-result" id="ipResult">Enter a URL and click Lookup to see IP & DNS details.</div>
-  </section>
-
-  <!-- Workspace -->
-  <div class="workspace" id="workspace">
-    <div class="workspace-header">
-      <div class="ws-left">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
-        <span class="host" id="sourceHost">example.com</span>
-        <span class="badge">HTML SOURCE</span>
-        <span class="badge" style="background:var(--bg-panel);color:var(--text-muted)" id="sourceSizeBadge">—</span>
-      </div>
-      <div class="ws-toolbar" id="wsToolbar">
-        <button id="copyBtn" aria-label="Copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copy</span></button>
-        <button id="downloadBtn" aria-label="Download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Download</span></button>
-        <button id="fullscreenBtn" aria-label="Fullscreen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg><span>Fullscreen</span></button>
-        <button id="refreshBtn" aria-label="Refresh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg><span>Refresh</span></button>
-        <button id="findBtn" aria-label="Find"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>Find</span></button>
-      </div>
-    </div>
-    <!-- search overlay -->
-    <div class="search-overlay" id="searchOverlay">
-      <input type="text" id="searchInput" placeholder="Search source…" aria-label="Search in source">
-      <span class="match-count" id="matchCount">0 / 0</span>
-      <div class="search-nav">
-        <button id="searchPrev" aria-label="Previous match"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
-        <button id="searchNext" aria-label="Next match"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg></button>
-        <button id="searchClose" aria-label="Close search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-      </div>
-    </div>
-    <!-- tabs -->
-    <div class="tabs" id="tabsContainer">
-      <div class="tab active" data-tab="html">HTML</div>
-      <div class="tab" data-tab="raw">Raw</div>
-      <div class="tab" data-tab="info">Info</div>
-    </div>
-    <!-- code container -->
-    <div class="code-container" id="codeContainer">
-      <div class="empty-state" id="emptyState">
-        <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="12" y="18" width="56" height="44" rx="4"/><path d="M28 8v10M52 8v10M12 36h56"/><circle cx="22" cy="28" r="3"/><circle cx="36" cy="28" r="3"/><circle cx="50" cy="28" r="3"/><path d="M20 50l12-8 12 8 12-8 12 8"/></svg>
-        <h3>Your source workspace is ready</h3>
-        <p style="max-width:360px;color:var(--text-muted)">Enter a public website URL above to begin inspecting its HTML source.</p>
-      </div>
-      <div class="code-wrapper hidden" id="codeWrapper">
-        <div class="line-numbers" id="lineNumbers"></div>
-        <div class="code-content" id="codeContent"></div>
-      </div>
-    </div>
   </div>
 
   <footer class="footer">
@@ -747,7 +799,7 @@
 <!-- toast container -->
 <div class="toast-container" id="toastContainer"></div>
 
-<!-- Prism.js CDN (lightweight) -->
+<!-- Prism.js CDN -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 
@@ -808,8 +860,14 @@
     const ipResult = $('ipResult');
     const navSource = $('navSource');
     const navIp = $('navIp');
-    const sourceSection = $('sourceSection');
-    const ipSection = $('ipSection');
+    const pageSource = $('pageSource');
+    const pageIp = $('pageIp');
+    const mobileMenu = $('mobileMenu');
+    const mobileMenuToggle = $('mobileMenuToggle');
+    const mobileNavSource = $('mobileNavSource');
+    const mobileNavIp = $('mobileNavIp');
+    const mobileThemeToggle = $('mobileThemeToggle');
+    const mobileAboutToggle = $('mobileAboutToggle');
 
     // ----- helpers -----
     function escapeHtml(text) {
@@ -853,6 +911,18 @@
     }
     function clearError() { errorContainer.innerHTML = ''; }
 
+    // ----- navigation -----
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      const page = document.getElementById(pageId);
+      if (page) page.classList.add('active');
+      mobileMenu.classList.remove('open');
+      // Update nav button styles
+      document.querySelectorAll('.desktop-nav button').forEach(b => b.style.color = 'var(--text-secondary)');
+      if (pageId === 'pageSource') navSource.style.color = 'var(--accent)';
+      else if (pageId === 'pageIp') navIp.style.color = 'var(--accent)';
+    }
+
     // ----- validation -----
     function normalizeUrl(input) {
       let url = input.trim();
@@ -864,14 +934,7 @@
       } catch { return null; }
     }
 
-    function extractHostname(url) {
-      try {
-        const u = new URL(url);
-        return u.hostname;
-      } catch { return url; }
-    }
-
-    // ----- fetch source with multiple proxies for reliability -----
+    // ----- fetch source with multiple proxies -----
     async function fetchSource(url) {
       const proxies = [
         'https://api.allorigins.win/get?url=',
@@ -948,7 +1011,6 @@
         codeWrapper.classList.remove('hidden');
         return;
       }
-      // html tab: highlight with Prism
       try {
         const highlighted = Prism.highlight(html, Prism.languages.html, 'html');
         codeContent.innerHTML = `<pre>${highlighted}</pre>`;
@@ -1062,22 +1124,33 @@
       if (!clean) { ipResult.innerHTML = 'Please enter a valid domain name.'; return; }
       
       ipBtn.disabled = true;
-      ipBtn.textContent = 'Looking up...';
+      ipBtn.innerHTML = '<span class="spinner" style="display:inline-block;width:20px;height:20px;border:2px solid rgba(10,8,18,0.3);border-top:2px solid #0a0812;border-radius:50%;animation:spin 0.8s linear infinite;"></span> Looking up...';
       ipResult.innerHTML = 'Fetching IP & DNS information...';
       
       try {
-        // Use multiple free APIs
-        const apis = [
-          `https://dns.google/resolve?name=${encodeURIComponent(clean)}&type=A`,
-          `https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(clean)}&type=A`
-        ];
-        
         let ip = 'N/A';
         let dnsData = null;
         
-        for (const api of apis) {
+        // Try Google DNS
+        try {
+          const resp = await fetch(`https://dns.google/resolve?name=${encodeURIComponent(clean)}&type=A`, {
+            headers: { 'Accept': 'application/dns-json' }
+          });
+          if (resp.ok) {
+            dnsData = await resp.json();
+            if (dnsData && dnsData.Answer && dnsData.Answer.length > 0) {
+              const answers = dnsData.Answer.filter(a => a.type === 1 || a.type === 28);
+              if (answers.length > 0) {
+                ip = answers.map(a => a.data).join(', ');
+              }
+            }
+          }
+        } catch (e) {}
+        
+        // Fallback: Cloudflare
+        if (ip === 'N/A') {
           try {
-            const resp = await fetch(api, {
+            const resp = await fetch(`https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(clean)}&type=A`, {
               headers: { 'Accept': 'application/dns-json' }
             });
             if (resp.ok) {
@@ -1087,15 +1160,14 @@
                 if (answers.length > 0) {
                   ip = answers.map(a => a.data).join(', ');
                 }
-                break;
               }
             }
           } catch (e) {}
         }
         
-        // Fallback: try ip-api.com for location info
+        // Try ip-api for location
         let locationInfo = '';
-        if (ip !== 'N/A' && ip.split(',').length === 1) {
+        if (ip !== 'N/A' && !ip.includes(',')) {
           try {
             const geoResp = await fetch(`https://ipapi.co/${ip.trim()}/json/`);
             if (geoResp.ok) {
@@ -1107,7 +1179,6 @@
           } catch (e) {}
         }
         
-        // Build DNS details
         let dnsDetails = '';
         if (dnsData && dnsData.Answer) {
           const records = dnsData.Answer.filter(a => a.type === 1 || a.type === 28 || a.type === 5);
@@ -1210,16 +1281,38 @@
       }
     }
 
-    // ----- navigation -----
-    function scrollToSection(el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
     // ----- init -----
     function init() {
       loadTheme();
       const last = localStorage.getItem('sv_last_url');
       if (last) urlInput.value = last;
+
+      // Navigation
+      navSource.addEventListener('click', () => showPage('pageSource'));
+      navIp.addEventListener('click', () => showPage('pageIp'));
+      mobileNavSource.addEventListener('click', () => showPage('pageSource'));
+      mobileNavIp.addEventListener('click', () => showPage('pageIp'));
+
+      // Mobile menu toggle
+      mobileMenuToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        mobileMenu.classList.toggle('open');
+      });
+      document.addEventListener('click', (e) => {
+        if (!mobileMenu.contains(e.target) && e.target !== mobileMenuToggle) {
+          mobileMenu.classList.remove('open');
+        }
+      });
+
+      // Mobile theme & about
+      mobileThemeToggle.addEventListener('click', () => {
+        toggleTheme();
+        mobileMenu.classList.remove('open');
+      });
+      mobileAboutToggle.addEventListener('click', () => {
+        aboutModal.classList.add('open');
+        mobileMenu.classList.remove('open');
+      });
 
       // Source inspect
       inspectBtn.addEventListener('click', () => {
@@ -1239,10 +1332,6 @@
       ipInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') { e.preventDefault(); ipBtn.click(); }
       });
-
-      // Navigation
-      navSource.addEventListener('click', () => scrollToSection(sourceSection));
-      navIp.addEventListener('click', () => scrollToSection(ipSection));
 
       // Keyboard shortcuts
       document.addEventListener('keydown', (e) => {
@@ -1316,25 +1405,6 @@
       document.getElementById('aboutFooterLink').addEventListener('click', (e) => { e.preventDefault(); aboutModal.classList.add('open'); });
       document.getElementById('privacyFooterLink').addEventListener('click', (e) => { e.preventDefault(); showToast('No data is stored on servers. All processing is client-side.', 'info'); });
       document.getElementById('githubFooterLink').addEventListener('click', (e) => { e.preventDefault(); showToast('Upcodez is open source. Check the repo!', 'info'); });
-
-      document.getElementById('mobileMenuToggle').addEventListener('click', () => {
-        const nav = document.querySelector('.desktop-nav');
-        if (nav.style.display === 'flex') {
-          nav.style.display = 'none';
-        } else {
-          nav.style.display = 'flex';
-          nav.style.flexDirection = 'column';
-          nav.style.position = 'absolute';
-          nav.style.top = '60px';
-          nav.style.right = '10px';
-          nav.style.background = 'var(--bg-panel)';
-          nav.style.border = '1px solid var(--border-subtle)';
-          nav.style.borderRadius = 'var(--radius-sm)';
-          nav.style.padding = '8px';
-          nav.style.zIndex = '50';
-          nav.style.boxShadow = 'var(--shadow)';
-        }
-      });
 
       emptyState.classList.remove('hidden');
       codeWrapper.classList.add('hidden');
