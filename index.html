@@ -896,97 +896,88 @@
       } catch { return null; }
     }
 
-    // ----- IMPROVED FETCH WITH MEANINGFUL ERRORS -----
+    // ----- FIXED: Better fetch with proper error handling and no abort signal issues -----
     async function fetchSource(url) {
-      // First try: AllOrigins /get (most reliable)
+      const encodedUrl = encodeURIComponent(url);
+      
+      // Try AllOrigins /get with a simple fetch (no abort signal to avoid "aborted without reason")
       try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 15000);
-        
-        const resp = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent(url), {
-          signal: controller.signal
+        const resp = await fetch('https://api.allorigins.win/get?url=' + encodedUrl, {
+          headers: { 'Accept': 'application/json' }
         });
-        clearTimeout(timeoutId);
         
         if (!resp.ok) {
-          throw new Error(`AllOrigins returned HTTP ${resp.status}: ${resp.statusText}`);
+          throw new Error(`HTTP ${resp.status}: ${resp.statusText || 'Unknown error'}`);
         }
         
         const data = await resp.json();
         if (!data || typeof data !== 'object') {
-          throw new Error('Invalid response from AllOrigins (not a JSON object)');
+          throw new Error('Invalid response format');
         }
         
-        if (!data.contents) {
-          throw new Error('AllOrigins returned empty contents - target website may be unreachable');
+        if (!data.contents || data.contents === 'null' || data.contents === '') {
+          throw new Error('Target website returned empty content or is unreachable');
         }
         
         return data.contents;
       } catch (err) {
-        // Log the actual error for debugging
-        console.warn('AllOrigins /get failed:', err.message);
+        console.warn('AllOrigins /get error:', err.message);
         
-        // Second try: AllOrigins /raw endpoint
+        // Try AllOrigins /raw
         try {
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 15000);
-          
-          const resp = await fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(url), {
-            signal: controller.signal
-          });
-          clearTimeout(timeoutId);
+          const resp = await fetch('https://api.allorigins.win/raw?url=' + encodedUrl);
           
           if (!resp.ok) {
-            throw new Error(`AllOrigins raw returned HTTP ${resp.status}: ${resp.statusText}`);
+            throw new Error(`HTTP ${resp.status}: ${resp.statusText || 'Unknown error'}`);
           }
           
           const text = await resp.text();
-          if (!text || text.length === 0) {
-            throw new Error('AllOrigins raw returned empty response');
+          if (!text || text.length < 10) {
+            throw new Error('Response too short or empty');
           }
           
-          // Check if it's a JSON error response disguised as text
+          // Check if it's a JSON error
           if (text.startsWith('{') && text.includes('"error"')) {
-            throw new Error('AllOrigins raw returned an error response');
+            throw new Error('Proxy returned an error response');
           }
           
           return text;
         } catch (err2) {
-          console.warn('AllOrigins /raw failed:', err2.message);
+          console.warn('AllOrigins /raw error:', err2.message);
           
-          // Third try: Corsproxy.io
+          // Try corsproxy.io as last resort
           try {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 15000);
-            
-            const resp = await fetch('https://corsproxy.io/?' + encodeURIComponent(url), {
-              signal: controller.signal
+            const resp = await fetch('https://corsproxy.io/?' + encodedUrl, {
+              headers: { 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' }
             });
-            clearTimeout(timeoutId);
             
             if (!resp.ok) {
-              throw new Error(`Corsproxy returned HTTP ${resp.status}: ${resp.statusText}`);
+              throw new Error(`HTTP ${resp.status}: ${resp.statusText || 'Unknown error'}`);
             }
             
             const text = await resp.text();
-            if (!text || text.length === 0) {
-              throw new Error('Corsproxy returned empty response');
+            if (!text || text.length < 10) {
+              throw new Error('Response too short or empty');
             }
             
-            // Check for error messages
-            if (text.includes('Error') || text.includes('error') || text.includes('blocked')) {
-              throw new Error('Corsproxy returned an error message');
+            if (text.includes('blocked') || text.includes('error') || text.includes('denied')) {
+              throw new Error('Proxy request was blocked');
             }
             
             return text;
           } catch (err3) {
-            console.warn('Corsproxy failed:', err3.message);
+            console.warn('Corsproxy error:', err3.message);
             
-            // All proxies failed - throw combined error with specifics
-            let errorMsg = 'All proxy attempts failed. ';
-            errorMsg += `AllOrigins: ${err.message}. `;
-            errorMsg += `AllOrigins raw: ${err2.message}. `;
-            errorMsg += `Corsproxy: ${err3.message}.`;
+            // All failed - return a meaningful combined error
+            let errorMsg = 'Unable to fetch source. ';
+            if (err.message.includes('empty') || err.message.includes('unreachable')) {
+              errorMsg += 'The target website may be down or blocking requests. ';
+            } else if (err2.message.includes('HTTP')) {
+              errorMsg += 'Proxy service returned an error. ';
+            } else {
+              errorMsg += 'All proxy services failed. ';
+            }
+            errorMsg += 'Please check the URL and try again.';
             throw new Error(errorMsg);
           }
         }
@@ -1109,7 +1100,7 @@
       state.isFetching = true;
       inspectBtn.classList.add('loading');
       inspectBtn.disabled = true;
-      showToast('Connecting to website…', 'info', 2000);
+      showToast('Fetching website source…', 'info', 2000);
 
       try {
         const html = await fetchSource(normalized);
