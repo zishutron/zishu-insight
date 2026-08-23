@@ -51,21 +51,6 @@
       --code-bg: #f8f7ff;
       --shadow: 0 12px 40px rgba(0,0,0,0.1);
     }
-    [data-theme="midnight"] {
-      --bg-primary: #0b0d11;
-      --bg-secondary: #12161c;
-      --bg-panel: #161b24;
-      --bg-glass: rgba(22, 27, 36, 0.72);
-      --border-subtle: #2a313e;
-      --text-primary: #eef2f8;
-      --text-secondary: #a8b3c9;
-      --text-muted: #6f7d98;
-      --accent: #5d9bff;
-      --accent-glow: rgba(93, 155, 255, 0.18);
-      --accent-hover: #7bb0ff;
-      --code-bg: #0f131a;
-      --shadow: 0 12px 40px rgba(0,0,0,0.6);
-    }
     /* default aurora (dark violet) */
     body {
       background: var(--bg-primary);
@@ -162,10 +147,12 @@
     @media (max-width: 640px) {
       .mobile-menu-toggle { display: flex; }
       .nav-actions .desktop-only { display: none; }
+      .nav-actions .desktop-nav { display: none; }
       .nav-actions { gap: 2px; }
       .brand-sub { display: none; }
       .header-inner { flex-wrap: nowrap; }
     }
+    .desktop-nav { display: flex; gap: 4px; }
 
     /* hero */
     .hero {
@@ -227,10 +214,25 @@
       transition: 0.15s;
       white-space: nowrap;
       border: none;
+      position: relative;
     }
     .url-card .inspect-btn:hover:not(:disabled) { background: var(--accent-hover); transform: scale(0.97); }
-    .url-card .inspect-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .url-card .inspect-btn:disabled { opacity: 0.7; cursor: not-allowed; }
     .url-card .inspect-btn svg { width: 20px; height: 20px; }
+    .spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(10, 8, 18, 0.3);
+      border-top: 2px solid #0a0812;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    .inspect-btn.loading .spinner { display: inline-block; }
+    .inspect-btn.loading .btn-text { display: none; }
+    .inspect-btn.loading .btn-icon { display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
     .error-msg {
       margin-top: 16px;
       padding: 14px 18px;
@@ -495,6 +497,84 @@
     .modal p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.6; }
     .modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; font-size: 1.5rem; color: var(--text-muted); }
 
+    /* IP/DNS section */
+    .ip-section {
+      background: var(--bg-secondary);
+      border-radius: var(--radius);
+      border: 1px solid var(--border-subtle);
+      padding: 24px 28px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow);
+      transition: background 0.2s;
+    }
+    .ip-section h2 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .ip-section .sub {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 16px;
+    }
+    .ip-url-card {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .ip-url-card input {
+      flex: 1;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 12px 18px;
+      font-size: 1rem;
+      color: var(--text-primary);
+      outline: none;
+      font-family: var(--font-sans);
+      min-width: 160px;
+    }
+    .ip-url-card input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+    .ip-url-card input::placeholder { color: var(--text-muted); }
+    .ip-url-card button {
+      background: var(--accent);
+      color: #0a0812;
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 40px;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: 0.15s;
+      white-space: nowrap;
+      border: none;
+    }
+    .ip-url-card button:hover:not(:disabled) { background: var(--accent-hover); transform: scale(0.97); }
+    .ip-url-card button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .ip-result {
+      background: var(--bg-panel);
+      border-radius: var(--radius-sm);
+      padding: 18px 22px;
+      border: 1px solid var(--border-subtle);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      white-space: pre-wrap;
+      word-break: break-all;
+      color: var(--text-secondary);
+      min-height: 60px;
+      max-height: 300px;
+      overflow: auto;
+    }
+    .ip-result .label { color: var(--text-muted); }
+    .ip-result .value { color: var(--text-primary); }
+
+    @media (max-width: 480px) {
+      .ip-url-card { flex-direction: column; }
+      .ip-url-card button { width: 100%; justify-content: center; }
+    }
+
     /* responsiveness */
     @media (max-width: 768px) {
       .hero { padding: 26px 18px; }
@@ -506,6 +586,7 @@
       .ws-toolbar button { padding: 8px 10px; }
       .stats-row { gap: 8px 16px; }
       .code-container { max-height: 60vh; }
+      .ip-section { padding: 18px 16px; }
     }
     @media (max-width: 480px) {
       .hero h1 { font-size: 1.3rem; }
@@ -533,7 +614,6 @@
   <header>
     <div class="header-inner">
       <div class="brand">
-        <!-- Upcodez logo: </> style code logo -->
         <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M10 12 L6 16 L10 20" />
           <path d="M30 12 L34 16 L30 20" />
@@ -545,6 +625,10 @@
         <span class="brand-sub">explore the code</span>
       </div>
       <div class="nav-actions">
+        <div class="desktop-nav">
+          <button id="navSource" class="desktop-only" style="color:var(--accent);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg> Source</button>
+          <button id="navIp" class="desktop-only"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> IP & DNS</button>
+        </div>
         <button class="desktop-only" id="themeToggle" aria-label="Switch theme">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="5"/>
@@ -557,13 +641,18 @@
     </div>
   </header>
 
-  <section class="hero">
+  <!-- Source Inspector Section -->
+  <section class="hero" id="sourceSection">
     <h1>Explore the code behind the web</h1>
     <p>Enter a website URL to retrieve and inspect its publicly accessible HTML source.</p>
     <div class="url-card" id="urlCard">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
       <input type="text" id="urlInput" placeholder="https://example.com" value="" autofocus spellcheck="false">
-      <button class="inspect-btn" id="inspectBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg> <span id="inspectLabel">Inspect Source</span></button>
+      <button class="inspect-btn" id="inspectBtn">
+        <span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>
+        <span class="btn-text">Inspect Source</span>
+        <span class="spinner"></span>
+      </button>
     </div>
     <div id="errorContainer"></div>
     <div class="stats-row" id="statsRow">
@@ -575,6 +664,18 @@
     </div>
   </section>
 
+  <!-- IP & DNS Section -->
+  <section class="ip-section" id="ipSection">
+    <h2>🌐 IP & DNS Lookup</h2>
+    <p class="sub">Enter a website URL to get its IP address and DNS information.</p>
+    <div class="ip-url-card">
+      <input type="text" id="ipInput" placeholder="example.com" value="">
+      <button id="ipBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg> Lookup</button>
+    </div>
+    <div class="ip-result" id="ipResult">Enter a URL and click Lookup to see IP & DNS details.</div>
+  </section>
+
+  <!-- Workspace -->
   <div class="workspace" id="workspace">
     <div class="workspace-header">
       <div class="ws-left">
@@ -675,7 +776,6 @@
     const $ = id => document.getElementById(id);
     const urlInput = $('urlInput');
     const inspectBtn = $('inspectBtn');
-    const inspectLabel = $('inspectLabel');
     const errorContainer = $('errorContainer');
     const statsRow = $('statsRow');
     const statLines = $('statLines');
@@ -703,6 +803,13 @@
     const aboutModal = $('aboutModal');
     const aboutModalClose = $('aboutModalClose');
     const toastContainer = $('toastContainer');
+    const ipInput = $('ipInput');
+    const ipBtn = $('ipBtn');
+    const ipResult = $('ipResult');
+    const navSource = $('navSource');
+    const navIp = $('navIp');
+    const sourceSection = $('sourceSection');
+    const ipSection = $('ipSection');
 
     // ----- helpers -----
     function escapeHtml(text) {
@@ -757,7 +864,14 @@
       } catch { return null; }
     }
 
-    // ----- fetch source with retry and fallback -----
+    function extractHostname(url) {
+      try {
+        const u = new URL(url);
+        return u.hostname;
+      } catch { return url; }
+    }
+
+    // ----- fetch source with multiple proxies for reliability -----
     async function fetchSource(url) {
       const proxies = [
         'https://api.allorigins.win/get?url=',
@@ -765,43 +879,33 @@
         'https://corsproxy.io/?'
       ];
       
-      let lastError = null;
       for (const proxy of proxies) {
         try {
           const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 15000);
+          const timeoutId = setTimeout(() => controller.abort(), 12000);
           
-          let fullUrl = proxy + encodeURIComponent(url);
-          
+          const fullUrl = proxy + encodeURIComponent(url);
           const resp = await fetch(fullUrl, { 
             signal: controller.signal,
             headers: { 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' }
           });
           clearTimeout(timeoutId);
           
-          if (!resp.ok) {
-            throw new Error(`HTTP ${resp.status}`);
-          }
+          if (!resp.ok) continue;
           
           let data;
           if (proxy.includes('allorigins')) {
             data = await resp.json();
             if (data && data.contents) {
               return data.contents;
-            } else {
-              throw new Error('Invalid response format');
             }
           } else {
             const text = await resp.text();
             if (text && text.length > 0) {
               return text;
-            } else {
-              throw new Error('Empty response');
             }
           }
         } catch (err) {
-          lastError = err;
-          console.warn(`Proxy ${proxy} failed:`, err.message);
           continue;
         }
       }
@@ -927,8 +1031,8 @@
       state.currentUrl = normalized;
       urlInput.value = normalized;
       state.isFetching = true;
+      inspectBtn.classList.add('loading');
       inspectBtn.disabled = true;
-      inspectLabel.textContent = 'Inspecting…';
       showToast('Connecting to website…', 'info', 2000);
 
       try {
@@ -946,9 +1050,87 @@
         codeWrapper.classList.add('hidden');
       } finally {
         state.isFetching = false;
+        inspectBtn.classList.remove('loading');
         inspectBtn.disabled = false;
-        inspectLabel.textContent = 'Inspect Source';
         document.getElementById('workspace').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    // ----- IP & DNS Lookup -----
+    async function lookupIpDns(hostname) {
+      const clean = hostname.trim().replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+      if (!clean) { ipResult.innerHTML = 'Please enter a valid domain name.'; return; }
+      
+      ipBtn.disabled = true;
+      ipBtn.textContent = 'Looking up...';
+      ipResult.innerHTML = 'Fetching IP & DNS information...';
+      
+      try {
+        // Use multiple free APIs
+        const apis = [
+          `https://dns.google/resolve?name=${encodeURIComponent(clean)}&type=A`,
+          `https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(clean)}&type=A`
+        ];
+        
+        let ip = 'N/A';
+        let dnsData = null;
+        
+        for (const api of apis) {
+          try {
+            const resp = await fetch(api, {
+              headers: { 'Accept': 'application/dns-json' }
+            });
+            if (resp.ok) {
+              dnsData = await resp.json();
+              if (dnsData && dnsData.Answer && dnsData.Answer.length > 0) {
+                const answers = dnsData.Answer.filter(a => a.type === 1 || a.type === 28);
+                if (answers.length > 0) {
+                  ip = answers.map(a => a.data).join(', ');
+                }
+                break;
+              }
+            }
+          } catch (e) {}
+        }
+        
+        // Fallback: try ip-api.com for location info
+        let locationInfo = '';
+        if (ip !== 'N/A' && ip.split(',').length === 1) {
+          try {
+            const geoResp = await fetch(`https://ipapi.co/${ip.trim()}/json/`);
+            if (geoResp.ok) {
+              const geo = await geoResp.json();
+              if (geo && !geo.error) {
+                locationInfo = `\n📍 Location: ${geo.city || 'N/A'}, ${geo.region || 'N/A'}, ${geo.country_name || 'N/A'}\n🏢 ISP: ${geo.org || 'N/A'}`;
+              }
+            }
+          } catch (e) {}
+        }
+        
+        // Build DNS details
+        let dnsDetails = '';
+        if (dnsData && dnsData.Answer) {
+          const records = dnsData.Answer.filter(a => a.type === 1 || a.type === 28 || a.type === 5);
+          records.forEach(r => {
+            const type = r.type === 1 ? 'A' : r.type === 28 ? 'AAAA' : 'CNAME';
+            dnsDetails += `  ${type} → ${r.data}\n`;
+          });
+        }
+        
+        ipResult.innerHTML = `
+  <span class="label">🌐 Hostname:</span> <span class="value">${clean}</span>
+  <span class="label">📡 IP Address(es):</span> <span class="value">${ip}</span>
+  ${locationInfo}
+  ${dnsDetails ? '\n<span class="label">📋 DNS Records:</span>\n' + dnsDetails : '\n<span class="label">📋 DNS Records:</span> No A/AAAA records found'}
+  <span class="label">⏱️ Lookup time:</span> <span class="value">${new Date().toLocaleString()}</span>
+        `;
+        showToast('IP lookup completed', 'success');
+      } catch (err) {
+        ipResult.innerHTML = `Failed to lookup IP: ${err.message || 'Unknown error'}`;
+        showToast('IP lookup failed', 'error');
+      } finally {
+        ipBtn.disabled = false;
+        ipBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg> Lookup';
       }
     }
 
@@ -1002,8 +1184,8 @@
       localStorage.setItem('sv_history', JSON.stringify(hist));
     }
 
-    // ----- theme with 3 modes: aurora (default dark), midnight, light -----
-    const themes = ['aurora', 'midnight', 'light'];
+    // ----- theme with 2 modes: aurora (dark violet) and light -----
+    const themes = ['aurora', 'light'];
     let currentThemeIndex = 0;
     
     function toggleTheme() {
@@ -1022,13 +1204,15 @@
       if (saved === 'aurora') {
         document.documentElement.removeAttribute('data-theme');
         currentThemeIndex = 0;
-      } else if (saved === 'midnight') {
-        document.documentElement.setAttribute('data-theme', 'midnight');
-        currentThemeIndex = 1;
       } else if (saved === 'light') {
         document.documentElement.setAttribute('data-theme', 'light');
-        currentThemeIndex = 2;
+        currentThemeIndex = 1;
       }
+    }
+
+    // ----- navigation -----
+    function scrollToSection(el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     // ----- init -----
@@ -1037,6 +1221,7 @@
       const last = localStorage.getItem('sv_last_url');
       if (last) urlInput.value = last;
 
+      // Source inspect
       inspectBtn.addEventListener('click', () => {
         const val = urlInput.value.trim();
         if (!val) { showError('Please enter a URL'); return; }
@@ -1046,6 +1231,20 @@
       urlInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') { e.preventDefault(); inspectBtn.click(); }
       });
+
+      // IP lookup
+      ipBtn.addEventListener('click', () => {
+        lookupIpDns(ipInput.value);
+      });
+      ipInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); ipBtn.click(); }
+      });
+
+      // Navigation
+      navSource.addEventListener('click', () => scrollToSection(sourceSection));
+      navIp.addEventListener('click', () => scrollToSection(ipSection));
+
+      // Keyboard shortcuts
       document.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
           e.preventDefault();
@@ -1119,7 +1318,22 @@
       document.getElementById('githubFooterLink').addEventListener('click', (e) => { e.preventDefault(); showToast('Upcodez is open source. Check the repo!', 'info'); });
 
       document.getElementById('mobileMenuToggle').addEventListener('click', () => {
-        aboutToggle.click();
+        const nav = document.querySelector('.desktop-nav');
+        if (nav.style.display === 'flex') {
+          nav.style.display = 'none';
+        } else {
+          nav.style.display = 'flex';
+          nav.style.flexDirection = 'column';
+          nav.style.position = 'absolute';
+          nav.style.top = '60px';
+          nav.style.right = '10px';
+          nav.style.background = 'var(--bg-panel)';
+          nav.style.border = '1px solid var(--border-subtle)';
+          nav.style.borderRadius = 'var(--radius-sm)';
+          nav.style.padding = '8px';
+          nav.style.zIndex = '50';
+          nav.style.boxShadow = 'var(--shadow)';
+        }
       });
 
       emptyState.classList.remove('hidden');
