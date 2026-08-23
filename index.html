@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>Upcodez — Explore the code behind the web</title>
+  <meta name="description" content="A modern browser-based tool for inspecting, searching, copying, and downloading publicly accessible website HTML source.">
+  <meta name="theme-color" content="#0a0812">
+  <meta name="robots" content="index, follow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* reset & base */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg-primary: #0a0812;
+      --bg-secondary: #100d1e;
+      --bg-panel: #191530;
+      --bg-glass: rgba(25, 21, 48, 0.78);
+      --border-subtle: #322a5a;
+      --text-primary: #f0edff;
+      --text-secondary: #b9afdb;
+      --text-muted: #7b6f9e;
+      --accent: #b388ff;
+      --accent-glow: rgba(179, 136, 255, 0.22);
+      --accent-hover: #cdb4ff;
+      --danger: #f87171;
+      --success: #6ee7b7;
+      --warning: #fbbf24;
+      --radius: 16px;
+      --radius-sm: 10px;
+      --shadow: 0 12px 40px rgba(0,0,0,0.7);
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+      --transition: 0.2s cubic-bezier(0.2, 0, 0, 1);
+      --code-bg: #0d0b18;
+    }
+    [data-theme="midnight"] {
+      --bg-primary: #0b0d11;
+      --bg-secondary: #12161c;
+      --bg-panel: #161b24;
+      --bg-glass: rgba(22, 27, 36, 0.72);
+      --border-subtle: #2a313e;
+      --text-primary: #eef2f8;
+      --text-secondary: #a8b3c9;
+      --text-muted: #6f7d98;
+      --accent: #5d9bff;
+      --accent-glow: rgba(93, 155, 255, 0.18);
+      --accent-hover: #7bb0ff;
+      --code-bg: #0f131a;
+    }
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      transition: background 0.25s, color 0.2s;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; border: none; background: transparent; color: inherit; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-secondary); }
+    ::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 8px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+    /* layout */
+    .app { max-width: 1360px; margin: 0 auto; padding: 0 20px 30px; }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: var(--bg-glass);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 12px 0;
+      margin: 0 -20px 24px;
+      padding-left: 20px;
+      padding-right: 20px;
+      transition: background 0.2s;
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand svg { width: 34px; height: 34px; flex-shrink: 0; }
+    .brand-name {
+      font-weight: 700;
+      font-size: 1.35rem;
+      letter-spacing: -0.3px;
+      background: linear-gradient(135deg, var(--text-primary) 60%, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .brand-sub {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      background: var(--bg-panel);
+      padding: 2px 12px;
+      border-radius: 30px;
+      border: 1px solid var(--border-subtle);
+      text-transform: uppercase;
+      -webkit-text-fill-color: var(--text-muted);
+    }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-actions button {
+      padding: 6px 12px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      border: 1px solid transparent;
+      transition: 0.15s;
+      color: var(--text-secondary);
+    }
+    .nav-actions button:hover { background: var(--bg-panel); border-color: var(--border-subtle); color: var(--text-primary); }
+    .nav-actions button svg { width: 18px; height: 18px; }
+    .mobile-menu-toggle { display: none; }
+    @media (max-width: 640px) {
+      .mobile-menu-toggle { display: flex; }
+      .nav-actions .desktop-only { display: none; }
+      .nav-actions { gap: 2px; }
+      .brand-sub { display: none; }
+      .header-inner { flex-wrap: nowrap; }
+    }
+
+    /* hero */
+    .hero {
+      background: var(--bg-secondary);
+      border-radius: var(--radius);
+      padding: 36px 28px 32px;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow);
+      margin-bottom: 32px;
+      transition: background 0.2s;
+    }
+    .hero h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+    .hero p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      max-width: 560px;
+      margin-bottom: 22px;
+    }
+    .url-card {
+      background: var(--bg-panel);
+      border-radius: var(--radius-sm);
+      padding: 6px 6px 6px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid var(--border-subtle);
+      transition: 0.2s;
+      flex-wrap: wrap;
+    }
+    .url-card:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+    .url-card svg { width: 20px; height: 20px; color: var(--text-muted); flex-shrink: 0; }
+    .url-card input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      padding: 14px 0;
+      font-size: 1rem;
+      color: var(--text-primary);
+      outline: none;
+      min-width: 160px;
+      font-family: var(--font-sans);
+    }
+    .url-card input::placeholder { color: var(--text-muted); }
+    .url-card .inspect-btn {
+      background: var(--accent);
+      color: #0a0812;
+      font-weight: 600;
+      padding: 12px 26px;
+      border-radius: 40px;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: 0.15s;
+      white-space: nowrap;
+      border: none;
+    }
+    .url-card .inspect-btn:hover:not(:disabled) { background: var(--accent-hover); transform: scale(0.97); }
+    .url-card .inspect-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .url-card .inspect-btn svg { width: 20px; height: 20px; }
+    .error-msg {
+      margin-top: 16px;
+      padding: 14px 18px;
+      background: rgba(248, 113, 113, 0.08);
+      border-left: 3px solid var(--danger);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--danger);
+      font-size: 0.9rem;
+    }
+    .error-msg svg { width: 22px; height: 22px; flex-shrink: 0; }
+
+    /* stats row */
+    .stats-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px 28px;
+      margin-bottom: 18px;
+      padding: 6px 0;
+    }
+    .stat-item {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+    .stat-item strong { color: var(--text-primary); font-weight: 600; font-size: 1rem; }
+
+    /* workspace */
+    .workspace {
+      background: var(--bg-secondary);
+      border-radius: var(--radius);
+      border: 1px solid var(--border-subtle);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: background 0.2s;
+    }
+    .workspace-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border-subtle);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .ws-left { display: flex; align-items: center; gap: 12px; }
+    .ws-left svg { width: 22px; height: 22px; color: var(--text-muted); }
+    .ws-left .host { font-weight: 600; }
+    .ws-left .badge {
+      background: var(--accent-glow);
+      color: var(--accent);
+      padding: 2px 14px;
+      border-radius: 30px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+    .ws-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+    .ws-toolbar button {
+      padding: 8px 12px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      border: 1px solid transparent;
+      transition: 0.15s;
+      color: var(--text-secondary);
+    }
+    .ws-toolbar button:hover { background: var(--bg-glass); border-color: var(--border-subtle); color: var(--text-primary); }
+    .ws-toolbar button svg { width: 18px; height: 18px; }
+    .ws-toolbar .active-tool { background: var(--bg-glass); border-color: var(--border-subtle); color: var(--text-primary); }
+
+    /* tabs */
+    .tabs {
+      display: flex;
+      gap: 0;
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 0 16px;
+    }
+    .tab {
+      padding: 12px 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      border-bottom: 2px solid transparent;
+      transition: 0.15s;
+      cursor: pointer;
+    }
+    .tab:hover { color: var(--text-secondary); }
+    .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+    /* code viewer */
+    .code-container {
+      position: relative;
+      background: var(--code-bg);
+      max-height: 70vh;
+      overflow: auto;
+      transition: background 0.2s;
+    }
+    .code-wrapper {
+      display: flex;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      line-height: 1.6;
+      min-height: 200px;
+    }
+    .line-numbers {
+      padding: 16px 0 16px 16px;
+      text-align: right;
+      user-select: none;
+      color: var(--text-muted);
+      background: var(--code-bg);
+      border-right: 1px solid var(--border-subtle);
+      min-width: 52px;
+      white-space: pre;
+      overflow: hidden;
+      font-feature-settings: "tnum";
+      font-variant-numeric: tabular-nums;
+    }
+    .line-numbers span { display: block; padding: 0 12px 0 4px; }
+    .code-content {
+      padding: 16px 20px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      flex: 1;
+      background: var(--code-bg);
+      color: var(--text-primary);
+    }
+    .code-content pre { margin: 0; font-family: inherit; }
+    .code-content .token { font-family: inherit; }
+
+    /* empty state */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+      text-align: center;
+      gap: 18px;
+    }
+    .empty-state svg { width: 80px; height: 80px; opacity: 0.4; }
+    .empty-state h3 { font-weight: 500; color: var(--text-secondary); }
+
+    /* search overlay */
+    .search-overlay {
+      display: none;
+      padding: 12px 20px;
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border-subtle);
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .search-overlay.open { display: flex; }
+    .search-overlay input {
+      flex: 1;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      padding: 8px 16px;
+      border-radius: 30px;
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      min-width: 120px;
+    }
+    .search-overlay input:focus { outline: none; border-color: var(--accent); }
+    .search-overlay .match-count { font-size: 0.8rem; color: var(--text-muted); }
+    .search-overlay .search-nav button { padding: 4px 10px; border-radius: 20px; background: var(--bg-secondary); border: 1px solid var(--border-subtle); }
+    .search-overlay .search-nav button:hover { background: var(--bg-glass); }
+
+    /* toast */
+    .toast-container {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 360px;
+      width: 100%;
+      pointer-events: none;
+    }
+    .toast {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 14px 20px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      pointer-events: auto;
+      backdrop-filter: blur(8px);
+      animation: slideUp 0.3s ease;
+      color: var(--text-primary);
+    }
+    .toast svg { width: 22px; height: 22px; flex-shrink: 0; }
+    .toast-success svg { color: var(--success); }
+    .toast-error svg { color: var(--danger); }
+    .toast-warning svg { color: var(--warning); }
+    .toast-info svg { color: var(--accent); }
+    @keyframes slideUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+
+    /* footer */
+    .footer {
+      margin-top: 40px;
+      padding: 24px 0 12px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 14px;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { color: var(--text-secondary); }
+    .footer-links a:hover { color: var(--text-primary); }
+
+    /* about modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      max-width: 520px;
+      width: 100%;
+      padding: 32px;
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+    .modal h2 { margin-bottom: 12px; }
+    .modal p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.6; }
+    .modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; font-size: 1.5rem; color: var(--text-muted); }
+
+    /* responsiveness */
+    @media (max-width: 768px) {
+      .hero { padding: 26px 18px; }
+      .hero h1 { font-size: 1.5rem; }
+      .url-card { padding: 4px 4px 4px 12px; }
+      .url-card input { padding: 12px 0; font-size: 0.95rem; }
+      .url-card .inspect-btn { padding: 10px 18px; font-size: 0.85rem; }
+      .ws-toolbar button span { display: none; }
+      .ws-toolbar button { padding: 8px 10px; }
+      .stats-row { gap: 8px 16px; }
+      .code-container { max-height: 60vh; }
+    }
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 1.3rem; }
+      .brand-name { font-size: 1rem; }
+      .url-card { flex-wrap: wrap; background: transparent; border: none; padding: 0; }
+      .url-card input { background: var(--bg-panel); padding: 14px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); }
+      .url-card .inspect-btn { width: 100%; justify-content: center; }
+      .ws-left .badge { display: none; }
+      .tabs { overflow-x: auto; flex-wrap: nowrap; }
+      .tab { padding: 10px 14px; font-size: 0.8rem; white-space: nowrap; }
+    }
+    /* reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+    /* utility */
+    .hidden { display: none !important; }
+    .flex-center { display: flex; align-items: center; gap: 8px; }
+    .mt-8 { margin-top: 8px; }
+    .gap-4 { gap: 4px; }
+  </style>
+</head>
+<body>
+<div class="app" id="app">
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <!-- Upcodez logo: U + </> -->
+        <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 8 L12 32 L28 32 L28 8 L12 8 Z" />
+          <path d="M12 16 L28 16" />
+          <path d="M12 24 L28 24" />
+          <path d="M20 8 L20 16" />
+          <path d="M20 24 L20 32" />
+          <circle cx="20" cy="20" r="3" fill="currentColor" stroke="none" />
+        </svg>
+        <span class="brand-name">Upcodez</span>
+        <span class="brand-sub">explore the code</span>
+      </div>
+      <div class="nav-actions">
+        <button class="desktop-only" id="themeToggle" aria-label="Switch theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></button>
+        <button id="aboutToggle" class="desktop-only" aria-label="About"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></button>
+        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>Explore the code behind the web</h1>
+    <p>Enter a website URL to retrieve and inspect its publicly accessible HTML source.</p>
+    <div class="url-card" id="urlCard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      <input type="text" id="urlInput" placeholder="https://example.com" value="" autofocus spellcheck="false">
+      <button class="inspect-btn" id="inspectBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg> <span id="inspectLabel">Inspect Source</span></button>
+    </div>
+    <div id="errorContainer"></div>
+    <div class="stats-row" id="statsRow">
+      <div class="stat-item"><strong id="statLines">—</strong> Lines</div>
+      <div class="stat-item"><strong id="statChars">—</strong> Characters</div>
+      <div class="stat-item"><strong id="statSize">—</strong> Size</div>
+      <div class="stat-item"><strong id="statTags">—</strong> Tags</div>
+      <div class="stat-item"><strong id="statWords">—</strong> Words</div>
+    </div>
+  </section>
+
+  <div class="workspace" id="workspace">
+    <div class="workspace-header">
+      <div class="ws-left">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
+        <span class="host" id="sourceHost">example.com</span>
+        <span class="badge">HTML SOURCE</span>
+        <span class="badge" style="background:var(--bg-panel);color:var(--text-muted)" id="sourceSizeBadge">—</span>
+      </div>
+      <div class="ws-toolbar" id="wsToolbar">
+        <button id="copyBtn" aria-label="Copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copy</span></button>
+        <button id="downloadBtn" aria-label="Download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Download</span></button>
+        <button id="fullscreenBtn" aria-label="Fullscreen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg><span>Fullscreen</span></button>
+        <button id="refreshBtn" aria-label="Refresh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg><span>Refresh</span></button>
+        <button id="findBtn" aria-label="Find"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>Find</span></button>
+      </div>
+    </div>
+    <!-- search overlay -->
+    <div class="search-overlay" id="searchOverlay">
+      <input type="text" id="searchInput" placeholder="Search source…" aria-label="Search in source">
+      <span class="match-count" id="matchCount">0 / 0</span>
+      <div class="search-nav">
+        <button id="searchPrev" aria-label="Previous match"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <button id="searchNext" aria-label="Next match"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg></button>
+        <button id="searchClose" aria-label="Close search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+    </div>
+    <!-- tabs -->
+    <div class="tabs" id="tabsContainer">
+      <div class="tab active" data-tab="html">HTML</div>
+      <div class="tab" data-tab="raw">Raw</div>
+      <div class="tab" data-tab="info">Info</div>
+    </div>
+    <!-- code container -->
+    <div class="code-container" id="codeContainer">
+      <div class="empty-state" id="emptyState">
+        <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="12" y="18" width="56" height="44" rx="4"/><path d="M28 8v10M52 8v10M12 36h56"/><circle cx="22" cy="28" r="3"/><circle cx="36" cy="28" r="3"/><circle cx="50" cy="28" r="3"/><path d="M20 50l12-8 12 8 12-8 12 8"/></svg>
+        <h3>Your source workspace is ready</h3>
+        <p style="max-width:360px;color:var(--text-muted)">Enter a public website URL above to begin inspecting its HTML source.</p>
+      </div>
+      <div class="code-wrapper hidden" id="codeWrapper">
+        <div class="line-numbers" id="lineNumbers"></div>
+        <div class="code-content" id="codeContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span>© 2026 Upcodez · Explore the code behind the web.</span>
+    <div class="footer-links">
+      <a href="#" id="aboutFooterLink">About</a>
+      <a href="#" id="privacyFooterLink">Privacy</a>
+      <a href="#" id="githubFooterLink">GitHub</a>
+    </div>
+  </footer>
+</div>
+
+<!-- about modal -->
+<div class="modal-overlay" id="aboutModal">
+  <div class="modal">
+    <button class="modal-close" id="aboutModalClose">&times;</button>
+    <h2>About Upcodez</h2>
+    <p>Upcodez is a client-side utility for inspecting publicly accessible HTML source through a CORS-compatible retrieval service.</p>
+    <p><strong>Version</strong> 1.0 · Built with vanilla JS, Prism.js for highlighting.</p>
+    <p><strong>Privacy</strong> Upcodez does not require an account and does not intentionally store inspected website source on its own server. All requests are made directly from your browser.</p>
+    <p><small style="color:var(--text-muted)">Source retrieval via AllOrigins proxy. Dynamically generated content may not appear.</small></p>
+  </div>
+</div>
+
+<!-- toast container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Prism.js CDN (lightweight) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+
+<script>
+  (function(){
+    "use strict";
+
+    // ----- state -----
+    const state = {
+      currentUrl: '',
+      rawSource: '',
+      hostname: '',
+      lines: 0,
+      chars: 0,
+      size: 0,
+      tags: 0,
+      words: 0,
+      isFetching: false,
+      fullscreen: false,
+      searchResults: [],
+      searchIndex: -1,
+      currentTab: 'html',
+    };
+
+    // ----- refs -----
+    const $ = id => document.getElementById(id);
+    const urlInput = $('urlInput');
+    const inspectBtn = $('inspectBtn');
+    const inspectLabel = $('inspectLabel');
+    const errorContainer = $('errorContainer');
+    const statsRow = $('statsRow');
+    const statLines = $('statLines');
+    const statChars = $('statChars');
+    const statSize = $('statSize');
+    const statTags = $('statTags');
+    const statWords = $('statWords');
+    const sourceHost = $('sourceHost');
+    const sourceSizeBadge = $('sourceSizeBadge');
+    const codeContainer = $('codeContainer');
+    const emptyState = $('emptyState');
+    const codeWrapper = $('codeWrapper');
+    const lineNumbers = $('lineNumbers');
+    const codeContent = $('codeContent');
+    const searchOverlay = $('searchOverlay');
+    const searchInput = $('searchInput');
+    const matchCount = $('matchCount');
+    const copyBtn = $('copyBtn');
+    const downloadBtn = $('downloadBtn');
+    const fullscreenBtn = $('fullscreenBtn');
+    const refreshBtn = $('refreshBtn');
+    const findBtn = $('findBtn');
+    const themeToggle = $('themeToggle');
+    const aboutToggle = $('aboutToggle');
+    const aboutModal = $('aboutModal');
+    const aboutModalClose = $('aboutModalClose');
+    const toastContainer = $('toastContainer');
+
+    // ----- helpers -----
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function formatSize(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+      return (bytes / 1048576).toFixed(2) + ' MB';
+    }
+
+    function countTags(html) {
+      const matches = html.match(/<[^>]*>/g);
+      return matches ? matches.length : 0;
+    }
+
+    function countWords(text) {
+      const clean = text.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+      return clean ? clean.split(/\s+/).length : 0;
+    }
+
+    function showToast(message, type = 'info', duration = 3500) {
+      const iconMap = {
+        success: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+        error: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
+        warning: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/></svg>',
+        info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>'
+      };
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+      toast.innerHTML = iconMap[type] || iconMap.info + `<span>${message}</span>`;
+      toastContainer.appendChild(toast);
+      setTimeout(() => { if (toast.parentNode) toast.remove(); }, duration);
+    }
+
+    function showError(msg) {
+      errorContainer.innerHTML = `<div class="error-msg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> ${escapeHtml(msg)}</div>`;
+    }
+    function clearError() { errorContainer.innerHTML = ''; }
+
+    // ----- validation -----
+    function normalizeUrl(input) {
+      let url = input.trim();
+      if (!url) return null;
+      if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+      try {
+        const u = new URL(url);
+        return u.href;
+      } catch { return null; }
+    }
+
+    // ----- fetch source -----
+    async function fetchSource(url) {
+      const proxy = 'https://api.allorigins.win/get?url=';
+      const resp = await fetch(proxy + encodeURIComponent(url));
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      const data = await resp.json();
+      if (!data.contents) throw new Error('Empty response from proxy');
+      return data.contents;
+    }
+
+    // ----- render source -----
+    function renderSource(html, tab = 'html') {
+      state.rawSource = html;
+      state.chars = html.length;
+      state.size = new Blob([html]).size;
+      state.lines = html.split('\n').length;
+      state.tags = countTags(html);
+      state.words = countWords(html);
+      updateStats();
+
+      if (tab === 'raw') {
+        codeContent.innerHTML = `<pre>${escapeHtml(html)}</pre>`;
+        lineNumbers.innerHTML = Array.from({length: state.lines}, (_,i) => `<span>${i+1}</span>`).join('');
+        emptyState.classList.add('hidden');
+        codeWrapper.classList.remove('hidden');
+        return;
+      }
+      if (tab === 'info') {
+        const info = `<pre style="font-family:var(--font-mono);color:var(--text-secondary);font-size:0.85rem">
+  URL: ${state.currentUrl}
+  Hostname: ${state.hostname}
+  Protocol: ${new URL(state.currentUrl).protocol.toUpperCase()}
+  Size: ${formatSize(state.size)}
+  Lines: ${state.lines}
+  Characters: ${state.chars}
+  Tags: ${state.tags}
+  Words: ${state.words}
+  Retrieved: ${new Date().toLocaleString()}
+        </pre>`;
+        codeContent.innerHTML = info;
+        lineNumbers.innerHTML = '';
+        emptyState.classList.add('hidden');
+        codeWrapper.classList.remove('hidden');
+        return;
+      }
+      // html tab: highlight with Prism
+      const highlighted = Prism.highlight(html, Prism.languages.html, 'html');
+      codeContent.innerHTML = `<pre>${highlighted}</pre>`;
+      lineNumbers.innerHTML = Array.from({length: state.lines}, (_,i) => `<span>${i+1}</span>`).join('');
+      emptyState.classList.add('hidden');
+      codeWrapper.classList.remove('hidden');
+    }
+
+    function updateStats() {
+      statLines.textContent = state.lines.toLocaleString();
+      statChars.textContent = state.chars.toLocaleString();
+      statSize.textContent = formatSize(state.size);
+      statTags.textContent = state.tags.toLocaleString();
+      statWords.textContent = state.words.toLocaleString();
+      sourceSizeBadge.textContent = formatSize(state.size);
+      sourceHost.textContent = state.hostname || '—';
+    }
+
+    // ----- search -----
+    function performSearch(query) {
+      const container = codeContent;
+      if (!query) { clearSearchHighlights(); return; }
+      const text = state.rawSource;
+      const matches = [];
+      let idx = text.toLowerCase().indexOf(query.toLowerCase());
+      while (idx !== -1) { matches.push(idx); idx = text.toLowerCase().indexOf(query.toLowerCase(), idx+1); }
+      state.searchResults = matches;
+      state.searchIndex = -1;
+      matchCount.textContent = matches.length ? `1 / ${matches.length}` : '0 / 0';
+      if (matches.length) { state.searchIndex = 0; highlightSearchMatch(0); }
+      else { clearSearchHighlights(); }
+    }
+
+    function clearSearchHighlights() {
+      renderSource(state.rawSource, state.currentTab);
+    }
+
+    function highlightSearchMatch(index) {
+      if (!state.searchResults.length) return;
+      const idx = state.searchResults[index];
+      const query = searchInput.value;
+      if (!query) return;
+      const text = state.rawSource;
+      const parts = text.split(new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'));
+      let html = '';
+      let matchIdx = 0;
+      for (let i=0; i<parts.length; i++) {
+        const part = parts[i];
+        if (part.toLowerCase() === query.toLowerCase()) {
+          const isMatch = matchIdx === index;
+          html += `<span style="background:${isMatch ? 'var(--accent)' : 'var(--warning)'};color:#0a0812;padding:0 2px;border-radius:2px;">${escapeHtml(part)}</span>`;
+          matchIdx++;
+        } else {
+          html += escapeHtml(part);
+        }
+      }
+      codeContent.innerHTML = `<pre>${html}</pre>`;
+      lineNumbers.innerHTML = Array.from({length: state.lines}, (_,i) => `<span>${i+1}</span>`).join('');
+      matchCount.textContent = `${index+1} / ${state.searchResults.length}`;
+    }
+
+    function searchNext() {
+      if (!state.searchResults.length) return;
+      state.searchIndex = (state.searchIndex + 1) % state.searchResults.length;
+      highlightSearchMatch(state.searchIndex);
+    }
+    function searchPrev() {
+      if (!state.searchResults.length) return;
+      state.searchIndex = (state.searchIndex - 1 + state.searchResults.length) % state.searchResults.length;
+      highlightSearchMatch(state.searchIndex);
+    }
+
+    // ----- main inspect -----
+    async function inspectWebsite(url) {
+      if (state.isFetching) return;
+      clearError();
+      const normalized = normalizeUrl(url);
+      if (!normalized) { showError('Invalid URL. Please enter a valid website address.'); return; }
+      state.currentUrl = normalized;
+      urlInput.value = normalized;
+      state.isFetching = true;
+      inspectBtn.disabled = true;
+      inspectLabel.textContent = 'Inspecting…';
+      showToast('Connecting to website…', 'info', 2000);
+
+      try {
+        const html = await fetchSource(normalized);
+        state.rawSource = html;
+        state.hostname = new URL(normalized).hostname;
+        renderSource(html, state.currentTab);
+        showToast('Source retrieved successfully', 'success');
+        addHistory(normalized);
+      } catch (err) {
+        showError(`Unable to inspect this website. ${err.message || 'Unknown error'}`);
+        showToast('Failed to retrieve source', 'error');
+        emptyState.classList.remove('hidden');
+        codeWrapper.classList.add('hidden');
+      } finally {
+        state.isFetching = false;
+        inspectBtn.disabled = false;
+        inspectLabel.textContent = 'Inspect Source';
+        document.getElementById('workspace').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    // ----- copy / download / fullscreen -----
+    function copySource() {
+      if (!state.rawSource) { showToast('No source to copy', 'warning'); return; }
+      navigator.clipboard.writeText(state.rawSource).then(() => {
+        showToast('Source copied to clipboard', 'success');
+      }).catch(() => {
+        const ta = document.createElement('textarea');
+        ta.value = state.rawSource;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+        showToast('Source copied to clipboard', 'success');
+      });
+    }
+
+    function downloadSource() {
+      if (!state.rawSource) { showToast('No source to download', 'warning'); return; }
+      const blob = new Blob([state.rawSource], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'source.html';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+      showToast('source.html downloaded', 'success');
+    }
+
+    function toggleFullscreen() {
+      const el = document.getElementById('workspace');
+      if (!document.fullscreenElement) {
+        el.requestFullscreen?.().catch(() => {});
+        fullscreenBtn.querySelector('span').textContent = 'Exit';
+      } else {
+        document.exitFullscreen?.();
+        fullscreenBtn.querySelector('span').textContent = 'Fullscreen';
+      }
+    }
+
+    // ----- history -----
+    function addHistory(url) {
+      let hist = JSON.parse(localStorage.getItem('sv_history') || '[]');
+      hist = hist.filter(u => u !== url);
+      hist.unshift(url);
+      if (hist.length > 10) hist = hist.slice(0, 10);
+      localStorage.setItem('sv_history', JSON.stringify(hist));
+    }
+
+    // ----- theme -----
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'midnight' ? 'aurora' : 'midnight';
+      document.documentElement.setAttribute('data-theme', next === 'aurora' ? '' : 'midnight');
+      localStorage.setItem('sv_theme', next);
+    }
+    function loadTheme() {
+      const saved = localStorage.getItem('sv_theme') || 'aurora';
+      if (saved === 'midnight') document.documentElement.setAttribute('data-theme', 'midnight');
+    }
+
+    // ----- init -----
+    function init() {
+      loadTheme();
+      const last = localStorage.getItem('sv_last_url');
+      if (last) urlInput.value = last;
+
+      inspectBtn.addEventListener('click', () => {
+        const val = urlInput.value.trim();
+        if (!val) { showError('Please enter a URL'); return; }
+        inspectWebsite(val);
+        localStorage.setItem('sv_last_url', val);
+      });
+      urlInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); inspectBtn.click(); }
+      });
+      document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+          e.preventDefault();
+          inspectBtn.click();
+        }
+        if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+          e.preventDefault();
+          findBtn.click();
+        }
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'c' || e.key === 'C')) {
+          e.preventDefault();
+          copyBtn.click();
+        }
+        if (e.key === 'Escape') {
+          if (searchOverlay.classList.contains('open')) { searchClose(); }
+          if (document.fullscreenElement) document.exitFullscreen();
+        }
+      });
+
+      copyBtn.addEventListener('click', copySource);
+      downloadBtn.addEventListener('click', downloadSource);
+      fullscreenBtn.addEventListener('click', toggleFullscreen);
+      refreshBtn.addEventListener('click', () => {
+        if (state.currentUrl) inspectWebsite(state.currentUrl);
+        else showToast('No source to refresh', 'warning');
+      });
+
+      findBtn.addEventListener('click', () => {
+        searchOverlay.classList.toggle('open');
+        if (searchOverlay.classList.contains('open')) {
+          searchInput.focus();
+          searchInput.select();
+        } else {
+          searchClose();
+        }
+      });
+      function searchClose() {
+        searchOverlay.classList.remove('open');
+        clearSearchHighlights();
+        searchInput.value = '';
+        matchCount.textContent = '0 / 0';
+        state.searchResults = [];
+        state.searchIndex = -1;
+      }
+      searchInput.addEventListener('input', () => {
+        const q = searchInput.value.trim();
+        if (q.length > 0) performSearch(q);
+        else { clearSearchHighlights(); matchCount.textContent = '0 / 0'; state.searchResults = []; }
+      });
+      document.getElementById('searchNext').addEventListener('click', searchNext);
+      document.getElementById('searchPrev').addEventListener('click', searchPrev);
+      document.getElementById('searchClose').addEventListener('click', searchClose);
+
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          const t = tab.dataset.tab;
+          state.currentTab = t;
+          if (state.rawSource) renderSource(state.rawSource, t);
+        });
+      });
+
+      themeToggle.addEventListener('click', toggleTheme);
+
+      aboutToggle.addEventListener('click', () => aboutModal.classList.add('open'));
+      aboutModalClose.addEventListener('click', () => aboutModal.classList.remove('open'));
+      aboutModal.addEventListener('click', (e) => { if (e.target === aboutModal) aboutModal.classList.remove('open'); });
+      document.getElementById('aboutFooterLink').addEventListener('click', (e) => { e.preventDefault(); aboutModal.classList.add('open'); });
+      document.getElementById('privacyFooterLink').addEventListener('click', (e) => { e.preventDefault(); showToast('No data is stored on servers. All processing is client-side.', 'info'); });
+      document.getElementById('githubFooterLink').addEventListener('click', (e) => { e.preventDefault(); showToast('Upcodez is open source. Check the repo!', 'info'); });
+
+      document.getElementById('mobileMenuToggle').addEventListener('click', () => {
+        aboutToggle.click();
+      });
+
+      emptyState.classList.remove('hidden');
+      codeWrapper.classList.add('hidden');
+      showToast('Welcome to Upcodez', 'info', 2000);
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  })();
+</script>
+</body>
+</html>
