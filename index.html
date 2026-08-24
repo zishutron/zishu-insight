@@ -777,6 +777,8 @@
   (function(){
     "use strict";
 
+    const API_BASE = 'https://stardust-ai.onrender.com';
+
     const state = {
       currentUrl: '',
       rawSource: '',
@@ -896,13 +898,46 @@
       } catch { return null; }
     }
 
-    // ----- SIMPLIFIED & RELIABLE FETCH -----
+    // ----- FAST BACKEND FETCH -----
     async function fetchSource(url) {
       const encodedUrl = encodeURIComponent(url);
       
-      // Use a single reliable proxy with no abort signals (causes issues)
       try {
-        const resp = await fetch('https://api.allorigins.win/get?url=' + encodedUrl, {
+        // Use your backend API
+        const resp = await fetch(`${API_BASE}/fetch?url=${encodedUrl}`, {
+          headers: { 'Accept': 'application/json' }
+        });
+        
+        if (!resp.ok) {
+          const errorData = await resp.json().catch(() => ({}));
+          throw new Error(errorData.error || `HTTP ${resp.status}`);
+        }
+        
+        const data = await resp.json();
+        if (!data || typeof data !== 'object') {
+          throw new Error('Invalid response from server');
+        }
+        
+        if (!data.content && data.content !== '') {
+          throw new Error(data.error || 'Empty response from target');
+        }
+        
+        return data.content;
+      } catch (err) {
+        // Check if it's a network error
+        if (err.name === 'TypeError' || err.message.includes('fetch')) {
+          throw new Error('Cannot connect to backend server. Please check your internet connection.');
+        }
+        throw err;
+      }
+    }
+
+    // ----- IP LOOKUP VIA BACKEND -----
+    async function fetchIpInfo(hostname) {
+      const clean = hostname.trim().replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+      
+      try {
+        const resp = await fetch(`${API_BASE}/ip?host=${encodeURIComponent(clean)}`, {
           headers: { 'Accept': 'application/json' }
         });
         
@@ -911,68 +946,9 @@
         }
         
         const data = await resp.json();
-        if (!data || typeof data !== 'object') {
-          throw new Error('Invalid JSON response');
-        }
-        
-        if (!data.contents || data.contents === 'null' || data.contents === '') {
-          throw new Error('Empty response from target');
-        }
-        
-        return data.contents;
+        return data;
       } catch (err) {
-        // If first proxy fails, try the raw endpoint
-        try {
-          const resp = await fetch('https://api.allorigins.win/raw?url=' + encodedUrl);
-          
-          if (!resp.ok) {
-            throw new Error(`HTTP ${resp.status}`);
-          }
-          
-          const text = await resp.text();
-          if (!text || text.length < 20) {
-            throw new Error('Response too short');
-          }
-          
-          // Check for error messages
-          if (text.includes('"error"') || text.includes('blocked')) {
-            throw new Error('Proxy returned error');
-          }
-          
-          return text;
-        } catch (err2) {
-          // Final fallback - try corsproxy.io
-          try {
-            const resp = await fetch('https://corsproxy.io/?' + encodedUrl);
-            
-            if (!resp.ok) {
-              throw new Error(`HTTP ${resp.status}`);
-            }
-            
-            const text = await resp.text();
-            if (!text || text.length < 20) {
-              throw new Error('Response too short');
-            }
-            
-            if (text.includes('blocked') || text.includes('denied')) {
-              throw new Error('Request blocked by proxy');
-            }
-            
-            return text;
-          } catch (err3) {
-            // All failed - show clear message
-            let msg = 'Unable to fetch source. ';
-            if (err.message.includes('HTTP')) {
-              msg += 'Proxy service returned an error. ';
-            } else if (err.message.includes('empty') || err.message.includes('short')) {
-              msg += 'Target website returned empty content. ';
-            } else {
-              msg += 'All proxy services are currently unavailable. ';
-            }
-            msg += 'Please try again later or check the URL.';
-            throw new Error(msg);
-          }
-        }
+        throw new Error(err.message || 'Failed to fetch IP information');
       }
     }
 
@@ -1124,70 +1100,43 @@
       ipResult.innerHTML = 'Fetching IP & DNS information...';
       
       try {
-        let ip = 'N/A';
-        let dnsData = null;
+        const data = await fetchIpInfo(clean);
         
-        try {
-          const resp = await fetch(`https://dns.google/resolve?name=${encodeURIComponent(clean)}&type=A`, {
-            headers: { 'Accept': 'application/dns-json' }
-          });
-          if (resp.ok) {
-            dnsData = await resp.json();
-            if (dnsData && dnsData.Answer && dnsData.Answer.length > 0) {
-              const answers = dnsData.Answer.filter(a => a.type === 1 || a.type === 28);
-              if (answers.length > 0) {
-                ip = answers.map(a => a.data).join(', ');
-              }
-            }
+        let output = '';
+        output += `<span class="label">🌐 Hostname:</span> <span class="value">${clean}</span>\n`;
+        
+        if (data.ip) {
+          output += `<span class="label">📡 IP Address:</span> <span class="value">${data.ip}</span>\n`;
+        } else {
+          output += `<span class="label">📡 IP Address:</span> <span class="value">N/A</span>\n`;
+        }
+        
+        if (data.location) {
+          const loc = data.location;
+          let locStr = '';
+          if (loc.city) locStr += loc.city;
+          if (loc.region) locStr += (locStr ? ', ' : '') + loc.region;
+          if (loc.country) locStr += (locStr ? ', ' : '') + loc.country;
+          if (locStr) {
+            output += `<span class="label">📍 Location:</span> <span class="value">${locStr}</span>\n`;
           }
-        } catch (e) {}
-        
-        if (ip === 'N/A') {
-          try {
-            const resp = await fetch(`https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(clean)}&type=A`, {
-              headers: { 'Accept': 'application/dns-json' }
-            });
-            if (resp.ok) {
-              dnsData = await resp.json();
-              if (dnsData && dnsData.Answer && dnsData.Answer.length > 0) {
-                const answers = dnsData.Answer.filter(a => a.type === 1 || a.type === 28);
-                if (answers.length > 0) {
-                  ip = answers.map(a => a.data).join(', ');
-                }
-              }
-            }
-          } catch (e) {}
+          if (loc.isp) {
+            output += `<span class="label">🏢 ISP:</span> <span class="value">${loc.isp}</span>\n`;
+          }
         }
         
-        let locationInfo = '';
-        if (ip !== 'N/A' && !ip.includes(',')) {
-          try {
-            const geoResp = await fetch(`https://ipapi.co/${ip.trim()}/json/`);
-            if (geoResp.ok) {
-              const geo = await geoResp.json();
-              if (geo && !geo.error) {
-                locationInfo = `\n📍 Location: ${geo.city || 'N/A'}, ${geo.region || 'N/A'}, ${geo.country_name || 'N/A'}\n🏢 ISP: ${geo.org || 'N/A'}`;
-              }
-            }
-          } catch (e) {}
-        }
-        
-        let dnsDetails = '';
-        if (dnsData && dnsData.Answer) {
-          const records = dnsData.Answer.filter(a => a.type === 1 || a.type === 28 || a.type === 5);
-          records.forEach(r => {
-            const type = r.type === 1 ? 'A' : r.type === 28 ? 'AAAA' : 'CNAME';
-            dnsDetails += `  ${type} → ${r.data}\n`;
+        if (data.dns && data.dns.length > 0) {
+          output += `\n<span class="label">📋 DNS Records:</span>\n`;
+          data.dns.forEach(record => {
+            output += `  ${record.type} → ${record.value}\n`;
           });
+        } else {
+          output += `\n<span class="label">📋 DNS Records:</span> No A/AAAA records found\n`;
         }
         
-        ipResult.innerHTML = `
-  <span class="label">🌐 Hostname:</span> <span class="value">${clean}</span>
-  <span class="label">📡 IP Address(es):</span> <span class="value">${ip}</span>
-  ${locationInfo}
-  ${dnsDetails ? '\n<span class="label">📋 DNS Records:</span>\n' + dnsDetails : '\n<span class="label">📋 DNS Records:</span> No A/AAAA records found'}
-  <span class="label">⏱️ Lookup time:</span> <span class="value">${new Date().toLocaleString()}</span>
-        `;
+        output += `\n<span class="label">⏱️ Lookup time:</span> <span class="value">${new Date().toLocaleString()}</span>`;
+        
+        ipResult.innerHTML = output;
         showToast('IP lookup completed', 'success');
       } catch (err) {
         ipResult.innerHTML = `Failed to lookup IP: ${err.message || 'Unknown error'}`;
