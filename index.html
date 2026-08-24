@@ -896,81 +896,89 @@
       } catch { return null; }
     }
 
-    // ----- SIMPLIFIED & RELIABLE FETCH -----
+    // ----- FIXED: Better fetch with proper error handling and no abort signal issues -----
     async function fetchSource(url) {
       const encodedUrl = encodeURIComponent(url);
       
-      // Use a single reliable proxy with no abort signals (causes issues)
+      // Try AllOrigins /get with a simple fetch (no abort signal to avoid "aborted without reason")
       try {
         const resp = await fetch('https://api.allorigins.win/get?url=' + encodedUrl, {
           headers: { 'Accept': 'application/json' }
         });
         
         if (!resp.ok) {
-          throw new Error(`HTTP ${resp.status}`);
+          throw new Error(`HTTP ${resp.status}: ${resp.statusText || 'Unknown error'}`);
         }
         
         const data = await resp.json();
         if (!data || typeof data !== 'object') {
-          throw new Error('Invalid JSON response');
+          throw new Error('Invalid response format');
         }
         
         if (!data.contents || data.contents === 'null' || data.contents === '') {
-          throw new Error('Empty response from target');
+          throw new Error('Target website returned empty content or is unreachable');
         }
         
         return data.contents;
       } catch (err) {
-        // If first proxy fails, try the raw endpoint
+        console.warn('AllOrigins /get error:', err.message);
+        
+        // Try AllOrigins /raw
         try {
           const resp = await fetch('https://api.allorigins.win/raw?url=' + encodedUrl);
           
           if (!resp.ok) {
-            throw new Error(`HTTP ${resp.status}`);
+            throw new Error(`HTTP ${resp.status}: ${resp.statusText || 'Unknown error'}`);
           }
           
           const text = await resp.text();
-          if (!text || text.length < 20) {
-            throw new Error('Response too short');
+          if (!text || text.length < 10) {
+            throw new Error('Response too short or empty');
           }
           
-          // Check for error messages
-          if (text.includes('"error"') || text.includes('blocked')) {
-            throw new Error('Proxy returned error');
+          // Check if it's a JSON error
+          if (text.startsWith('{') && text.includes('"error"')) {
+            throw new Error('Proxy returned an error response');
           }
           
           return text;
         } catch (err2) {
-          // Final fallback - try corsproxy.io
+          console.warn('AllOrigins /raw error:', err2.message);
+          
+          // Try corsproxy.io as last resort
           try {
-            const resp = await fetch('https://corsproxy.io/?' + encodedUrl);
+            const resp = await fetch('https://corsproxy.io/?' + encodedUrl, {
+              headers: { 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' }
+            });
             
             if (!resp.ok) {
-              throw new Error(`HTTP ${resp.status}`);
+              throw new Error(`HTTP ${resp.status}: ${resp.statusText || 'Unknown error'}`);
             }
             
             const text = await resp.text();
-            if (!text || text.length < 20) {
-              throw new Error('Response too short');
+            if (!text || text.length < 10) {
+              throw new Error('Response too short or empty');
             }
             
-            if (text.includes('blocked') || text.includes('denied')) {
-              throw new Error('Request blocked by proxy');
+            if (text.includes('blocked') || text.includes('error') || text.includes('denied')) {
+              throw new Error('Proxy request was blocked');
             }
             
             return text;
           } catch (err3) {
-            // All failed - show clear message
-            let msg = 'Unable to fetch source. ';
-            if (err.message.includes('HTTP')) {
-              msg += 'Proxy service returned an error. ';
-            } else if (err.message.includes('empty') || err.message.includes('short')) {
-              msg += 'Target website returned empty content. ';
+            console.warn('Corsproxy error:', err3.message);
+            
+            // All failed - return a meaningful combined error
+            let errorMsg = 'Unable to fetch source. ';
+            if (err.message.includes('empty') || err.message.includes('unreachable')) {
+              errorMsg += 'The target website may be down or blocking requests. ';
+            } else if (err2.message.includes('HTTP')) {
+              errorMsg += 'Proxy service returned an error. ';
             } else {
-              msg += 'All proxy services are currently unavailable. ';
+              errorMsg += 'All proxy services failed. ';
             }
-            msg += 'Please try again later or check the URL.';
-            throw new Error(msg);
+            errorMsg += 'Please check the URL and try again.';
+            throw new Error(errorMsg);
           }
         }
       }
