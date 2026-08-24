@@ -10,7 +10,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
@@ -141,7 +140,6 @@
     }
     .nav-actions button:hover { background: var(--bg-panel); border-color: var(--border-subtle); color: var(--text-primary); }
     .nav-actions button svg { width: 18px; height: 18px; }
-    .nav-actions .active { color: var(--accent) !important; }
     .mobile-menu-toggle { display: none; }
     @media (max-width: 640px) {
       .mobile-menu-toggle { display: flex; }
@@ -650,8 +648,8 @@
       </div>
       <div class="nav-actions">
         <div class="desktop-nav">
-          <button id="navSource" class="active" style="color:var(--accent);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg> Source</button>
-          <button id="navIp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> IP & DNS</button>
+          <button id="navSource" class="desktop-only" style="color:var(--accent);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg> Source</button>
+          <button id="navIp" class="desktop-only"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> IP & DNS</button>
         </div>
         <button class="desktop-only" id="themeToggle" aria-label="Switch theme">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -766,19 +764,18 @@
     <p>Upcodez is a client-side utility for inspecting publicly accessible HTML source through a CORS-compatible retrieval service.</p>
     <p><strong>Version</strong> 1.0 · Built with vanilla JS, Prism.js for highlighting.</p>
     <p><strong>Privacy</strong> Upcodez does not require an account and does not intentionally store inspected website source on its own server. All requests are made directly from your browser.</p>
-    <p><small style="color:var(--text-muted)">Source retrieval via backend API. Dynamically generated content may not appear.</small></p>
+    <p><small style="color:var(--text-muted)">Source retrieval via AllOrigins proxy. Dynamically generated content may not appear.</small></p>
   </div>
 </div>
 
 <div class="toast-container" id="toastContainer"></div>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+
 <script>
   (function(){
     "use strict";
-
-    // 🔥 BACKEND API URL - CHANGE THIS TO YOUR RENDER BACKEND URL
-    const API_BASE = 'https://stardust-ai.onrender.com/api';
 
     const state = {
       currentUrl: '',
@@ -860,16 +857,6 @@
       return clean ? clean.split(/\s+/).length : 0;
     }
 
-    function normalizeUrl(input) {
-      let url = input.trim();
-      if (!url) return null;
-      if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
-      try {
-        const u = new URL(url);
-        return u.href;
-      } catch { return null; }
-    }
-
     function showToast(message, type = 'info', duration = 3500) {
       const iconMap = {
         success: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
@@ -894,9 +881,99 @@
       const page = document.getElementById(pageId);
       if (page) page.classList.add('active');
       mobileMenu.classList.remove('open');
-      document.querySelectorAll('.desktop-nav button').forEach(b => b.classList.remove('active'));
-      if (pageId === 'pageSource') navSource.classList.add('active');
-      else if (pageId === 'pageIp') navIp.classList.add('active');
+      document.querySelectorAll('.desktop-nav button').forEach(b => b.style.color = 'var(--text-secondary)');
+      if (pageId === 'pageSource') navSource.style.color = 'var(--accent)';
+      else if (pageId === 'pageIp') navIp.style.color = 'var(--accent)';
+    }
+
+    function normalizeUrl(input) {
+      let url = input.trim();
+      if (!url) return null;
+      if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+      try {
+        const u = new URL(url);
+        return u.href;
+      } catch { return null; }
+    }
+
+    // ----- SIMPLIFIED & RELIABLE FETCH -----
+    async function fetchSource(url) {
+      const encodedUrl = encodeURIComponent(url);
+      
+      // Use a single reliable proxy with no abort signals (causes issues)
+      try {
+        const resp = await fetch('https://api.allorigins.win/get?url=' + encodedUrl, {
+          headers: { 'Accept': 'application/json' }
+        });
+        
+        if (!resp.ok) {
+          throw new Error(`HTTP ${resp.status}`);
+        }
+        
+        const data = await resp.json();
+        if (!data || typeof data !== 'object') {
+          throw new Error('Invalid JSON response');
+        }
+        
+        if (!data.contents || data.contents === 'null' || data.contents === '') {
+          throw new Error('Empty response from target');
+        }
+        
+        return data.contents;
+      } catch (err) {
+        // If first proxy fails, try the raw endpoint
+        try {
+          const resp = await fetch('https://api.allorigins.win/raw?url=' + encodedUrl);
+          
+          if (!resp.ok) {
+            throw new Error(`HTTP ${resp.status}`);
+          }
+          
+          const text = await resp.text();
+          if (!text || text.length < 20) {
+            throw new Error('Response too short');
+          }
+          
+          // Check for error messages
+          if (text.includes('"error"') || text.includes('blocked')) {
+            throw new Error('Proxy returned error');
+          }
+          
+          return text;
+        } catch (err2) {
+          // Final fallback - try corsproxy.io
+          try {
+            const resp = await fetch('https://corsproxy.io/?' + encodedUrl);
+            
+            if (!resp.ok) {
+              throw new Error(`HTTP ${resp.status}`);
+            }
+            
+            const text = await resp.text();
+            if (!text || text.length < 20) {
+              throw new Error('Response too short');
+            }
+            
+            if (text.includes('blocked') || text.includes('denied')) {
+              throw new Error('Request blocked by proxy');
+            }
+            
+            return text;
+          } catch (err3) {
+            // All failed - show clear message
+            let msg = 'Unable to fetch source. ';
+            if (err.message.includes('HTTP')) {
+              msg += 'Proxy service returned an error. ';
+            } else if (err.message.includes('empty') || err.message.includes('short')) {
+              msg += 'Target website returned empty content. ';
+            } else {
+              msg += 'All proxy services are currently unavailable. ';
+            }
+            msg += 'Please try again later or check the URL.';
+            throw new Error(msg);
+          }
+        }
+      }
     }
 
     function renderSource(html, tab = 'html') {
@@ -1005,7 +1082,6 @@
       highlightSearchMatch(state.searchIndex);
     }
 
-    // 🔥 MAIN: Inspect website via backend
     async function inspectWebsite(url) {
       if (state.isFetching) return;
       clearError();
@@ -1019,30 +1095,12 @@
       showToast('Fetching website source…', 'info', 2000);
 
       try {
-        const response = await fetch(`${API_BASE}/fetch-source`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ url: normalized })
-        });
-
-        const data = await response.json();
-
-        if (!response.ok || !data.success) {
-          throw new Error(data.error || 'Failed to fetch source');
-        }
-
-        state.rawSource = data.content;
+        const html = await fetchSource(normalized);
+        state.rawSource = html;
         state.hostname = new URL(normalized).hostname;
-        state.lines = data.lines || data.content.split('\n').length;
-        state.size = data.size || new Blob([data.content]).size;
-        state.chars = data.content.length;
-        state.tags = countTags(data.content);
-        state.words = countWords(data.content);
-        
-        renderSource(data.content, state.currentTab);
+        renderSource(html, state.currentTab);
         showToast('Source retrieved successfully', 'success');
         addHistory(normalized);
-        
       } catch (err) {
         const errorMsg = err.message || 'Unknown error';
         showError(`Unable to inspect this website. ${errorMsg}`);
@@ -1057,7 +1115,6 @@
       }
     }
 
-    // 🔥 DNS Lookup via backend
     async function lookupIpDns(hostname) {
       const clean = hostname.trim().replace(/^https?:\/\//, '').replace(/\/.*$/, '');
       if (!clean) { ipResult.innerHTML = 'Please enter a valid domain name.'; return; }
@@ -1067,58 +1124,71 @@
       ipResult.innerHTML = 'Fetching IP & DNS information...';
       
       try {
-        const response = await fetch(`${API_BASE}/dns-lookup`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ hostname: clean })
-        });
-
-        const data = await response.json();
-
-        if (!response.ok || !data.success) {
-          throw new Error(data.error || 'DNS lookup failed');
-        }
-
-        let result = `🌐 Hostname: ${data.hostname}\n`;
-        result += `📡 IP Addresses: `;
+        let ip = 'N/A';
+        let dnsData = null;
         
-        if (data.dns && data.dns.Answer) {
-          const ips = data.dns.Answer.filter(a => a.type === 1).map(a => a.data);
-          result += ips.length ? ips.join(', ') : 'N/A';
-        } else {
-          result += 'N/A';
+        try {
+          const resp = await fetch(`https://dns.google/resolve?name=${encodeURIComponent(clean)}&type=A`, {
+            headers: { 'Accept': 'application/dns-json' }
+          });
+          if (resp.ok) {
+            dnsData = await resp.json();
+            if (dnsData && dnsData.Answer && dnsData.Answer.length > 0) {
+              const answers = dnsData.Answer.filter(a => a.type === 1 || a.type === 28);
+              if (answers.length > 0) {
+                ip = answers.map(a => a.data).join(', ');
+              }
+            }
+          }
+        } catch (e) {}
+        
+        if (ip === 'N/A') {
+          try {
+            const resp = await fetch(`https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(clean)}&type=A`, {
+              headers: { 'Accept': 'application/dns-json' }
+            });
+            if (resp.ok) {
+              dnsData = await resp.json();
+              if (dnsData && dnsData.Answer && dnsData.Answer.length > 0) {
+                const answers = dnsData.Answer.filter(a => a.type === 1 || a.type === 28);
+                if (answers.length > 0) {
+                  ip = answers.map(a => a.data).join(', ');
+                }
+              }
+            }
+          } catch (e) {}
         }
         
-        if (data.geo) {
-          result += `\n📍 Location: ${data.geo.city || 'N/A'}, ${data.geo.regionName || 'N/A'}, ${data.geo.country || 'N/A'}`;
-          result += `\n🏢 ISP: ${data.geo.isp || data.geo.org || 'N/A'}`;
+        let locationInfo = '';
+        if (ip !== 'N/A' && !ip.includes(',')) {
+          try {
+            const geoResp = await fetch(`https://ipapi.co/${ip.trim()}/json/`);
+            if (geoResp.ok) {
+              const geo = await geoResp.json();
+              if (geo && !geo.error) {
+                locationInfo = `\n📍 Location: ${geo.city || 'N/A'}, ${geo.region || 'N/A'}, ${geo.country_name || 'N/A'}\n🏢 ISP: ${geo.org || 'N/A'}`;
+              }
+            }
+          } catch (e) {}
         }
         
-        if (data.dns && data.dns.Answer) {
-          result += '\n\n📋 DNS Records:';
-          data.dns.Answer.forEach(r => {
+        let dnsDetails = '';
+        if (dnsData && dnsData.Answer) {
+          const records = dnsData.Answer.filter(a => a.type === 1 || a.type === 28 || a.type === 5);
+          records.forEach(r => {
             const type = r.type === 1 ? 'A' : r.type === 28 ? 'AAAA' : 'CNAME';
-            result += `\n  ${type} → ${r.data}`;
+            dnsDetails += `  ${type} → ${r.data}\n`;
           });
         }
         
-        if (data.aaaa && data.aaaa.Answer) {
-          data.aaaa.Answer.forEach(r => {
-            if (r.type === 28) result += `\n  AAAA → ${r.data}`;
-          });
-        }
-        
-        if (data.cname && data.cname.Answer) {
-          data.cname.Answer.forEach(r => {
-            if (r.type === 5) result += `\n  CNAME → ${r.data}`;
-          });
-        }
-        
-        result += `\n\n⏱️ Lookup time: ${new Date(data.timestamp).toLocaleString()}`;
-        
-        ipResult.textContent = result;
+        ipResult.innerHTML = `
+  <span class="label">🌐 Hostname:</span> <span class="value">${clean}</span>
+  <span class="label">📡 IP Address(es):</span> <span class="value">${ip}</span>
+  ${locationInfo}
+  ${dnsDetails ? '\n<span class="label">📋 DNS Records:</span>\n' + dnsDetails : '\n<span class="label">📋 DNS Records:</span> No A/AAAA records found'}
+  <span class="label">⏱️ Lookup time:</span> <span class="value">${new Date().toLocaleString()}</span>
+        `;
         showToast('IP lookup completed', 'success');
-        
       } catch (err) {
         ipResult.innerHTML = `Failed to lookup IP: ${err.message || 'Unknown error'}`;
         showToast('IP lookup failed', 'error');
