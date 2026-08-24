@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
+    /* reset & base */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
       --bg-primary: #0a0812;
@@ -50,6 +51,7 @@
       --code-bg: #f8f7ff;
       --shadow: 0 12px 40px rgba(0,0,0,0.1);
     }
+    /* default aurora (dark violet) */
     body {
       background: var(--bg-primary);
       color: var(--text-primary);
@@ -65,6 +67,7 @@
     ::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 8px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
+    /* layout */
     .app { max-width: 1360px; margin: 0 auto; padding: 0 20px 30px; }
     header {
       position: sticky;
@@ -151,6 +154,7 @@
     }
     .desktop-nav { display: flex; gap: 4px; }
 
+    /* hero */
     .hero {
       background: var(--bg-secondary);
       border-radius: var(--radius);
@@ -243,6 +247,7 @@
     }
     .error-msg svg { width: 22px; height: 22px; flex-shrink: 0; }
 
+    /* stats row */
     .stats-row {
       display: flex;
       flex-wrap: wrap;
@@ -259,6 +264,7 @@
     }
     .stat-item strong { color: var(--text-primary); font-weight: 600; font-size: 1rem; }
 
+    /* workspace */
     .workspace {
       background: var(--bg-secondary);
       border-radius: var(--radius);
@@ -310,7 +316,9 @@
     }
     .ws-toolbar button:hover { background: var(--bg-glass); border-color: var(--border-subtle); color: var(--text-primary); }
     .ws-toolbar button svg { width: 18px; height: 18px; }
+    .ws-toolbar .active-tool { background: var(--bg-glass); border-color: var(--border-subtle); color: var(--text-primary); }
 
+    /* tabs */
     .tabs {
       display: flex;
       gap: 0;
@@ -330,6 +338,7 @@
     .tab:hover { color: var(--text-secondary); }
     .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 
+    /* code viewer */
     .code-container {
       position: relative;
       background: var(--code-bg);
@@ -370,6 +379,7 @@
     .code-content pre { margin: 0; font-family: inherit; }
     .code-content .token { font-family: inherit; }
 
+    /* empty state */
     .empty-state {
       display: flex;
       flex-direction: column;
@@ -383,6 +393,7 @@
     .empty-state svg { width: 80px; height: 80px; opacity: 0.4; }
     .empty-state h3 { font-weight: 500; color: var(--text-secondary); }
 
+    /* search overlay */
     .search-overlay {
       display: none;
       padding: 12px 20px;
@@ -409,6 +420,7 @@
     .search-overlay .search-nav button { padding: 4px 10px; border-radius: 20px; background: var(--bg-secondary); border: 1px solid var(--border-subtle); }
     .search-overlay .search-nav button:hover { background: var(--bg-glass); }
 
+    /* toast */
     .toast-container {
       position: fixed;
       bottom: 30px;
@@ -442,6 +454,7 @@
     .toast-info svg { color: var(--accent); }
     @keyframes slideUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
 
+    /* footer */
     .footer {
       margin-top: 40px;
       padding: 24px 0 12px;
@@ -457,6 +470,7 @@
     .footer-links a { color: var(--text-secondary); }
     .footer-links a:hover { color: var(--text-primary); }
 
+    /* about modal */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -483,6 +497,7 @@
     .modal p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.6; }
     .modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; font-size: 1.5rem; color: var(--text-muted); }
 
+    /* IP/DNS section - separate page */
     .ip-page {
       display: none;
       background: var(--bg-secondary);
@@ -565,6 +580,7 @@
       .ip-page h1 { font-size: 1.5rem; }
     }
 
+    /* Mobile menu */
     .mobile-menu {
       display: none;
       position: absolute;
@@ -577,7 +593,7 @@
       z-index: 50;
       box-shadow: var(--shadow);
       flex-direction: column;
-      min-width: 180px;
+      min-width: 160px;
     }
     .mobile-menu.open { display: flex; }
     .mobile-menu button {
@@ -602,6 +618,7 @@
       margin: 4px 8px;
     }
 
+    /* responsiveness */
     @media (max-width: 768px) {
       .hero { padding: 26px 18px; }
       .hero h1 { font-size: 1.5rem; }
@@ -623,10 +640,17 @@
       .tabs { overflow-x: auto; flex-wrap: nowrap; }
       .tab { padding: 10px 14px; font-size: 0.8rem; white-space: nowrap; }
     }
+    /* reduced motion */
     @media (prefers-reduced-motion: reduce) {
       * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
     }
+    /* utility */
     .hidden { display: none !important; }
+    .flex-center { display: flex; align-items: center; gap: 8px; }
+    .mt-8 { margin-top: 8px; }
+    .gap-4 { gap: 4px; }
+
+    /* Page visibility */
     .page { display: none; }
     .page.active { display: block; }
   </style>
@@ -661,6 +685,7 @@
         <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
       </div>
     </div>
+    <!-- Mobile Menu -->
     <div class="mobile-menu" id="mobileMenu">
       <button id="mobileNavSource"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg> Source Inspector</button>
       <button id="mobileNavIp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> IP & DNS</button>
@@ -670,6 +695,7 @@
     </div>
   </header>
 
+  <!-- Page: Source Inspector -->
   <div class="page active" id="pageSource">
     <section class="hero">
       <h1>Explore the code behind the web</h1>
@@ -737,6 +763,7 @@
     </div>
   </div>
 
+  <!-- Page: IP & DNS -->
   <div class="page ip-page" id="pageIp">
     <h1>🌐 IP & DNS Lookup</h1>
     <p class="sub">Enter a website URL to get its IP address and DNS information.</p>
@@ -757,6 +784,7 @@
   </footer>
 </div>
 
+<!-- about modal -->
 <div class="modal-overlay" id="aboutModal">
   <div class="modal">
     <button class="modal-close" id="aboutModalClose">&times;</button>
@@ -768,8 +796,10 @@
   </div>
 </div>
 
+<!-- toast container -->
 <div class="toast-container" id="toastContainer"></div>
 
+<!-- Prism.js CDN -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 
@@ -777,6 +807,7 @@
   (function(){
     "use strict";
 
+    // ----- state -----
     const state = {
       currentUrl: '',
       rawSource: '',
@@ -793,10 +824,12 @@
       currentTab: 'html',
     };
 
+    // ----- refs -----
     const $ = id => document.getElementById(id);
     const urlInput = $('urlInput');
     const inspectBtn = $('inspectBtn');
     const errorContainer = $('errorContainer');
+    const statsRow = $('statsRow');
     const statLines = $('statLines');
     const statChars = $('statChars');
     const statSize = $('statSize');
@@ -804,6 +837,7 @@
     const statWords = $('statWords');
     const sourceHost = $('sourceHost');
     const sourceSizeBadge = $('sourceSizeBadge');
+    const codeContainer = $('codeContainer');
     const emptyState = $('emptyState');
     const codeWrapper = $('codeWrapper');
     const lineNumbers = $('lineNumbers');
@@ -835,6 +869,7 @@
     const mobileThemeToggle = $('mobileThemeToggle');
     const mobileAboutToggle = $('mobileAboutToggle');
 
+    // ----- helpers -----
     function escapeHtml(text) {
       const div = document.createElement('div');
       div.textContent = text;
@@ -876,16 +911,19 @@
     }
     function clearError() { errorContainer.innerHTML = ''; }
 
+    // ----- navigation -----
     function showPage(pageId) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       const page = document.getElementById(pageId);
       if (page) page.classList.add('active');
       mobileMenu.classList.remove('open');
+      // Update nav button styles
       document.querySelectorAll('.desktop-nav button').forEach(b => b.style.color = 'var(--text-secondary)');
       if (pageId === 'pageSource') navSource.style.color = 'var(--accent)';
       else if (pageId === 'pageIp') navIp.style.color = 'var(--accent)';
     }
 
+    // ----- validation -----
     function normalizeUrl(input) {
       let url = input.trim();
       if (!url) return null;
@@ -896,103 +934,49 @@
       } catch { return null; }
     }
 
-    // ----- IMPROVED FETCH WITH MEANINGFUL ERRORS -----
+    // ----- fetch source with multiple proxies -----
     async function fetchSource(url) {
-      // First try: AllOrigins /get (most reliable)
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 15000);
-        
-        const resp = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent(url), {
-          signal: controller.signal
-        });
-        clearTimeout(timeoutId);
-        
-        if (!resp.ok) {
-          throw new Error(`AllOrigins returned HTTP ${resp.status}: ${resp.statusText}`);
-        }
-        
-        const data = await resp.json();
-        if (!data || typeof data !== 'object') {
-          throw new Error('Invalid response from AllOrigins (not a JSON object)');
-        }
-        
-        if (!data.contents) {
-          throw new Error('AllOrigins returned empty contents - target website may be unreachable');
-        }
-        
-        return data.contents;
-      } catch (err) {
-        // Log the actual error for debugging
-        console.warn('AllOrigins /get failed:', err.message);
-        
-        // Second try: AllOrigins /raw endpoint
+      const proxies = [
+        'https://api.allorigins.win/get?url=',
+        'https://api.allorigins.win/raw?url=',
+        'https://corsproxy.io/?'
+      ];
+      
+      for (const proxy of proxies) {
         try {
           const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 15000);
+          const timeoutId = setTimeout(() => controller.abort(), 12000);
           
-          const resp = await fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(url), {
-            signal: controller.signal
+          const fullUrl = proxy + encodeURIComponent(url);
+          const resp = await fetch(fullUrl, { 
+            signal: controller.signal,
+            headers: { 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' }
           });
           clearTimeout(timeoutId);
           
-          if (!resp.ok) {
-            throw new Error(`AllOrigins raw returned HTTP ${resp.status}: ${resp.statusText}`);
-          }
+          if (!resp.ok) continue;
           
-          const text = await resp.text();
-          if (!text || text.length === 0) {
-            throw new Error('AllOrigins raw returned empty response');
-          }
-          
-          // Check if it's a JSON error response disguised as text
-          if (text.startsWith('{') && text.includes('"error"')) {
-            throw new Error('AllOrigins raw returned an error response');
-          }
-          
-          return text;
-        } catch (err2) {
-          console.warn('AllOrigins /raw failed:', err2.message);
-          
-          // Third try: Corsproxy.io
-          try {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 15000);
-            
-            const resp = await fetch('https://corsproxy.io/?' + encodeURIComponent(url), {
-              signal: controller.signal
-            });
-            clearTimeout(timeoutId);
-            
-            if (!resp.ok) {
-              throw new Error(`Corsproxy returned HTTP ${resp.status}: ${resp.statusText}`);
+          let data;
+          if (proxy.includes('allorigins')) {
+            data = await resp.json();
+            if (data && data.contents) {
+              return data.contents;
             }
-            
+          } else {
             const text = await resp.text();
-            if (!text || text.length === 0) {
-              throw new Error('Corsproxy returned empty response');
+            if (text && text.length > 0) {
+              return text;
             }
-            
-            // Check for error messages
-            if (text.includes('Error') || text.includes('error') || text.includes('blocked')) {
-              throw new Error('Corsproxy returned an error message');
-            }
-            
-            return text;
-          } catch (err3) {
-            console.warn('Corsproxy failed:', err3.message);
-            
-            // All proxies failed - throw combined error with specifics
-            let errorMsg = 'All proxy attempts failed. ';
-            errorMsg += `AllOrigins: ${err.message}. `;
-            errorMsg += `AllOrigins raw: ${err2.message}. `;
-            errorMsg += `Corsproxy: ${err3.message}.`;
-            throw new Error(errorMsg);
           }
+        } catch (err) {
+          continue;
         }
       }
+      
+      throw new Error('Unable to retrieve source. Please check the URL and try again.');
     }
 
+    // ----- render source -----
     function renderSource(html, tab = 'html') {
       state.rawSource = html;
       state.chars = html.length;
@@ -1048,6 +1032,7 @@
       sourceHost.textContent = state.hostname || '—';
     }
 
+    // ----- search -----
     function performSearch(query) {
       if (!query) { clearSearchHighlights(); return; }
       const text = state.rawSource;
@@ -1099,6 +1084,7 @@
       highlightSearchMatch(state.searchIndex);
     }
 
+    // ----- main inspect -----
     async function inspectWebsite(url) {
       if (state.isFetching) return;
       clearError();
@@ -1132,6 +1118,7 @@
       }
     }
 
+    // ----- IP & DNS Lookup -----
     async function lookupIpDns(hostname) {
       const clean = hostname.trim().replace(/^https?:\/\//, '').replace(/\/.*$/, '');
       if (!clean) { ipResult.innerHTML = 'Please enter a valid domain name.'; return; }
@@ -1144,6 +1131,7 @@
         let ip = 'N/A';
         let dnsData = null;
         
+        // Try Google DNS
         try {
           const resp = await fetch(`https://dns.google/resolve?name=${encodeURIComponent(clean)}&type=A`, {
             headers: { 'Accept': 'application/dns-json' }
@@ -1159,6 +1147,7 @@
           }
         } catch (e) {}
         
+        // Fallback: Cloudflare
         if (ip === 'N/A') {
           try {
             const resp = await fetch(`https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(clean)}&type=A`, {
@@ -1176,6 +1165,7 @@
           } catch (e) {}
         }
         
+        // Try ip-api for location
         let locationInfo = '';
         if (ip !== 'N/A' && !ip.includes(',')) {
           try {
@@ -1215,6 +1205,7 @@
       }
     }
 
+    // ----- copy / download / fullscreen -----
     function copySource() {
       if (!state.rawSource) { showToast('No source to copy', 'warning'); return; }
       navigator.clipboard.writeText(state.rawSource).then(() => {
@@ -1255,6 +1246,7 @@
       }
     }
 
+    // ----- history -----
     function addHistory(url) {
       let hist = JSON.parse(localStorage.getItem('sv_history') || '[]');
       hist = hist.filter(u => u !== url);
@@ -1263,6 +1255,7 @@
       localStorage.setItem('sv_history', JSON.stringify(hist));
     }
 
+    // ----- theme with 2 modes: aurora (dark violet) and light -----
     const themes = ['aurora', 'light'];
     let currentThemeIndex = 0;
     
@@ -1288,16 +1281,19 @@
       }
     }
 
+    // ----- init -----
     function init() {
       loadTheme();
       const last = localStorage.getItem('sv_last_url');
       if (last) urlInput.value = last;
 
+      // Navigation
       navSource.addEventListener('click', () => showPage('pageSource'));
       navIp.addEventListener('click', () => showPage('pageIp'));
       mobileNavSource.addEventListener('click', () => showPage('pageSource'));
       mobileNavIp.addEventListener('click', () => showPage('pageIp'));
 
+      // Mobile menu toggle
       mobileMenuToggle.addEventListener('click', (e) => {
         e.stopPropagation();
         mobileMenu.classList.toggle('open');
@@ -1308,6 +1304,7 @@
         }
       });
 
+      // Mobile theme & about
       mobileThemeToggle.addEventListener('click', () => {
         toggleTheme();
         mobileMenu.classList.remove('open');
@@ -1317,6 +1314,7 @@
         mobileMenu.classList.remove('open');
       });
 
+      // Source inspect
       inspectBtn.addEventListener('click', () => {
         const val = urlInput.value.trim();
         if (!val) { showError('Please enter a URL'); return; }
@@ -1327,6 +1325,7 @@
         if (e.key === 'Enter') { e.preventDefault(); inspectBtn.click(); }
       });
 
+      // IP lookup
       ipBtn.addEventListener('click', () => {
         lookupIpDns(ipInput.value);
       });
@@ -1334,6 +1333,7 @@
         if (e.key === 'Enter') { e.preventDefault(); ipBtn.click(); }
       });
 
+      // Keyboard shortcuts
       document.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
           e.preventDefault();
