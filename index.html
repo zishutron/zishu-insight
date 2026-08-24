@@ -1,1338 +1,793 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-  <title>Upcodez — Explore the code behind the web</title>
-  <meta name="description" content="A modern browser-based tool for inspecting, searching, copying, and downloading publicly accessible website HTML source.">
-  <meta name="theme-color" content="#0a0812">
-  <meta name="robots" content="index, follow">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    :root {
-      --bg-primary: #0a0812;
-      --bg-secondary: #100d1e;
-      --bg-panel: #191530;
-      --bg-glass: rgba(25, 21, 48, 0.78);
-      --border-subtle: #322a5a;
-      --text-primary: #f0edff;
-      --text-secondary: #b9afdb;
-      --text-muted: #7b6f9e;
-      --accent: #b388ff;
-      --accent-glow: rgba(179, 136, 255, 0.22);
-      --accent-hover: #cdb4ff;
-      --danger: #f87171;
-      --success: #6ee7b7;
-      --warning: #fbbf24;
-      --radius: 16px;
-      --radius-sm: 10px;
-      --shadow: 0 12px 40px rgba(0,0,0,0.7);
-      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-      --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-      --transition: 0.2s cubic-bezier(0.2, 0, 0, 1);
-      --code-bg: #0d0b18;
-    }
-    [data-theme="light"] {
-      --bg-primary: #f5f3ff;
-      --bg-secondary: #ede9fe;
-      --bg-panel: #ffffff;
-      --bg-glass: rgba(255, 255, 255, 0.85);
-      --border-subtle: #c4b5fd;
-      --text-primary: #1e1b2e;
-      --text-secondary: #4b4468;
-      --text-muted: #7b6f9e;
-      --accent: #7c3aed;
-      --accent-glow: rgba(124, 58, 237, 0.15);
-      --accent-hover: #6d28d9;
-      --code-bg: #f8f7ff;
-      --shadow: 0 12px 40px rgba(0,0,0,0.1);
-    }
-    body {
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      font-family: var(--font-sans);
-      line-height: 1.5;
-      transition: background 0.25s, color 0.2s;
-      -webkit-font-smoothing: antialiased;
-    }
-    a { color: var(--accent); text-decoration: none; }
-    button { font-family: inherit; cursor: pointer; border: none; background: transparent; color: inherit; }
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg-secondary); }
-    ::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 8px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Upcodez — Web Source Inspector & Developer Tools</title>
+    <meta name="description" content="Inspect publicly accessible web source code and explore public IP and domain information with Upcodez.">
+    <!-- Open Graph / Twitter -->
+    <meta property="og:title" content="Upcodez — Web Source Inspector & Developer Tools">
+    <meta property="og:description" content="Inspect publicly accessible web source code and explore public IP and domain information with Upcodez.">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://upcodez.example.com">
+    <!-- Font & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            background: var(--bg-body);
+            color: var(--text-primary);
+            transition: background 0.2s, color 0.2s;
+            line-height: 1.5;
+        }
+        :root {
+            --bg-body: #f8fafc;
+            --bg-surface: #ffffff;
+            --bg-card: #ffffff;
+            --bg-code: #f1f5f9;
+            --text-primary: #0b1120;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+            --radius-card: 12px;
+            --radius-code: 8px;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --transition: 0.15s ease;
+        }
+        [data-theme="dark"] {
+            --bg-body: #0b1120;
+            --bg-surface: #1e293b;
+            --bg-card: #1e293b;
+            --bg-code: #0f172a;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+            --accent: #3b82f6;
+            --accent-hover: #60a5fa;
+        }
+        a { color: var(--accent); text-decoration: none; }
+        .container { max-width: 1120px; margin: 0 auto; padding: 0 1.25rem; }
+        /* navbar */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.9rem 1.25rem;
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            backdrop-filter: blur(6px);
+            background: rgba(var(--bg-surface-rgb, 255,255,255), 0.8);
+        }
+        [data-theme="dark"] .navbar { background: rgba(30, 41, 59, 0.85); }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: -0.02em;
+        }
+        .nav-brand .logo-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--accent);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            align-items: center;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        .nav-links a { color: var(--text-secondary); transition: color 0.15s; }
+        .nav-links a:hover { color: var(--accent); }
+        .nav-links .active { color: var(--accent); }
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            transition: 0.15s;
+        }
+        .theme-toggle:hover { background: var(--bg-code); }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+        }
+        .hamburger span {
+            display: block;
+            width: 22px;
+            height: 2.5px;
+            background: var(--text-primary);
+            border-radius: 4px;
+            transition: 0.2s;
+        }
+        /* mobile nav */
+        .mobile-nav {
+            display: none;
+            flex-direction: column;
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.8rem 1.25rem 1.2rem;
+            gap: 0.8rem;
+        }
+        .mobile-nav a { font-weight: 500; color: var(--text-secondary); }
+        .mobile-nav a.active { color: var(--accent); }
 
-    .app { max-width: 1360px; margin: 0 auto; padding: 0 20px 30px; }
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      background: var(--bg-glass);
-      border-bottom: 1px solid var(--border-subtle);
-      padding: 12px 0;
-      margin: 0 -20px 24px;
-      padding-left: 20px;
-      padding-right: 20px;
-      transition: background 0.2s;
-    }
-    .header-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .brand svg { 
-      width: 38px; 
-      height: 38px; 
-      flex-shrink: 0;
-      stroke: var(--accent);
-      fill: none;
-    }
-    .brand-name {
-      font-weight: 700;
-      font-size: 1.4rem;
-      letter-spacing: -0.3px;
-      background: linear-gradient(135deg, var(--text-primary) 50%, var(--accent));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .brand-sub {
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      color: var(--text-muted);
-      background: var(--bg-panel);
-      padding: 2px 12px;
-      border-radius: 30px;
-      border: 1px solid var(--border-subtle);
-      text-transform: uppercase;
-      -webkit-text-fill-color: var(--text-muted);
-    }
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .nav-actions button {
-      padding: 6px 12px;
-      border-radius: 30px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: transparent;
-      border: 1px solid transparent;
-      transition: 0.15s;
-      color: var(--text-secondary);
-    }
-    .nav-actions button:hover { background: var(--bg-panel); border-color: var(--border-subtle); color: var(--text-primary); }
-    .nav-actions button svg { width: 18px; height: 18px; }
-    .mobile-menu-toggle { display: none; }
-    @media (max-width: 640px) {
-      .mobile-menu-toggle { display: flex; }
-      .nav-actions .desktop-only { display: none; }
-      .nav-actions .desktop-nav { display: none !important; }
-      .nav-actions { gap: 2px; }
-      .brand-sub { display: none; }
-      .header-inner { flex-wrap: nowrap; }
-    }
-    .desktop-nav { display: flex; gap: 4px; }
+        /* hero & cards */
+        .hero {
+            padding: 2.5rem 0 1.5rem;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+        }
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 560px;
+            margin: 0 auto 1.5rem;
+        }
+        .inspect-form {
+            background: var(--bg-surface);
+            border-radius: var(--radius-card);
+            padding: 1.5rem 1.8rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            max-width: 700px;
+            margin: 0 auto 0.5rem;
+            text-align: left;
+        }
+        .form-row {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        .form-row input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-body);
+            color: var(--text-primary);
+            font-size: 1rem;
+            min-width: 180px;
+            font-family: 'JetBrains Mono', monospace;
+            transition: 0.15s;
+        }
+        .form-row input:focus { outline: 2px solid var(--accent); border-color: transparent; }
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.8rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.15s;
+            white-space: nowrap;
+        }
+        .btn-primary:hover { background: var(--accent-hover); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+        .note { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem; }
 
-    .hero {
-      background: var(--bg-secondary);
-      border-radius: var(--radius);
-      padding: 36px 28px 32px;
-      border: 1px solid var(--border-subtle);
-      box-shadow: var(--shadow);
-      margin-bottom: 32px;
-      transition: background 0.2s;
-    }
-    .hero h1 {
-      font-size: 2rem;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      margin-bottom: 6px;
-    }
-    .hero p {
-      color: var(--text-secondary);
-      font-size: 0.95rem;
-      max-width: 560px;
-      margin-bottom: 22px;
-    }
-    .url-card {
-      background: var(--bg-panel);
-      border-radius: var(--radius-sm);
-      padding: 6px 6px 6px 18px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      border: 1px solid var(--border-subtle);
-      transition: 0.2s;
-      flex-wrap: wrap;
-    }
-    .url-card:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
-    .url-card svg { width: 20px; height: 20px; color: var(--text-muted); flex-shrink: 0; }
-    .url-card input {
-      flex: 1;
-      background: transparent;
-      border: none;
-      padding: 14px 0;
-      font-size: 1rem;
-      color: var(--text-primary);
-      outline: none;
-      min-width: 160px;
-      font-family: var(--font-sans);
-    }
-    .url-card input::placeholder { color: var(--text-muted); }
-    .url-card .inspect-btn {
-      background: var(--accent);
-      color: #0a0812;
-      font-weight: 600;
-      padding: 12px 26px;
-      border-radius: 40px;
-      font-size: 0.95rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: 0.15s;
-      white-space: nowrap;
-      border: none;
-      position: relative;
-    }
-    .url-card .inspect-btn:hover:not(:disabled) { background: var(--accent-hover); transform: scale(0.97); }
-    .url-card .inspect-btn:disabled { opacity: 0.7; cursor: not-allowed; }
-    .url-card .inspect-btn svg { width: 20px; height: 20px; }
-    .spinner {
-      display: none;
-      width: 20px;
-      height: 20px;
-      border: 2px solid rgba(10, 8, 18, 0.3);
-      border-top: 2px solid #0a0812;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-    .inspect-btn.loading .spinner { display: inline-block; }
-    .inspect-btn.loading .btn-text { display: none; }
-    .inspect-btn.loading .btn-icon { display: none; }
-    @keyframes spin { to { transform: rotate(360deg); } }
+        /* cards grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.2rem;
+            margin: 2.5rem 0 1.5rem;
+        }
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-card);
+            padding: 1.25rem 1.2rem;
+            box-shadow: var(--shadow-sm);
+        }
+        .feature-card h3 { font-size: 1.05rem; margin-bottom: 0.2rem; }
+        .feature-card p { color: var(--text-secondary); font-size: 0.9rem; }
 
-    .error-msg {
-      margin-top: 16px;
-      padding: 14px 18px;
-      background: rgba(248, 113, 113, 0.08);
-      border-left: 3px solid var(--danger);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: var(--danger);
-      font-size: 0.9rem;
-    }
-    .error-msg svg { width: 22px; height: 22px; flex-shrink: 0; }
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.2rem;
+            margin: 1.8rem 0 2.5rem;
+        }
+        .step { background: var(--bg-card); border-radius: var(--radius-card); padding: 1.2rem; border: 1px solid var(--border-color); }
 
-    .stats-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px 28px;
-      margin-bottom: 18px;
-      padding: 6px 0;
-    }
-    .stat-item {
-      display: flex;
-      align-items: baseline;
-      gap: 6px;
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-    }
-    .stat-item strong { color: var(--text-primary); font-weight: 600; font-size: 1rem; }
+        /* result viewer */
+        .result-container {
+            margin-top: 2rem;
+            background: var(--bg-card);
+            border-radius: var(--radius-card);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+        .result-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem 1.8rem;
+            padding: 1rem 1.5rem;
+            background: var(--bg-code);
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+        .result-meta span { color: var(--text-secondary); }
+        .result-meta strong { color: var(--text-primary); }
+        .code-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem 0.8rem;
+            padding: 0.6rem 1.2rem;
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border-color);
+            align-items: center;
+        }
+        .code-toolbar button {
+            background: none;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0.25rem 0.8rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: 0.1s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--bg-body);
+        }
+        .code-toolbar button:hover { background: var(--bg-code); }
+        .code-wrapper {
+            position: relative;
+            max-height: 480px;
+            overflow: auto;
+            background: var(--bg-code);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            padding: 0.8rem 1rem;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .code-wrapper .line-numbers {
+            user-select: none;
+            color: var(--text-muted);
+            padding-right: 1rem;
+            border-right: 1px solid var(--border-color);
+            margin-right: 1rem;
+            display: inline-block;
+            text-align: right;
+        }
+        .code-wrapper pre { margin: 0; white-space: pre-wrap; word-break: break-all; }
+        .empty-state {
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+        .empty-state .icon { font-size: 2.4rem; opacity: 0.5; margin-bottom: 0.5rem; display: block; }
+        /* ip page */
+        .ip-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+            margin: 1.5rem 0;
+        }
+        .ip-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-card);
+            padding: 1.2rem 1.4rem;
+            box-shadow: var(--shadow-sm);
+        }
+        .ip-card h4 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.03em; color: var(--text-muted); margin-bottom: 0.2rem; }
+        .ip-card .value { font-weight: 500; font-size: 1.1rem; }
+        .skeleton { background: var(--bg-code); border-radius: 6px; height: 1.2rem; width: 60%; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+        .footer {
+            margin-top: 3rem;
+            border-top: 1px solid var(--border-color);
+            padding: 2rem 0 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 1.2rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+        .footer-links a { color: var(--text-secondary); }
+        .footer-links a:hover { color: var(--accent); }
+        .page-title { font-size: 1.8rem; font-weight: 700; margin: 1.2rem 0 0.2rem; letter-spacing: -0.02em; }
 
-    .workspace {
-      background: var(--bg-secondary);
-      border-radius: var(--radius);
-      border: 1px solid var(--border-subtle);
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      transition: background 0.2s;
-    }
-    .workspace-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 20px;
-      background: var(--bg-panel);
-      border-bottom: 1px solid var(--border-subtle);
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .ws-left { display: flex; align-items: center; gap: 12px; }
-    .ws-left svg { width: 22px; height: 22px; color: var(--text-muted); }
-    .ws-left .host { font-weight: 600; }
-    .ws-left .badge {
-      background: var(--accent-glow);
-      color: var(--accent);
-      padding: 2px 14px;
-      border-radius: 30px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.3px;
-    }
-    .ws-toolbar {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      flex-wrap: wrap;
-    }
-    .ws-toolbar button {
-      padding: 8px 12px;
-      border-radius: 30px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: transparent;
-      border: 1px solid transparent;
-      transition: 0.15s;
-      color: var(--text-secondary);
-    }
-    .ws-toolbar button:hover { background: var(--bg-glass); border-color: var(--border-subtle); color: var(--text-primary); }
-    .ws-toolbar button svg { width: 18px; height: 18px; }
-
-    .tabs {
-      display: flex;
-      gap: 0;
-      background: var(--bg-panel);
-      border-bottom: 1px solid var(--border-subtle);
-      padding: 0 16px;
-    }
-    .tab {
-      padding: 12px 20px;
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: var(--text-muted);
-      border-bottom: 2px solid transparent;
-      transition: 0.15s;
-      cursor: pointer;
-    }
-    .tab:hover { color: var(--text-secondary); }
-    .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-
-    .code-container {
-      position: relative;
-      background: var(--code-bg);
-      max-height: 70vh;
-      overflow: auto;
-      transition: background 0.2s;
-    }
-    .code-wrapper {
-      display: flex;
-      font-family: var(--font-mono);
-      font-size: 0.82rem;
-      line-height: 1.6;
-      min-height: 200px;
-    }
-    .line-numbers {
-      padding: 16px 0 16px 16px;
-      text-align: right;
-      user-select: none;
-      color: var(--text-muted);
-      background: var(--code-bg);
-      border-right: 1px solid var(--border-subtle);
-      min-width: 52px;
-      white-space: pre;
-      overflow: hidden;
-      font-feature-settings: "tnum";
-      font-variant-numeric: tabular-nums;
-    }
-    .line-numbers span { display: block; padding: 0 12px 0 4px; }
-    .code-content {
-      padding: 16px 20px;
-      overflow-x: auto;
-      white-space: pre-wrap;
-      word-break: break-word;
-      flex: 1;
-      background: var(--code-bg);
-      color: var(--text-primary);
-    }
-    .code-content pre { margin: 0; font-family: inherit; }
-    .code-content .token { font-family: inherit; }
-
-    .empty-state {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 60px 20px;
-      color: var(--text-muted);
-      text-align: center;
-      gap: 18px;
-    }
-    .empty-state svg { width: 80px; height: 80px; opacity: 0.4; }
-    .empty-state h3 { font-weight: 500; color: var(--text-secondary); }
-
-    .search-overlay {
-      display: none;
-      padding: 12px 20px;
-      background: var(--bg-panel);
-      border-bottom: 1px solid var(--border-subtle);
-      align-items: center;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-    .search-overlay.open { display: flex; }
-    .search-overlay input {
-      flex: 1;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-subtle);
-      padding: 8px 16px;
-      border-radius: 30px;
-      color: var(--text-primary);
-      font-family: var(--font-sans);
-      font-size: 0.9rem;
-      min-width: 120px;
-    }
-    .search-overlay input:focus { outline: none; border-color: var(--accent); }
-    .search-overlay .match-count { font-size: 0.8rem; color: var(--text-muted); }
-    .search-overlay .search-nav button { padding: 4px 10px; border-radius: 20px; background: var(--bg-secondary); border: 1px solid var(--border-subtle); }
-    .search-overlay .search-nav button:hover { background: var(--bg-glass); }
-
-    .toast-container {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      z-index: 999;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      max-width: 360px;
-      width: 100%;
-      pointer-events: none;
-    }
-    .toast {
-      background: var(--bg-panel);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-sm);
-      padding: 14px 20px;
-      box-shadow: var(--shadow);
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      pointer-events: auto;
-      backdrop-filter: blur(8px);
-      animation: slideUp 0.3s ease;
-      color: var(--text-primary);
-    }
-    .toast svg { width: 22px; height: 22px; flex-shrink: 0; }
-    .toast-success svg { color: var(--success); }
-    .toast-error svg { color: var(--danger); }
-    .toast-warning svg { color: var(--warning); }
-    .toast-info svg { color: var(--accent); }
-    @keyframes slideUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
-
-    .footer {
-      margin-top: 40px;
-      padding: 24px 0 12px;
-      border-top: 1px solid var(--border-subtle);
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 14px;
-      color: var(--text-muted);
-      font-size: 0.8rem;
-    }
-    .footer-links { display: flex; gap: 20px; }
-    .footer-links a { color: var(--text-secondary); }
-    .footer-links a:hover { color: var(--text-primary); }
-
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.7);
-      backdrop-filter: blur(4px);
-      z-index: 100;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-    .modal-overlay.open { display: flex; }
-    .modal {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius);
-      max-width: 520px;
-      width: 100%;
-      padding: 32px;
-      box-shadow: var(--shadow);
-      position: relative;
-    }
-    .modal h2 { margin-bottom: 12px; }
-    .modal p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.6; }
-    .modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; font-size: 1.5rem; color: var(--text-muted); }
-
-    .ip-page {
-      display: none;
-      background: var(--bg-secondary);
-      border-radius: var(--radius);
-      border: 1px solid var(--border-subtle);
-      padding: 36px 28px 32px;
-      margin-bottom: 32px;
-      box-shadow: var(--shadow);
-      transition: background 0.2s;
-    }
-    .ip-page.active { display: block; }
-    .ip-page h1 {
-      font-size: 2rem;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      margin-bottom: 6px;
-    }
-    .ip-page .sub {
-      color: var(--text-secondary);
-      font-size: 0.95rem;
-      margin-bottom: 22px;
-    }
-    .ip-url-card {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 16px;
-    }
-    .ip-url-card input {
-      flex: 1;
-      background: var(--bg-panel);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-sm);
-      padding: 14px 18px;
-      font-size: 1rem;
-      color: var(--text-primary);
-      outline: none;
-      font-family: var(--font-sans);
-      min-width: 160px;
-    }
-    .ip-url-card input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
-    .ip-url-card input::placeholder { color: var(--text-muted); }
-    .ip-url-card button {
-      background: var(--accent);
-      color: #0a0812;
-      font-weight: 600;
-      padding: 14px 28px;
-      border-radius: 40px;
-      font-size: 0.95rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: 0.15s;
-      white-space: nowrap;
-      border: none;
-    }
-    .ip-url-card button:hover:not(:disabled) { background: var(--accent-hover); transform: scale(0.97); }
-    .ip-url-card button:disabled { opacity: 0.5; cursor: not-allowed; }
-    .ip-result {
-      background: var(--bg-panel);
-      border-radius: var(--radius-sm);
-      padding: 20px 24px;
-      border: 1px solid var(--border-subtle);
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      white-space: pre-wrap;
-      word-break: break-all;
-      color: var(--text-secondary);
-      min-height: 80px;
-      max-height: 400px;
-      overflow: auto;
-    }
-    .ip-result .label { color: var(--text-muted); }
-    .ip-result .value { color: var(--text-primary); }
-
-    @media (max-width: 480px) {
-      .ip-url-card { flex-direction: column; }
-      .ip-url-card button { width: 100%; justify-content: center; }
-      .ip-page { padding: 24px 16px; }
-      .ip-page h1 { font-size: 1.5rem; }
-    }
-
-    .mobile-menu {
-      display: none;
-      position: absolute;
-      top: 68px;
-      right: 10px;
-      background: var(--bg-panel);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-sm);
-      padding: 8px;
-      z-index: 50;
-      box-shadow: var(--shadow);
-      flex-direction: column;
-      min-width: 180px;
-    }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu button {
-      padding: 10px 16px;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--text-secondary);
-      background: transparent;
-      border: none;
-      text-align: left;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      transition: 0.15s;
-    }
-    .mobile-menu button:hover { background: var(--bg-glass); color: var(--text-primary); }
-    .mobile-menu button svg { width: 18px; height: 18px; }
-    .mobile-menu .menu-divider {
-      height: 1px;
-      background: var(--border-subtle);
-      margin: 4px 8px;
-    }
-
-    @media (max-width: 768px) {
-      .hero { padding: 26px 18px; }
-      .hero h1 { font-size: 1.5rem; }
-      .url-card { padding: 4px 4px 4px 12px; }
-      .url-card input { padding: 12px 0; font-size: 0.95rem; }
-      .url-card .inspect-btn { padding: 10px 18px; font-size: 0.85rem; }
-      .ws-toolbar button span { display: none; }
-      .ws-toolbar button { padding: 8px 10px; }
-      .stats-row { gap: 8px 16px; }
-      .code-container { max-height: 60vh; }
-    }
-    @media (max-width: 480px) {
-      .hero h1 { font-size: 1.3rem; }
-      .brand-name { font-size: 1rem; }
-      .url-card { flex-wrap: wrap; background: transparent; border: none; padding: 0; }
-      .url-card input { background: var(--bg-panel); padding: 14px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); }
-      .url-card .inspect-btn { width: 100%; justify-content: center; }
-      .ws-left .badge { display: none; }
-      .tabs { overflow-x: auto; flex-wrap: nowrap; }
-      .tab { padding: 10px 14px; font-size: 0.8rem; white-space: nowrap; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-    }
-    .hidden { display: none !important; }
-    .page { display: none; }
-    .page.active { display: block; }
-  </style>
+        @media (max-width: 700px) {
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .mobile-nav.open { display: flex; }
+            .hero h1 { font-size: 1.8rem; }
+            .form-row { flex-direction: column; }
+            .form-row input { width: 100%; }
+            .btn-primary { width: 100%; justify-content: center; }
+            .ip-grid { grid-template-columns: 1fr; }
+            .footer { flex-direction: column; align-items: center; text-align: center; }
+            .result-meta { flex-direction: column; gap: 0.2rem; }
+        }
+        @media (max-width: 480px) {
+            .container { padding: 0 0.8rem; }
+            .inspect-form { padding: 1rem; }
+        }
+        /* utility */
+        .mt-1 { margin-top: 0.75rem; }
+        .mb-1 { margin-bottom: 0.75rem; }
+        .flex { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+        .text-muted { color: var(--text-muted); }
+        .hidden { display: none !important; }
+        .loading-text { color: var(--text-muted); font-size: 0.95rem; }
+        /* about/privacy/terms content */
+        .content-page { max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
+        .content-page h1 { font-size: 1.8rem; margin: 0.5rem 0 0.5rem; }
+        .content-page h2 { font-size: 1.6rem; margin: 1.5rem 0 0.5rem; }
+        .content-page p { margin-bottom: 0.8rem; color: var(--text-secondary); }
+        /* toast notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.8rem 1.5rem;
+            box-shadow: var(--shadow-md);
+            z-index: 100;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        .toast.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .toast.success { border-left: 4px solid #22c55e; }
+        .toast.error { border-left: 4px solid #ef4444; }
+    </style>
 </head>
 <body>
-<div class="app" id="app">
-  <header>
-    <div class="header-inner">
-      <div class="brand">
-        <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M10 12 L6 16 L10 20" />
-          <path d="M30 12 L34 16 L30 20" />
-          <path d="M18 10 L14 22" />
-          <path d="M22 10 L26 22" />
-          <rect x="14" y="24" width="12" height="6" rx="1" />
-        </svg>
-        <span class="brand-name">Upcodez</span>
-        <span class="brand-sub">explore the code</span>
-      </div>
-      <div class="nav-actions">
-        <div class="desktop-nav">
-          <button id="navSource" class="desktop-only" style="color:var(--accent);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg> Source</button>
-          <button id="navIp" class="desktop-only"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> IP & DNS</button>
-        </div>
-        <button class="desktop-only" id="themeToggle" aria-label="Switch theme">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="5"/>
-            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-          </svg>
-        </button>
-        <button id="aboutToggle" class="desktop-only" aria-label="About"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></button>
-        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
-      </div>
-    </div>
-    <div class="mobile-menu" id="mobileMenu">
-      <button id="mobileNavSource"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg> Source Inspector</button>
-      <button id="mobileNavIp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> IP & DNS</button>
-      <div class="menu-divider"></div>
-      <button id="mobileThemeToggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg> Switch Theme</button>
-      <button id="mobileAboutToggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg> About</button>
-    </div>
-  </header>
 
-  <div class="page active" id="pageSource">
-    <section class="hero">
-      <h1>Explore the code behind the web</h1>
-      <p>Enter a website URL to retrieve and inspect its publicly accessible HTML source.</p>
-      <div class="url-card" id="urlCard">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-        <input type="text" id="urlInput" placeholder="https://example.com" value="" autofocus spellcheck="false">
-        <button class="inspect-btn" id="inspectBtn">
-          <span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>
-          <span class="btn-text">Inspect Source</span>
-          <span class="spinner"></span>
-        </button>
-      </div>
-      <div id="errorContainer"></div>
-      <div class="stats-row" id="statsRow">
-        <div class="stat-item"><strong id="statLines">—</strong> Lines</div>
-        <div class="stat-item"><strong id="statChars">—</strong> Characters</div>
-        <div class="stat-item"><strong id="statSize">—</strong> Size</div>
-        <div class="stat-item"><strong id="statTags">—</strong> Tags</div>
-        <div class="stat-item"><strong id="statWords">—</strong> Words</div>
-      </div>
-    </section>
-
-    <div class="workspace" id="workspace">
-      <div class="workspace-header">
-        <div class="ws-left">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
-          <span class="host" id="sourceHost">example.com</span>
-          <span class="badge">HTML SOURCE</span>
-          <span class="badge" style="background:var(--bg-panel);color:var(--text-muted)" id="sourceSizeBadge">—</span>
-        </div>
-        <div class="ws-toolbar" id="wsToolbar">
-          <button id="copyBtn" aria-label="Copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copy</span></button>
-          <button id="downloadBtn" aria-label="Download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Download</span></button>
-          <button id="fullscreenBtn" aria-label="Fullscreen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg><span>Fullscreen</span></button>
-          <button id="refreshBtn" aria-label="Refresh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg><span>Refresh</span></button>
-          <button id="findBtn" aria-label="Find"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>Find</span></button>
-        </div>
-      </div>
-      <div class="search-overlay" id="searchOverlay">
-        <input type="text" id="searchInput" placeholder="Search source…" aria-label="Search in source">
-        <span class="match-count" id="matchCount">0 / 0</span>
-        <div class="search-nav">
-          <button id="searchPrev" aria-label="Previous match"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
-          <button id="searchNext" aria-label="Next match"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg></button>
-          <button id="searchClose" aria-label="Close search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-        </div>
-      </div>
-      <div class="tabs" id="tabsContainer">
-        <div class="tab active" data-tab="html">HTML</div>
-        <div class="tab" data-tab="raw">Raw</div>
-        <div class="tab" data-tab="info">Info</div>
-      </div>
-      <div class="code-container" id="codeContainer">
-        <div class="empty-state" id="emptyState">
-          <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="12" y="18" width="56" height="44" rx="4"/><path d="M28 8v10M52 8v10M12 36h56"/><circle cx="22" cy="28" r="3"/><circle cx="36" cy="28" r="3"/><circle cx="50" cy="28" r="3"/><path d="M20 50l12-8 12 8 12-8 12 8"/></svg>
-          <h3>Your source workspace is ready</h3>
-          <p style="max-width:360px;color:var(--text-muted)">Enter a public website URL above to begin inspecting its HTML source.</p>
-        </div>
-        <div class="code-wrapper hidden" id="codeWrapper">
-          <div class="line-numbers" id="lineNumbers"></div>
-          <div class="code-content" id="codeContent"></div>
-        </div>
-      </div>
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="nav-brand">
+        <span class="logo-icon">&lt;/&gt;</span>
+        Upcodez
     </div>
-  </div>
-
-  <div class="page ip-page" id="pageIp">
-    <h1>🌐 IP & DNS Lookup</h1>
-    <p class="sub">Enter a website URL to get its IP address and DNS information.</p>
-    <div class="ip-url-card">
-      <input type="text" id="ipInput" placeholder="example.com" value="">
-      <button id="ipBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg> Lookup</button>
+    <div class="nav-links">
+        <a href="/" class="active" data-nav>Source Inspector</a>
+        <a href="/ip" data-nav>IP Lookup</a>
+        <a href="/about" data-nav>About</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
     </div>
-    <div class="ip-result" id="ipResult">Enter a URL and click Lookup to see IP & DNS details.</div>
-  </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+</nav>
+<!-- mobile nav -->
+<div class="mobile-nav" id="mobileNav">
+    <a href="/" class="active" data-nav>Source Inspector</a>
+    <a href="/ip" data-nav>IP Lookup</a>
+    <a href="/about" data-nav>About</a>
+    <button class="theme-toggle" id="themeToggleMobile" style="align-self:flex-start; margin-top:4px;">🌙</button>
+</div>
 
-  <footer class="footer">
-    <span>© 2026 Upcodez · Explore the code behind the web.</span>
+<!-- MAIN APP -->
+<div id="app" class="container" style="min-height:70vh;">
+    <!-- dynamic content rendered here -->
+</div>
+
+<!-- FOOTER -->
+<footer class="container footer">
+    <div><span class="logo-icon" style="display:inline-flex;width:24px;height:24px;font-size:0.9rem;margin-right:6px;">&lt;/&gt;</span> Upcodez — Professional tools for understanding the web.</div>
     <div class="footer-links">
-      <a href="#" id="aboutFooterLink">About</a>
-      <a href="#" id="privacyFooterLink">Privacy</a>
-      <a href="#" id="githubFooterLink">GitHub</a>
+        <a href="/">Source Inspector</a>
+        <a href="/ip">IP Lookup</a>
+        <a href="/about">About</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
     </div>
-  </footer>
-</div>
+    <div>© 2026 Upcodez</div>
+</footer>
 
-<div class="modal-overlay" id="aboutModal">
-  <div class="modal">
-    <button class="modal-close" id="aboutModalClose">&times;</button>
-    <h2>About Upcodez</h2>
-    <p>Upcodez is a client-side utility for inspecting publicly accessible HTML source through a CORS-compatible retrieval service.</p>
-    <p><strong>Version</strong> 1.0 · Built with vanilla JS, Prism.js for highlighting.</p>
-    <p><strong>Privacy</strong> Upcodez does not require an account and does not intentionally store inspected website source on its own server. All requests are made directly from your browser.</p>
-    <p><small style="color:var(--text-muted)">Source retrieval via AllOrigins proxy. Dynamically generated content may not appear.</small></p>
-  </div>
-</div>
-
-<div class="toast-container" id="toastContainer"></div>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<!-- Toast Notification -->
+<div id="toast" class="toast"></div>
 
 <script>
-  (function(){
-    "use strict";
+    (function() {
+        // ---------- CONFIGURATION ----------
+        const API_BASE_URL = 'https://stardust-ai.onrender.com';
 
-    // ✅ YOUR BACKEND URL - Set this to your deployed backend
-    const API_BASE = 'https://stardust-ai.onrender.com';
-
-    const state = {
-      currentUrl: '',
-      rawSource: '',
-      hostname: '',
-      lines: 0,
-      chars: 0,
-      size: 0,
-      tags: 0,
-      words: 0,
-      isFetching: false,
-      fullscreen: false,
-      searchResults: [],
-      searchIndex: -1,
-      currentTab: 'html',
-    };
-
-    const $ = id => document.getElementById(id);
-    const urlInput = $('urlInput');
-    const inspectBtn = $('inspectBtn');
-    const errorContainer = $('errorContainer');
-    const statLines = $('statLines');
-    const statChars = $('statChars');
-    const statSize = $('statSize');
-    const statTags = $('statTags');
-    const statWords = $('statWords');
-    const sourceHost = $('sourceHost');
-    const sourceSizeBadge = $('sourceSizeBadge');
-    const emptyState = $('emptyState');
-    const codeWrapper = $('codeWrapper');
-    const lineNumbers = $('lineNumbers');
-    const codeContent = $('codeContent');
-    const searchOverlay = $('searchOverlay');
-    const searchInput = $('searchInput');
-    const matchCount = $('matchCount');
-    const copyBtn = $('copyBtn');
-    const downloadBtn = $('downloadBtn');
-    const fullscreenBtn = $('fullscreenBtn');
-    const refreshBtn = $('refreshBtn');
-    const findBtn = $('findBtn');
-    const themeToggle = $('themeToggle');
-    const aboutToggle = $('aboutToggle');
-    const aboutModal = $('aboutModal');
-    const aboutModalClose = $('aboutModalClose');
-    const toastContainer = $('toastContainer');
-    const ipInput = $('ipInput');
-    const ipBtn = $('ipBtn');
-    const ipResult = $('ipResult');
-    const navSource = $('navSource');
-    const navIp = $('navIp');
-    const pageSource = $('pageSource');
-    const pageIp = $('pageIp');
-    const mobileMenu = $('mobileMenu');
-    const mobileMenuToggle = $('mobileMenuToggle');
-    const mobileNavSource = $('mobileNavSource');
-    const mobileNavIp = $('mobileNavIp');
-    const mobileThemeToggle = $('mobileThemeToggle');
-    const mobileAboutToggle = $('mobileAboutToggle');
-
-    function escapeHtml(text) {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    }
-
-    function formatSize(bytes) {
-      if (bytes < 1024) return bytes + ' B';
-      if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
-      return (bytes / 1048576).toFixed(2) + ' MB';
-    }
-
-    function countTags(html) {
-      const matches = html.match(/<[^>]*>/g);
-      return matches ? matches.length : 0;
-    }
-
-    function countWords(text) {
-      const clean = text.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
-      return clean ? clean.split(/\s+/).length : 0;
-    }
-
-    function showToast(message, type = 'info', duration = 3500) {
-      const iconMap = {
-        success: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
-        error: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
-        warning: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/></svg>',
-        info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>'
-      };
-      const toast = document.createElement('div');
-      toast.className = `toast toast-${type}`;
-      toast.innerHTML = iconMap[type] || iconMap.info + `<span>${message}</span>`;
-      toastContainer.appendChild(toast);
-      setTimeout(() => { if (toast.parentNode) toast.remove(); }, duration);
-    }
-
-    function showError(msg) {
-      errorContainer.innerHTML = `<div class="error-msg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> ${escapeHtml(msg)}</div>`;
-    }
-    function clearError() { errorContainer.innerHTML = ''; }
-
-    function showPage(pageId) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      const page = document.getElementById(pageId);
-      if (page) page.classList.add('active');
-      mobileMenu.classList.remove('open');
-      document.querySelectorAll('.desktop-nav button').forEach(b => b.style.color = 'var(--text-secondary)');
-      if (pageId === 'pageSource') navSource.style.color = 'var(--accent)';
-      else if (pageId === 'pageIp') navIp.style.color = 'var(--accent)';
-    }
-
-    function normalizeUrl(input) {
-      let url = input.trim();
-      if (!url) return null;
-      if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
-      try {
-        const u = new URL(url);
-        return u.href;
-      } catch { return null; }
-    }
-
-    // ----- FETCH SOURCE FROM BACKEND -----
-    async function fetchSource(url) {
-      const encodedUrl = encodeURIComponent(url);
-      
-      const resp = await fetch(`${API_BASE}/fetch?url=${encodedUrl}`, {
-        headers: { 'Accept': 'application/json' }
-      });
-      
-      if (!resp.ok) {
-        const errorData = await resp.json().catch(() => ({}));
-        throw new Error(errorData.error || `HTTP ${resp.status}`);
-      }
-      
-      const data = await resp.json();
-      if (!data || typeof data !== 'object') {
-        throw new Error('Invalid response from server');
-      }
-      
-      if (!data.content && data.content !== '') {
-        throw new Error(data.error || 'Empty response from target');
-      }
-      
-      return data.content;
-    }
-
-    // ----- IP LOOKUP FROM BACKEND -----
-    async function fetchIpInfo(hostname) {
-      const clean = hostname.trim().replace(/^https?:\/\//, '').replace(/\/.*$/, '');
-      
-      const resp = await fetch(`${API_BASE}/ip?host=${encodeURIComponent(clean)}`, {
-        headers: { 'Accept': 'application/json' }
-      });
-      
-      if (!resp.ok) {
-        throw new Error(`HTTP ${resp.status}`);
-      }
-      
-      const data = await resp.json();
-      return data;
-    }
-
-    function renderSource(html, tab = 'html') {
-      state.rawSource = html;
-      state.chars = html.length;
-      state.size = new Blob([html]).size;
-      state.lines = html.split('\n').length;
-      state.tags = countTags(html);
-      state.words = countWords(html);
-      updateStats();
-
-      if (tab === 'raw') {
-        codeContent.innerHTML = `<pre>${escapeHtml(html)}</pre>`;
-        lineNumbers.innerHTML = Array.from({length: state.lines}, (_,i) => `<span>${i+1}</span>`).join('');
-        emptyState.classList.add('hidden');
-        codeWrapper.classList.remove('hidden');
-        return;
-      }
-      if (tab === 'info') {
-        const info = `<pre style="font-family:var(--font-mono);color:var(--text-secondary);font-size:0.85rem">
-  URL: ${state.currentUrl}
-  Hostname: ${state.hostname}
-  Protocol: ${new URL(state.currentUrl).protocol.toUpperCase()}
-  Size: ${formatSize(state.size)}
-  Lines: ${state.lines}
-  Characters: ${state.chars}
-  Tags: ${state.tags}
-  Words: ${state.words}
-  Retrieved: ${new Date().toLocaleString()}
-        </pre>`;
-        codeContent.innerHTML = info;
-        lineNumbers.innerHTML = '';
-        emptyState.classList.add('hidden');
-        codeWrapper.classList.remove('hidden');
-        return;
-      }
-      try {
-        const highlighted = Prism.highlight(html, Prism.languages.html, 'html');
-        codeContent.innerHTML = `<pre>${highlighted}</pre>`;
-      } catch (e) {
-        codeContent.innerHTML = `<pre>${escapeHtml(html)}</pre>`;
-      }
-      lineNumbers.innerHTML = Array.from({length: state.lines}, (_,i) => `<span>${i+1}</span>`).join('');
-      emptyState.classList.add('hidden');
-      codeWrapper.classList.remove('hidden');
-    }
-
-    function updateStats() {
-      statLines.textContent = state.lines.toLocaleString();
-      statChars.textContent = state.chars.toLocaleString();
-      statSize.textContent = formatSize(state.size);
-      statTags.textContent = state.tags.toLocaleString();
-      statWords.textContent = state.words.toLocaleString();
-      sourceSizeBadge.textContent = formatSize(state.size);
-      sourceHost.textContent = state.hostname || '—';
-    }
-
-    function performSearch(query) {
-      if (!query) { clearSearchHighlights(); return; }
-      const text = state.rawSource;
-      const matches = [];
-      let idx = text.toLowerCase().indexOf(query.toLowerCase());
-      while (idx !== -1) { matches.push(idx); idx = text.toLowerCase().indexOf(query.toLowerCase(), idx+1); }
-      state.searchResults = matches;
-      state.searchIndex = -1;
-      matchCount.textContent = matches.length ? `1 / ${matches.length}` : '0 / 0';
-      if (matches.length) { state.searchIndex = 0; highlightSearchMatch(0); }
-      else { clearSearchHighlights(); }
-    }
-
-    function clearSearchHighlights() {
-      renderSource(state.rawSource, state.currentTab);
-    }
-
-    function highlightSearchMatch(index) {
-      if (!state.searchResults.length) return;
-      const query = searchInput.value;
-      if (!query) return;
-      const text = state.rawSource;
-      const parts = text.split(new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'));
-      let html = '';
-      let matchIdx = 0;
-      for (let i=0; i<parts.length; i++) {
-        const part = parts[i];
-        if (part.toLowerCase() === query.toLowerCase()) {
-          const isMatch = matchIdx === index;
-          html += `<span style="background:${isMatch ? 'var(--accent)' : 'var(--warning)'};color:#0a0812;padding:0 2px;border-radius:2px;">${escapeHtml(part)}</span>`;
-          matchIdx++;
-        } else {
-          html += escapeHtml(part);
+        // ---------- TOAST ----------
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
         }
-      }
-      codeContent.innerHTML = `<pre>${html}</pre>`;
-      lineNumbers.innerHTML = Array.from({length: state.lines}, (_,i) => `<span>${i+1}</span>`).join('');
-      matchCount.textContent = `${index+1} / ${state.searchResults.length}`;
-    }
 
-    function searchNext() {
-      if (!state.searchResults.length) return;
-      state.searchIndex = (state.searchIndex + 1) % state.searchResults.length;
-      highlightSearchMatch(state.searchIndex);
-    }
-    function searchPrev() {
-      if (!state.searchResults.length) return;
-      state.searchIndex = (state.searchIndex - 1 + state.searchResults.length) % state.searchResults.length;
-      highlightSearchMatch(state.searchIndex);
-    }
-
-    async function inspectWebsite(url) {
-      if (state.isFetching) return;
-      clearError();
-      const normalized = normalizeUrl(url);
-      if (!normalized) { showError('Invalid URL. Please enter a valid website address.'); return; }
-      state.currentUrl = normalized;
-      urlInput.value = normalized;
-      state.isFetching = true;
-      inspectBtn.classList.add('loading');
-      inspectBtn.disabled = true;
-      showToast('Fetching website source…', 'info', 2000);
-
-      try {
-        const html = await fetchSource(normalized);
-        state.rawSource = html;
-        state.hostname = new URL(normalized).hostname;
-        renderSource(html, state.currentTab);
-        showToast('Source retrieved successfully', 'success');
-        addHistory(normalized);
-      } catch (err) {
-        const errorMsg = err.message || 'Unknown error';
-        showError(`Unable to inspect this website. ${errorMsg}`);
-        showToast('Failed to retrieve source', 'error');
-        emptyState.classList.remove('hidden');
-        codeWrapper.classList.add('hidden');
-      } finally {
-        state.isFetching = false;
-        inspectBtn.classList.remove('loading');
-        inspectBtn.disabled = false;
-        document.getElementById('workspace').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }
-
-    async function lookupIpDns(hostname) {
-      const clean = hostname.trim().replace(/^https?:\/\//, '').replace(/\/.*$/, '');
-      if (!clean) { ipResult.innerHTML = 'Please enter a valid domain name.'; return; }
-      
-      ipBtn.disabled = true;
-      ipBtn.innerHTML = '<span class="spinner" style="display:inline-block;width:20px;height:20px;border:2px solid rgba(10,8,18,0.3);border-top:2px solid #0a0812;border-radius:50%;animation:spin 0.8s linear infinite;"></span> Looking up...';
-      ipResult.innerHTML = 'Fetching IP & DNS information...';
-      
-      try {
-        const data = await fetchIpInfo(clean);
-        
-        let output = '';
-        output += `<span class="label">🌐 Hostname:</span> <span class="value">${clean}</span>\n`;
-        
-        if (data.ip) {
-          output += `<span class="label">📡 IP Address:</span> <span class="value">${data.ip}</span>\n`;
-        } else {
-          output += `<span class="label">📡 IP Address:</span> <span class="value">N/A</span>\n`;
+        // ---------- THEME ----------
+        function getPreferredTheme() {
+            const stored = localStorage.getItem('upcodez-theme');
+            if (stored === 'dark' || stored === 'light') return stored;
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         }
-        
-        if (data.location) {
-          const loc = data.location;
-          let locStr = '';
-          if (loc.city) locStr += loc.city;
-          if (loc.region) locStr += (locStr ? ', ' : '') + loc.region;
-          if (loc.country) locStr += (locStr ? ', ' : '') + loc.country;
-          if (locStr) {
-            output += `<span class="label">📍 Location:</span> <span class="value">${locStr}</span>\n`;
-          }
-          if (loc.isp) {
-            output += `<span class="label">🏢 ISP:</span> <span class="value">${loc.isp}</span>\n`;
-          }
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('upcodez-theme', theme);
+            const icon = document.getElementById('themeToggle');
+            const iconM = document.getElementById('themeToggleMobile');
+            const label = theme === 'dark' ? '☀️' : '🌙';
+            if (icon) icon.textContent = label;
+            if (iconM) iconM.textContent = label;
         }
-        
-        if (data.dns && data.dns.length > 0) {
-          output += `\n<span class="label">📋 DNS Records:</span>\n`;
-          data.dns.forEach(record => {
-            output += `  ${record.type} → ${record.value}\n`;
-          });
-        } else {
-          output += `\n<span class="label">📋 DNS Records:</span> No A/AAAA records found\n`;
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            applyTheme(current === 'dark' ? 'light' : 'dark');
         }
-        
-        output += `\n<span class="label">⏱️ Lookup time:</span> <span class="value">${new Date().toLocaleString()}</span>`;
-        
-        ipResult.innerHTML = output;
-        showToast('IP lookup completed', 'success');
-      } catch (err) {
-        ipResult.innerHTML = `Failed to lookup IP: ${err.message || 'Unknown error'}`;
-        showToast('IP lookup failed', 'error');
-      } finally {
-        ipBtn.disabled = false;
-        ipBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg> Lookup';
-      }
-    }
-
-    function copySource() {
-      if (!state.rawSource) { showToast('No source to copy', 'warning'); return; }
-      navigator.clipboard.writeText(state.rawSource).then(() => {
-        showToast('Source copied to clipboard', 'success');
-      }).catch(() => {
-        const ta = document.createElement('textarea');
-        ta.value = state.rawSource;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        ta.remove();
-        showToast('Source copied to clipboard', 'success');
-      });
-    }
-
-    function downloadSource() {
-      if (!state.rawSource) { showToast('No source to download', 'warning'); return; }
-      const blob = new Blob([state.rawSource], { type: 'text/html' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'source.html';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 5000);
-      showToast('source.html downloaded', 'success');
-    }
-
-    function toggleFullscreen() {
-      const el = document.getElementById('workspace');
-      if (!document.fullscreenElement) {
-        el.requestFullscreen?.().catch(() => {});
-        fullscreenBtn.querySelector('span').textContent = 'Exit';
-      } else {
-        document.exitFullscreen?.();
-        fullscreenBtn.querySelector('span').textContent = 'Fullscreen';
-      }
-    }
-
-    function addHistory(url) {
-      let hist = JSON.parse(localStorage.getItem('sv_history') || '[]');
-      hist = hist.filter(u => u !== url);
-      hist.unshift(url);
-      if (hist.length > 10) hist = hist.slice(0, 10);
-      localStorage.setItem('sv_history', JSON.stringify(hist));
-    }
-
-    const themes = ['aurora', 'light'];
-    let currentThemeIndex = 0;
-    
-    function toggleTheme() {
-      currentThemeIndex = (currentThemeIndex + 1) % themes.length;
-      const theme = themes[currentThemeIndex];
-      if (theme === 'aurora') {
-        document.documentElement.removeAttribute('data-theme');
-      } else {
-        document.documentElement.setAttribute('data-theme', theme);
-      }
-      localStorage.setItem('sv_theme', theme);
-    }
-    
-    function loadTheme() {
-      const saved = localStorage.getItem('sv_theme') || 'aurora';
-      if (saved === 'aurora') {
-        document.documentElement.removeAttribute('data-theme');
-        currentThemeIndex = 0;
-      } else if (saved === 'light') {
-        document.documentElement.setAttribute('data-theme', 'light');
-        currentThemeIndex = 1;
-      }
-    }
-
-    function init() {
-      loadTheme();
-      const last = localStorage.getItem('sv_last_url');
-      if (last) urlInput.value = last;
-
-      navSource.addEventListener('click', () => showPage('pageSource'));
-      navIp.addEventListener('click', () => showPage('pageIp'));
-      mobileNavSource.addEventListener('click', () => showPage('pageSource'));
-      mobileNavIp.addEventListener('click', () => showPage('pageIp'));
-
-      mobileMenuToggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        mobileMenu.classList.toggle('open');
-      });
-      document.addEventListener('click', (e) => {
-        if (!mobileMenu.contains(e.target) && e.target !== mobileMenuToggle) {
-          mobileMenu.classList.remove('open');
-        }
-      });
-
-      mobileThemeToggle.addEventListener('click', () => {
-        toggleTheme();
-        mobileMenu.classList.remove('open');
-      });
-      mobileAboutToggle.addEventListener('click', () => {
-        aboutModal.classList.add('open');
-        mobileMenu.classList.remove('open');
-      });
-
-      inspectBtn.addEventListener('click', () => {
-        const val = urlInput.value.trim();
-        if (!val) { showError('Please enter a URL'); return; }
-        inspectWebsite(val);
-        localStorage.setItem('sv_last_url', val);
-      });
-      urlInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') { e.preventDefault(); inspectBtn.click(); }
-      });
-
-      ipBtn.addEventListener('click', () => {
-        lookupIpDns(ipInput.value);
-      });
-      ipInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') { e.preventDefault(); ipBtn.click(); }
-      });
-
-      document.addEventListener('keydown', (e) => {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-          e.preventDefault();
-          inspectBtn.click();
-        }
-        if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
-          e.preventDefault();
-          findBtn.click();
-        }
-        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'c' || e.key === 'C')) {
-          e.preventDefault();
-          copyBtn.click();
-        }
-        if (e.key === 'Escape') {
-          if (searchOverlay.classList.contains('open')) { searchClose(); }
-          if (document.fullscreenElement) document.exitFullscreen();
-        }
-      });
-
-      copyBtn.addEventListener('click', copySource);
-      downloadBtn.addEventListener('click', downloadSource);
-      fullscreenBtn.addEventListener('click', toggleFullscreen);
-      refreshBtn.addEventListener('click', () => {
-        if (state.currentUrl) inspectWebsite(state.currentUrl);
-        else showToast('No source to refresh', 'warning');
-      });
-
-      findBtn.addEventListener('click', () => {
-        searchOverlay.classList.toggle('open');
-        if (searchOverlay.classList.contains('open')) {
-          searchInput.focus();
-          searchInput.select();
-        } else {
-          searchClose();
-        }
-      });
-      function searchClose() {
-        searchOverlay.classList.remove('open');
-        clearSearchHighlights();
-        searchInput.value = '';
-        matchCount.textContent = '0 / 0';
-        state.searchResults = [];
-        state.searchIndex = -1;
-      }
-      searchInput.addEventListener('input', () => {
-        const q = searchInput.value.trim();
-        if (q.length > 0) performSearch(q);
-        else { clearSearchHighlights(); matchCount.textContent = '0 / 0'; state.searchResults = []; }
-      });
-      document.getElementById('searchNext').addEventListener('click', searchNext);
-      document.getElementById('searchPrev').addEventListener('click', searchPrev);
-      document.getElementById('searchClose').addEventListener('click', searchClose);
-
-      document.querySelectorAll('.tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-          tab.classList.add('active');
-          const t = tab.dataset.tab;
-          state.currentTab = t;
-          if (state.rawSource) renderSource(state.rawSource, t);
+        document.addEventListener('DOMContentLoaded', function() {
+            applyTheme(getPreferredTheme());
+            document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
+            document.getElementById('themeToggleMobile')?.addEventListener('click', toggleTheme);
+            // hamburger
+            const ham = document.getElementById('hamburger');
+            const mobileNav = document.getElementById('mobileNav');
+            ham?.addEventListener('click', () => mobileNav.classList.toggle('open'));
+            // close mobile on link click
+            document.querySelectorAll('#mobileNav a').forEach(a => a.addEventListener('click', () => mobileNav.classList.remove('open')));
         });
-      });
 
-      themeToggle.addEventListener('click', toggleTheme);
+        // ---------- ROUTER ----------
+        const routes = {
+            '/': renderHome,
+            '/ip': renderIp,
+            '/about': renderAbout,
+            '/privacy': renderPrivacy,
+            '/terms': renderTerms
+        };
 
-      aboutToggle.addEventListener('click', () => aboutModal.classList.add('open'));
-      aboutModalClose.addEventListener('click', () => aboutModal.classList.remove('open'));
-      aboutModal.addEventListener('click', (e) => { if (e.target === aboutModal) aboutModal.classList.remove('open'); });
-      document.getElementById('aboutFooterLink').addEventListener('click', (e) => { e.preventDefault(); aboutModal.classList.add('open'); });
-      document.getElementById('privacyFooterLink').addEventListener('click', (e) => { e.preventDefault(); showToast('No data is stored on servers. All processing is client-side.', 'info'); });
-      document.getElementById('githubFooterLink').addEventListener('click', (e) => { e.preventDefault(); showToast('Upcodez is open source. Check the repo!', 'info'); });
+        function navigate(path) {
+            window.history.pushState({}, '', path);
+            renderPage(path);
+        }
 
-      emptyState.classList.remove('hidden');
-      codeWrapper.classList.add('hidden');
-      showToast('Welcome to Upcodez', 'info', 2000);
-    }
+        function renderPage(path) {
+            const app = document.getElementById('app');
+            const routeFn = routes[path] || routes['/'];
+            app.innerHTML = routeFn();
+            // highlight active nav
+            document.querySelectorAll('[data-nav]').forEach(el => {
+                el.classList.toggle('active', el.getAttribute('href') === path);
+            });
+            // re-bind events specific to page
+            if (path === '/') bindSourceInspector();
+            if (path === '/ip') bindIpLookup();
+        }
 
-    document.addEventListener('DOMContentLoaded', init);
-  })();
+        // ---------- HOME ----------
+        function renderHome() {
+            return `
+            <div class="hero">
+                <h1>Inspect the Web. Understand the Code.</h1>
+                <p>Enter a public website URL and inspect its publicly accessible HTML source with Upcodez.</p>
+            </div>
+            <div class="inspect-form">
+                <div class="form-row">
+                    <input type="text" id="urlInput" placeholder="https://example.com" value="https://example.com">
+                    <button class="btn-primary" id="inspectBtn">Inspect Source</button>
+                </div>
+                <div class="note">🔒 Only inspect websites and resources you are authorized to access.</div>
+            </div>
+            <div id="resultArea"></div>
+            <div class="steps">
+                <div class="step"><strong>1. Enter URL</strong><br><span class="text-muted">A publicly accessible website URL.</span></div>
+                <div class="step"><strong>2. Inspect</strong><br><span class="text-muted">Upcodez retrieves the public HTML via secure backend.</span></div>
+                <div class="step"><strong>3. Understand</strong><br><span class="text-muted">View source and response info in a clean interface.</span></div>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card"><h3>📄 Source Inspector</h3><p>Inspect publicly accessible HTML source.</p></div>
+                <div class="feature-card"><h3>🌐 IP Lookup</h3><p>Analyze public IP and domain information.</p></div>
+                <div class="feature-card"><h3>🛠️ Developer Tools</h3><p>A growing collection of web utilities.</p></div>
+            </div>
+            `;
+        }
+
+        function bindSourceInspector() {
+            const input = document.getElementById('urlInput');
+            const btn = document.getElementById('inspectBtn');
+            const area = document.getElementById('resultArea');
+            if (!btn) return;
+
+            btn.addEventListener('click', async () => {
+                let url = input.value.trim();
+                if (!url) { 
+                    area.innerHTML = '<div class="empty-state"><span class="icon">⚠️</span>Please enter a valid URL.</div>';
+                    showToast('Please enter a URL to inspect', 'error');
+                    return; 
+                }
+                if (!url.startsWith('http://') && !url.startsWith('https://')) url = 'https://' + url;
+                
+                area.innerHTML = `<div class="empty-state"><span class="icon">⏳</span>Connecting...<br><span class="loading-text">Fetching public source...</span></div>`;
+                btn.disabled = true;
+                
+                try {
+                    const response = await fetch(`${API_BASE_URL}/api/source`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ url })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (!response.ok) {
+                        area.innerHTML = `<div class="empty-state"><span class="icon">❌</span>${data.error || 'Unable to inspect this website.'}</div>`;
+                        showToast(data.error || 'Failed to inspect source', 'error');
+                        return;
+                    }
+                    
+                    // display result
+                    const size = data.size ? (data.size / 1024).toFixed(1) + ' KB' : '—';
+                    area.innerHTML = `
+                    <div class="result-container">
+                        <div class="result-meta">
+                            <span><strong>Status:</strong> ${data.status || '—'}</span>
+                            <span><strong>Content-Type:</strong> ${data.contentType || '—'}</span>
+                            <span><strong>Response Time:</strong> ${data.responseTime || '—'} ms</span>
+                            <span><strong>Size:</strong> ${size}</span>
+                            <span><strong>Final URL:</strong> ${data.finalUrl || url}</span>
+                        </div>
+                        <div class="code-toolbar">
+                            <button id="copyBtn">📋 Copy</button>
+                            <button id="downloadBtn">⬇ Download</button>
+                            <button id="fullscreenBtn">⛶ Fullscreen</button>
+                            <span style="margin-left:auto;font-size:0.75rem;color:var(--text-muted);">${data.source ? data.source.length.toLocaleString() : 0} chars</span>
+                        </div>
+                        <div class="code-wrapper" id="codeWrapper">
+                            <pre id="codePre">${escapeHtml(data.source || '')}</pre>
+                        </div>
+                    </div>
+                    `;
+                    
+                    // Toolbar buttons
+                    document.getElementById('copyBtn')?.addEventListener('click', () => {
+                        const text = document.getElementById('codePre')?.textContent || '';
+                        navigator.clipboard?.writeText(text).then(() => {
+                            showToast('Copied to clipboard!', 'success');
+                        }).catch(() => {
+                            showToast('Failed to copy', 'error');
+                        });
+                    });
+                    
+                    document.getElementById('downloadBtn')?.addEventListener('click', () => {
+                        const text = document.getElementById('codePre')?.textContent || '';
+                        const blob = new Blob([text], {type: 'text/html'});
+                        const a = document.createElement('a');
+                        a.href = URL.createObjectURL(blob);
+                        a.download = 'source.html';
+                        a.click();
+                        showToast('Download started!', 'success');
+                    });
+                    
+                    document.getElementById('fullscreenBtn')?.addEventListener('click', () => {
+                        const wrapper = document.getElementById('codeWrapper');
+                        if (wrapper.requestFullscreen) {
+                            wrapper.requestFullscreen().catch(() => {});
+                        }
+                    });
+                    
+                    showToast('Source inspected successfully!', 'success');
+                } catch(e) {
+                    area.innerHTML = `<div class="empty-state"><span class="icon">⚠️</span>Network error. Please try again.</div>`;
+                    showToast('Network error. Please check your connection.', 'error');
+                }
+                btn.disabled = false;
+            });
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        }
+
+        // ---------- IP PAGE ----------
+        function renderIp() {
+            return `
+            <div class="hero" style="padding-bottom:0.5rem;">
+                <h1>IP & Domain Intelligence</h1>
+                <p>Enter a domain or IP address to view publicly available network information.</p>
+            </div>
+            <div class="inspect-form" style="max-width:600px;">
+                <div class="form-row">
+                    <input type="text" id="ipInput" placeholder="example.com or 93.184.216.34" value="example.com">
+                    <button class="btn-primary" id="ipBtn">Analyze</button>
+                </div>
+            </div>
+            <div id="ipResult"></div>
+            `;
+        }
+
+        function bindIpLookup() {
+            const input = document.getElementById('ipInput');
+            const btn = document.getElementById('ipBtn');
+            const result = document.getElementById('ipResult');
+            if (!btn) return;
+            
+            btn.addEventListener('click', async () => {
+                const target = input.value.trim();
+                if (!target) { 
+                    result.innerHTML = '<div class="empty-state"><span class="icon">⚠️</span>Enter a domain or IP.</div>';
+                    showToast('Please enter a domain or IP address', 'error');
+                    return; 
+                }
+                
+                result.innerHTML = `<div class="empty-state"><span class="icon">⏳</span>Analyzing network information...</div>`;
+                btn.disabled = true;
+                
+                try {
+                    const response = await fetch(`${API_BASE_URL}/api/ip?target=${encodeURIComponent(target)}`);
+                    const data = await response.json();
+                    
+                    if (!response.ok) {
+                        result.innerHTML = `<div class="empty-state"><span class="icon">❌</span>${data.error || 'Could not retrieve IP intelligence.'}</div>`;
+                        showToast(data.error || 'Failed to lookup IP', 'error');
+                        return;
+                    }
+                    
+                    // render cards
+                    result.innerHTML = `
+                    <div style="margin-top:1.2rem;">
+                        <div class="ip-grid">
+                            <div class="ip-card"><h4>Target</h4><div class="value">${data.target || target}</div></div>
+                            <div class="ip-card"><h4>Resolved IP</h4><div class="value">${data.resolvedIP || '—'}</div></div>
+                            <div class="ip-card"><h4>IPv4</h4><div class="value">${data.ipv4 || '—'}</div></div>
+                            <div class="ip-card"><h4>IPv6</h4><div class="value">${data.ipv6 || '—'}</div></div>
+                            <div class="ip-card"><h4>ASN</h4><div class="value">${data.asn || '—'}</div></div>
+                            <div class="ip-card"><h4>Organization</h4><div class="value">${data.organization || '—'}</div></div>
+                            <div class="ip-card"><h4>Country</h4><div class="value">${data.country || '—'}</div></div>
+                            <div class="ip-card"><h4>Region</h4><div class="value">${data.region || '—'}</div></div>
+                            <div class="ip-card"><h4>City</h4><div class="value">${data.city || '—'}</div></div>
+                            <div class="ip-card"><h4>Timezone</h4><div class="value">${data.timezone || '—'}</div></div>
+                            <div class="ip-card"><h4>A Records</h4><div class="value" style="font-size:0.9rem;">${data.aRecords ? data.aRecords.join(', ') : '—'}</div></div>
+                            <div class="ip-card"><h4>AAAA Records</h4><div class="value" style="font-size:0.9rem;">${data.aaaaRecords ? data.aaaaRecords.join(', ') : '—'}</div></div>
+                            <div class="ip-card"><h4>Reverse DNS</h4><div class="value" style="font-size:0.9rem;">${data.reverse || '—'}</div></div>
+                        </div>
+                        <p class="text-muted" style="font-size:0.8rem;margin-top:0.2rem;">📍 Approximate location — IP geolocation is not exact.</p>
+                    </div>
+                    `;
+                    
+                    showToast('IP lookup completed!', 'success');
+                } catch(e) {
+                    result.innerHTML = `<div class="empty-state"><span class="icon">⚠️</span>Network error. Please try again.</div>`;
+                    showToast('Network error. Please check your connection.', 'error');
+                }
+                btn.disabled = false;
+            });
+        }
+
+        // ---------- STATIC PAGES ----------
+        function renderAbout() { 
+            return `<div class="content-page">
+                <h1>About Upcodez</h1>
+                <p>Upcodez is a developer-focused web utility platform designed to make basic web inspection and publicly available domain/network information easier to understand. It provides a clean, professional interface for inspecting HTML source and exploring IP intelligence.</p>
+                <p>Built with security and privacy in mind, Upcodez only retrieves publicly accessible web pages and network data through its secure backend API.</p>
+                <h2>Features</h2>
+                <ul style="color:var(--text-secondary);margin-left:1.5rem;margin-bottom:1rem;">
+                    <li>🔍 Inspect publicly accessible HTML source</li>
+                    <li>🌐 Look up domain and IP information</li>
+                    <li>📋 Copy, download, and view source in fullscreen</li>
+                    <li>🌙 Dark/Light mode support</li>
+                    <li>📱 Fully responsive mobile design</li>
+                </ul>
+            </div>`; 
+        }
+        
+        function renderPrivacy() { 
+            return `<div class="content-page">
+                <h1>Privacy Policy</h1>
+                <p><strong>Last updated: August 2026</strong></p>
+                <p>Upcodez respects your privacy. This policy explains how we handle information when you use our service.</p>
+                <h2>Information We Process</h2>
+                <p>When you use Upcodez, we temporarily process the URLs and domain/IP addresses you submit to perform inspections and lookups. This information is not stored persistently.</p>
+                <h2>Server Logs</h2>
+                <p>Our servers may log request metadata (timestamps, IP addresses, rate limit data) for security, monitoring, and rate limiting purposes. These logs do not contain the content of the pages you inspect.</p>
+                <h2>Third-Party Services</h2>
+                <p>For IP intelligence, we may use third-party APIs such as ip-api.com to provide approximate geolocation data. These services are used solely for providing the requested information.</p>
+                <h2>Data Storage</h2>
+                <p>Inspection results are not stored. We do not collect or retain personal information about our users.</p>
+            </div>`; 
+        }
+        
+        function renderTerms() { 
+            return `<div class="content-page">
+                <h1>Terms of Service</h1>
+                <p><strong>Last updated: August 2026</strong></p>
+                <p>By using Upcodez, you agree to the following terms and conditions.</p>
+                <h2>Acceptable Use</h2>
+                <p>Upcodez is provided as an inspection and diagnostic utility. You agree to use it only for legitimate purposes and only on websites and resources you are authorized to access.</p>
+                <h2>Prohibited Activities</h2>
+                <ul style="color:var(--text-secondary);margin-left:1.5rem;margin-bottom:1rem;">
+                    <li>Unauthorized access to private or internal systems</li>
+                    <li>Security testing or penetration testing without explicit permission</li>
+                    <li>Abuse of the service through excessive requests</li>
+                    <li>Using the service for illegal activities</li>
+                </ul>
+                <h2>Rate Limiting</h2>
+                <p>To ensure fair usage, rate limits are applied to API requests. Excessive usage may result in temporary blocks.</p>
+                <h2>Service Availability</h2>
+                <p>Upcodez is provided "as is" without any guarantees of uptime or availability. We reserve the right to modify or discontinue the service at any time.</p>
+                <h2>User Responsibility</h2>
+                <p>You are solely responsible for your use of Upcodez and for ensuring you have proper authorization to inspect any website or resource.</p>
+            </div>`; 
+        }
+
+        // ---------- NAVIGATION ----------
+        window.addEventListener('popstate', () => renderPage(window.location.pathname));
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPage(window.location.pathname);
+            // Intercept nav clicks
+            document.querySelectorAll('[data-nav]').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const href = el.getAttribute('href');
+                    if (href) navigate(href);
+                });
+            });
+        });
+    })();
 </script>
 </body>
 </html>
