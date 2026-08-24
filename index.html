@@ -777,6 +777,7 @@
   (function(){
     "use strict";
 
+    // ✅ YOUR BACKEND URL - Set this to your deployed backend
     const API_BASE = 'https://stardust-ai.onrender.com';
 
     const state = {
@@ -898,58 +899,45 @@
       } catch { return null; }
     }
 
-    // ----- FAST BACKEND FETCH -----
+    // ----- FETCH SOURCE FROM BACKEND -----
     async function fetchSource(url) {
       const encodedUrl = encodeURIComponent(url);
       
-      try {
-        // Use your backend API
-        const resp = await fetch(`${API_BASE}/fetch?url=${encodedUrl}`, {
-          headers: { 'Accept': 'application/json' }
-        });
-        
-        if (!resp.ok) {
-          const errorData = await resp.json().catch(() => ({}));
-          throw new Error(errorData.error || `HTTP ${resp.status}`);
-        }
-        
-        const data = await resp.json();
-        if (!data || typeof data !== 'object') {
-          throw new Error('Invalid response from server');
-        }
-        
-        if (!data.content && data.content !== '') {
-          throw new Error(data.error || 'Empty response from target');
-        }
-        
-        return data.content;
-      } catch (err) {
-        // Check if it's a network error
-        if (err.name === 'TypeError' || err.message.includes('fetch')) {
-          throw new Error('Cannot connect to backend server. Please check your internet connection.');
-        }
-        throw err;
+      const resp = await fetch(`${API_BASE}/fetch?url=${encodedUrl}`, {
+        headers: { 'Accept': 'application/json' }
+      });
+      
+      if (!resp.ok) {
+        const errorData = await resp.json().catch(() => ({}));
+        throw new Error(errorData.error || `HTTP ${resp.status}`);
       }
+      
+      const data = await resp.json();
+      if (!data || typeof data !== 'object') {
+        throw new Error('Invalid response from server');
+      }
+      
+      if (!data.content && data.content !== '') {
+        throw new Error(data.error || 'Empty response from target');
+      }
+      
+      return data.content;
     }
 
-    // ----- IP LOOKUP VIA BACKEND -----
+    // ----- IP LOOKUP FROM BACKEND -----
     async function fetchIpInfo(hostname) {
       const clean = hostname.trim().replace(/^https?:\/\//, '').replace(/\/.*$/, '');
       
-      try {
-        const resp = await fetch(`${API_BASE}/ip?host=${encodeURIComponent(clean)}`, {
-          headers: { 'Accept': 'application/json' }
-        });
-        
-        if (!resp.ok) {
-          throw new Error(`HTTP ${resp.status}`);
-        }
-        
-        const data = await resp.json();
-        return data;
-      } catch (err) {
-        throw new Error(err.message || 'Failed to fetch IP information');
+      const resp = await fetch(`${API_BASE}/ip?host=${encodeURIComponent(clean)}`, {
+        headers: { 'Accept': 'application/json' }
+      });
+      
+      if (!resp.ok) {
+        throw new Error(`HTTP ${resp.status}`);
       }
+      
+      const data = await resp.json();
+      return data;
     }
 
     function renderSource(html, tab = 'html') {
