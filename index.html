@@ -3,7 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
-  <title>ZISHU TRON INSIGHT</title>
+  <title>ZISHU TRON INSIGHT — Official ZISHU TRON Updates</title>
+  <meta name="description" content="Official updates, announcements, product news and company news from ZISHU TRON.">
+  <link rel="canonical" href="https://stardust-official.github.io/zishu-insight/">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "ZISHU TRON INSIGHT",
+      "url": "https://stardust-official.github.io/zishu-insight/",
+      "description": "Official updates, announcements, product news and company news from ZISHU TRON.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "ZISHU TRON"
+      }
+    }
+  </script>
+  
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -13,141 +32,124 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
     body {
-      background: #f8f7ff;
-      color: #1a1030;
+      background: #f8fafc;
+      color: #0b1a2f;
       padding-bottom: 80px;
-      transition: background 0.2s, color 0.2s;
     }
     body.dark {
-      background: #0d0b1a;
-      color: #eae6f5;
+      background: #0f172a;
+      color: #e8edf5;
     }
     .container {
       max-width: 1100px;
       margin: 0 auto;
       padding: 0 20px;
     }
-    /* header – clean, no brand text */
+    /* header - NO SEARCH BAR */
     .top-header {
       display: flex;
       align-items: center;
-      justify-content: flex-end;
-      padding: 14px 0 10px;
-      border-bottom: 1px solid rgba(120, 80, 200, 0.15);
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
       flex-wrap: wrap;
       gap: 10px 16px;
     }
     body.dark .top-header {
-      border-bottom-color: rgba(160, 130, 220, 0.2);
+      border-bottom-color: rgba(255,255,255,0.06);
     }
     .header-left {
-      flex: 1;
-    }
-    /* dark mode toggle */
-    .theme-toggle {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 6px 8px;
-      border-radius: 40px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      color: #4a3a6b;
-      transition: 0.2s;
+      gap: 16px;
+      flex-wrap: wrap;
+      flex: 1 1 auto;
     }
-    body.dark .theme-toggle {
-      color: #c8b8f0;
+    .brand {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+      flex-shrink: 0;
     }
-    .theme-toggle svg {
-      width: 28px;
-      height: 28px;
-      stroke: currentColor;
-      stroke-width: 2;
-      fill: none;
+    .brand h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #0b1a2f, #1e3b5c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
-    .theme-toggle:hover {
-      background: rgba(120, 80, 200, 0.08);
+    body.dark .brand h1 {
+      background: linear-gradient(135deg, #d6e4ff, #a0c0f0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .brand span {
+      font-size: 0.75rem;
+      color: #4a5b6e;
+      letter-spacing: 0.02em;
+    }
+    body.dark .brand span {
+      color: #a3b8d9;
     }
 
     /* feed */
     .feed-header {
-      margin: 10px 0 6px;
+      margin: 16px 0 16px;
     }
     .post-card {
       background: white;
-      border-radius: 28px;
+      border-radius: 24px;
       padding: 24px 28px;
       margin-bottom: 20px;
-      box-shadow: 0 8px 24px rgba(80, 50, 160, 0.04);
-      border: 1px solid #ede8f8;
-      transition: 0.15s;
-      cursor: default;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.02);
+      border: 1px solid #eef3f9;
+      transition: 0.1s;
+      cursor: pointer;
     }
     body.dark .post-card {
-      background: #18152e;
-      border-color: #322d50;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      background: #1a263b;
+      border-color: #2e405b;
     }
     .post-card:hover {
-      border-color: #b8a8e0;
+      border-color: #cbd9ec;
       transform: translateY(-2px);
-      box-shadow: 0 12px 32px rgba(80, 50, 160, 0.08);
-    }
-    body.dark .post-card:hover {
-      border-color: #7a6aa8;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
     }
     .post-card h4 {
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       font-weight: 700;
-      margin-bottom: 4px;
-      color: #1f1538;
-    }
-    body.dark .post-card h4 {
-      color: #e2d9fc;
+      margin-bottom: 6px;
     }
     .post-meta {
       display: flex;
       gap: 16px;
       flex-wrap: wrap;
       font-size: 0.85rem;
-      color: #5a4a7a;
-      margin: 8px 0 12px;
+      color: #4a5f7a;
+      margin: 10px 0 12px;
     }
     body.dark .post-meta {
-      color: #b0a0d0;
+      color: #a3bbd9;
     }
     .post-meta strong {
-      color: #1f1538;
+      color: #0b1a2f;
     }
     body.dark .post-meta strong {
-      color: #d6ccf5;
-    }
-    /* full article content – clean, readable */
-    .full-article-content {
-      line-height: 1.8;
-      font-size: 1.05rem;
-      max-width: 700px;
-      margin: 0 auto;
-      color: #1f1538;
-    }
-    body.dark .full-article-content {
-      color: #ded6f0;
-    }
-    .full-article-content p {
-      margin-bottom: 1.2rem;
+      color: #d0e0fc;
     }
     .post-excerpt {
-      color: #2f234a;
+      color: #1f3147;
       line-height: 1.6;
       margin: 8px 0 14px;
-      font-size: 1rem;
     }
     body.dark .post-excerpt {
-      color: #c8bce0;
+      color: #c6d6ed;
     }
     .card-actions {
       display: flex;
@@ -156,34 +158,83 @@
       flex-wrap: wrap;
     }
     .btn-read {
-      background: #ede6fc;
+      background: #eef3fa;
       border: none;
-      padding: 8px 24px;
+      padding: 8px 22px;
       border-radius: 40px;
       font-weight: 600;
-      color: #2a1a50;
+      color: #0b1a2f;
       cursor: pointer;
-      transition: 0.15s;
     }
     body.dark .btn-read {
-      background: #2f2850;
-      color: #e0d8f5;
+      background: #2e405f;
+      color: #e8edf5;
     }
     .btn-read:hover {
-      background: #d8ccf5;
-    }
-    body.dark .btn-read:hover {
-      background: #423b6a;
+      background: #d7e1ee;
     }
 
     .empty-state {
       padding: 60px 0;
       text-align: center;
-      color: #5a4a7a;
+      color: #4a5f7a;
     }
     .empty-state h4 {
       font-size: 1.3rem;
       margin-bottom: 4px;
+    }
+    .loading-state {
+      padding: 60px 0;
+      text-align: center;
+      color: #4a5f7a;
+    }
+    .loading-state h4 {
+      font-size: 1.3rem;
+      margin-bottom: 4px;
+    }
+    .loading-state .spinner {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      border: 3px solid #eef3f9;
+      border-radius: 50%;
+      border-top-color: #0b1a2f;
+      animation: spin 0.8s ease-in-out infinite;
+      margin-bottom: 12px;
+    }
+    body.dark .loading-state .spinner {
+      border-color: #2e405f;
+      border-top-color: #d0e0fc;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .error-state {
+      padding: 60px 0;
+      text-align: center;
+      color: #4a5f7a;
+    }
+    .error-state h4 {
+      font-size: 1.3rem;
+      margin-bottom: 4px;
+      color: #b13e3e;
+    }
+    .error-state .retry-btn {
+      margin-top: 12px;
+      background: #eef3fa;
+      border: none;
+      padding: 8px 24px;
+      border-radius: 40px;
+      font-weight: 600;
+      color: #0b1a2f;
+      cursor: pointer;
+    }
+    body.dark .error-state .retry-btn {
+      background: #2e405f;
+      color: #e8edf5;
+    }
+    .error-state .retry-btn:hover {
+      background: #d7e1ee;
     }
     .hidden {
       display: none !important;
@@ -193,7 +244,7 @@
       bottom: 100px;
       left: 50%;
       transform: translateX(-50%);
-      background: #2a1a50;
+      background: #0b1a2f;
       color: white;
       padding: 14px 28px;
       border-radius: 60px;
@@ -204,9 +255,16 @@
       text-align: center;
     }
     body.dark .toast {
-      background: #c8b8f0;
-      color: #1a1030;
+      background: #d6e4ff;
+      color: #0b1a2f;
     }
+    .full-article-content {
+      line-height: 1.8;
+      font-size: 1.05rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .full-article-content p { margin-bottom: 1.2rem; }
 
     /* Full article view */
     #articleView {
@@ -215,17 +273,14 @@
     #articleView .back-btn {
       background: none;
       border: none;
-      font-size: 1rem;
-      color: #5a3a9e;
+      font-size: 1.1rem;
+      color: #2b6b9e;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 8px;
       margin-bottom: 20px;
       font-weight: 500;
-    }
-    body.dark #articleView .back-btn {
-      color: #b098e0;
     }
     #articleView .back-btn:hover {
       text-decoration: underline;
@@ -238,24 +293,24 @@
       bottom: 0;
       left: 0;
       right: 0;
-      background: rgba(248, 247, 255, 0.9);
+      background: #ffffffdd;
       backdrop-filter: blur(12px);
-      border-top: 1px solid #e0d8f0;
+      border-top: 1px solid #e2e8f0;
       padding: 8px 0;
       justify-content: space-around;
       z-index: 100;
-      box-shadow: 0 -4px 20px rgba(80, 50, 160, 0.06);
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
     }
     body.dark .bottom-nav {
-      background: rgba(20, 16, 38, 0.9);
-      border-top-color: #322d50;
+      background: #1e293bdd;
+      border-top-color: #334155;
     }
     .bottom-nav .nav-item {
       display: flex;
       flex-direction: column;
       align-items: center;
       text-decoration: none;
-      color: #6a5a8a;
+      color: #64748b;
       font-size: 0.65rem;
       gap: 2px;
       font-weight: 500;
@@ -267,7 +322,7 @@
       position: relative;
     }
     body.dark .bottom-nav .nav-item {
-      color: #9484b8;
+      color: #94a3b8;
     }
     .bottom-nav .nav-item svg {
       width: 24px;
@@ -279,10 +334,10 @@
       stroke-linejoin: round;
     }
     .bottom-nav .nav-item.active {
-      color: #4a2a8a;
+      color: #1e5f8e;
     }
     body.dark .bottom-nav .nav-item.active {
-      color: #b098e0;
+      color: #60a5fa;
     }
 
     /* Search Section - Full Screen */
@@ -292,14 +347,14 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: #f8f7ff;
+      background: #f8fafc;
       z-index: 50;
       padding: 20px;
       display: none;
       flex-direction: column;
     }
     body.dark #searchSection {
-      background: #0d0b1a;
+      background: #0f172a;
     }
     #searchSection.open {
       display: flex;
@@ -309,40 +364,40 @@
       align-items: center;
       gap: 12px;
       padding: 12px 0;
-      border-bottom: 1px solid #e0d8f0;
+      border-bottom: 1px solid #e2e8f0;
       margin-bottom: 16px;
     }
     body.dark .search-header-full {
-      border-bottom-color: #322d50;
+      border-bottom-color: #334155;
     }
     .search-header-full .close-search {
       background: none;
       border: none;
       font-size: 1.5rem;
       cursor: pointer;
-      color: #6a5a8a;
+      color: #64748b;
       padding: 4px 8px;
     }
     .search-header-full .close-search:hover {
-      color: #8a3a3a;
+      color: #b13e3e;
     }
     .search-header-full input {
       flex: 1;
       padding: 12px 16px;
       border-radius: 60px;
-      border: 1px solid #d0c8e8;
+      border: 1px solid #d0ddee;
       font-size: 1rem;
       background: white;
       color: inherit;
       outline: none;
     }
     body.dark .search-header-full input {
-      background: #1a1730;
-      border-color: #423b6a;
-      color: #eae6f5;
+      background: #1e2a40;
+      border-color: #3d5478;
+      color: #e8edf5;
     }
     .search-header-full input:focus {
-      border-color: #5a3a9e;
+      border-color: #2b6b9e;
     }
     .search-results-full {
       flex: 1;
@@ -351,19 +406,19 @@
     }
     .search-result-item {
       background: white;
-      border-radius: 20px;
+      border-radius: 16px;
       padding: 16px 20px;
       margin-bottom: 12px;
-      border: 1px solid #ede8f8;
+      border: 1px solid #eef3f9;
       cursor: pointer;
       transition: 0.1s;
     }
     body.dark .search-result-item {
-      background: #18152e;
-      border-color: #322d50;
+      background: #1a263b;
+      border-color: #2e405b;
     }
     .search-result-item:hover {
-      border-color: #b8a8e0;
+      border-color: #cbd9ec;
       transform: translateY(-1px);
     }
     .search-result-item h4 {
@@ -373,16 +428,16 @@
     }
     .search-result-item .excerpt {
       font-size: 0.9rem;
-      color: #5a4a7a;
+      color: #4a5f7a;
       line-height: 1.5;
     }
     body.dark .search-result-item .excerpt {
-      color: #b0a0d0;
+      color: #a3bbd9;
     }
     .search-empty {
       text-align: center;
       padding: 60px 0;
-      color: #5a4a7a;
+      color: #4a5f7a;
     }
     .search-empty h4 {
       font-size: 1.2rem;
@@ -393,7 +448,6 @@
       .container { padding: 0 14px; }
       .post-card { padding: 18px; }
       body { padding-bottom: 80px; }
-      .post-card h4 { font-size: 1.25rem; }
     }
     @media (min-width: 721px) {
       .bottom-nav { display: flex !important; }
@@ -402,12 +456,14 @@
 </head>
 <body>
   <div id="app">
-    <!-- Header – no brand text, only dark toggle -->
+    <!-- Header - NO SEARCH BAR -->
     <header class="container top-header">
-      <div class="header-left"></div>
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-      </button>
+      <div class="header-left">
+        <div class="brand">
+          <h1>ZISHU TRON INSIGHT</h1>
+          <span>The official updates from ZISHU TRON.</span>
+        </div>
+      </div>
     </header>
 
     <!-- Main Content -->
@@ -416,7 +472,20 @@
       <section id="homePage">
         <div class="feed-header"></div>
         <div id="postsFeed"></div>
-        <div id="emptyFeed" class="empty-state hidden"><h4>No updates yet</h4><p>Check back later for new insights from ZISHU TRON.</p></div>
+        <div id="loadingFeed" class="loading-state">
+          <div class="spinner"></div>
+          <h4>Loading latest updates…</h4>
+          <p>Please wait while we fetch the latest insights from ZISHU TRON.</p>
+        </div>
+        <div id="emptyFeed" class="empty-state hidden">
+          <h4>No updates yet</h4>
+          <p>Check back later for new insights from ZISHU TRON.</p>
+        </div>
+        <div id="errorFeed" class="error-state hidden">
+          <h4>Unable to load updates right now.</h4>
+          <p>Please check your connection and try again.</p>
+          <button class="retry-btn" id="retryBtn">Try Again</button>
+        </div>
       </section>
 
       <!-- Full Article View -->
@@ -472,11 +541,16 @@
 
       let allPosts = [];
       let searchQuery = '';
+      let postsLoaded = false;
+      let isLoading = true;
+      let loadError = false;
 
       const $ = (s) => document.querySelector(s);
       const $$ = (s) => document.querySelectorAll(s);
       const postsFeed = $('#postsFeed');
+      const loadingFeed = $('#loadingFeed');
       const emptyFeed = $('#emptyFeed');
+      const errorFeed = $('#errorFeed');
       const toastContainer = $('#toastContainer');
       const homePage = $('#homePage');
       const articleView = $('#articleView');
@@ -487,24 +561,40 @@
       const searchInputFull = $('#searchInputFull');
       const searchResultsFull = $('#searchResultsFull');
       const closeSearchBtn = $('#closeSearch');
-      const themeToggle = $('#themeToggle');
-
-      // --- Theme ---
-      function setTheme(dark) {
-        document.body.classList.toggle('dark', dark);
-        localStorage.setItem('zishu-theme', dark ? 'dark' : 'light');
-      }
-      const saved = localStorage.getItem('zishu-theme');
-      if (saved === 'dark') setTheme(true);
-      themeToggle.addEventListener('click', () => {
-        const isDark = document.body.classList.contains('dark');
-        setTheme(!isDark);
-      });
+      const retryBtn = $('#retryBtn');
 
       function showToast(msg) {
         toastContainer.textContent = msg;
         toastContainer.classList.remove('hidden');
         setTimeout(() => toastContainer.classList.add('hidden'), 4000);
+      }
+
+      function showLoadingState() {
+        postsFeed.classList.add('hidden');
+        loadingFeed.classList.remove('hidden');
+        emptyFeed.classList.add('hidden');
+        errorFeed.classList.add('hidden');
+      }
+
+      function showEmptyState() {
+        postsFeed.classList.add('hidden');
+        loadingFeed.classList.add('hidden');
+        emptyFeed.classList.remove('hidden');
+        errorFeed.classList.add('hidden');
+      }
+
+      function showErrorState() {
+        postsFeed.classList.add('hidden');
+        loadingFeed.classList.add('hidden');
+        emptyFeed.classList.add('hidden');
+        errorFeed.classList.remove('hidden');
+      }
+
+      function showPostsState() {
+        postsFeed.classList.remove('hidden');
+        loadingFeed.classList.add('hidden');
+        emptyFeed.classList.add('hidden');
+        errorFeed.classList.add('hidden');
       }
 
       function renderPostCard(post, id) {
@@ -526,7 +616,7 @@
         const date = post.createdAt ? new Date(post.createdAt).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' }) : 'Recent';
         return `<div class="search-result-item" data-id="${id}">
           <h4>${post.title || 'Untitled'}</h4>
-          <div style="font-size:0.8rem;color:#5a4a7a;margin:4px 0;">${post.authorName || 'ZISHU TRON'} · ${date}</div>
+          <div style="font-size:0.8rem;color:#4a5f7a;margin:4px 0;">${post.authorName || 'ZISHU TRON'} · ${date}</div>
           <div class="excerpt">${excerpt}</div>
         </div>`;
       }
@@ -534,26 +624,103 @@
       function renderFullArticle(post) {
         const date = post.createdAt ? new Date(post.createdAt).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' }) : 'Recent';
         const updated = post.updatedAt ? new Date(post.updatedAt).toLocaleDateString() : '';
-        return `<h2 style="font-size:2rem;margin-bottom:6px;color:inherit;">${post.title}</h2>
-          <div style="color:#5a4a7a;margin-bottom:12px;">By ${post.authorName || 'ZISHU TRON'} · Published: ${date} ${updated ? '· Updated: '+updated : ''}</div>
+        
+        // Add structured data for the article
+        const articleStructuredData = {
+          "@context": "https://schema.org",
+          "@type": "NewsArticle",
+          "headline": post.title || 'Untitled',
+          "author": {
+            "@type": "Person",
+            "name": post.authorName || 'ZISHU TRON'
+          },
+          "datePublished": post.createdAt ? new Date(post.createdAt).toISOString() : new Date().toISOString(),
+          "dateModified": post.updatedAt ? new Date(post.updatedAt).toISOString() : new Date().toISOString(),
+          "publisher": {
+            "@type": "Organization",
+            "name": "ZISHU TRON"
+          },
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://stardust-official.github.io/zishu-insight/"
+          }
+        };
+        
+        // Remove existing article structured data if any
+        const existingScript = document.querySelector('script[data-article-ld]');
+        if (existingScript) existingScript.remove();
+        
+        const script = document.createElement('script');
+        script.type = 'application/ld+json';
+        script.setAttribute('data-article-ld', 'true');
+        script.textContent = JSON.stringify(articleStructuredData);
+        document.head.appendChild(script);
+        
+        return `<h2 style="font-size:2rem;margin-bottom:6px;">${post.title}</h2>
+          <div style="color:#4a5f7a;margin-bottom:12px;">By ${post.authorName || 'ZISHU TRON'} · Published: ${date} ${updated ? '· Updated: '+updated : ''}</div>
           <div class="full-article-content">${post.content?.replace(/\n/g, '<br>') || ''}</div>`;
       }
 
       function loadPosts() {
+        isLoading = true;
+        postsLoaded = false;
+        loadError = false;
+        showLoadingState();
+
         const ref = db.ref('posts').orderByChild('createdAt').limitToLast(50);
+        ref.once('value')
+          .then((snap) => {
+            isLoading = false;
+            postsLoaded = true;
+            const data = snap.val();
+            if (!data) { 
+              allPosts = []; 
+              showEmptyState();
+              return; 
+            }
+            allPosts = Object.keys(data).map(key => ({ id: key, ...data[key] })).sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+            if (allPosts.length === 0) {
+              showEmptyState();
+            } else {
+              showPostsState();
+              renderFeed(allPosts);
+            }
+          })
+          .catch((error) => {
+            console.error('Error loading posts:', error);
+            isLoading = false;
+            postsLoaded = false;
+            loadError = true;
+            showErrorState();
+            showToast('Error loading posts: ' + error.message);
+          });
+
+        // Also set up real-time listener for updates after initial load
         ref.on('value', (snap) => {
+          if (!postsLoaded) return; // Don't process during initial load
           const data = snap.val();
-          if (!data) { allPosts = []; postsFeed.innerHTML = ''; emptyFeed.classList.remove('hidden'); return; }
+          if (!data) { allPosts = []; renderFeed([]); return; }
           allPosts = Object.keys(data).map(key => ({ id: key, ...data[key] })).sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
-          emptyFeed.classList.add('hidden');
           renderFeed(allPosts);
+        }, (error) => {
+          console.error('Real-time listener error:', error);
         });
       }
 
       function renderFeed(posts) {
-        if (!posts || posts.length === 0) { postsFeed.innerHTML = ''; emptyFeed.classList.remove('hidden'); return; }
-        emptyFeed.classList.add('hidden');
+        if (!posts || posts.length === 0) { 
+          postsFeed.innerHTML = ''; 
+          if (postsLoaded && !isLoading && !loadError) {
+            showEmptyState();
+          }
+          return; 
+        }
         postsFeed.innerHTML = posts.map(p => renderPostCard(p, p.id)).join('');
+        if (!articleView.classList.contains('hidden')) {
+          // If we're in article view, keep it hidden
+        } else {
+          showPostsState();
+        }
       }
 
       function performSearch(query) {
@@ -562,11 +729,13 @@
           searchResultsFull.innerHTML = `<div class="search-empty"><h4>Type to search</h4><p>Search articles by title or content</p></div>`;
           return;
         }
+
         const q = searchQuery.toLowerCase();
         const filtered = allPosts.filter(p => 
           (p.title && p.title.toLowerCase().includes(q)) ||
           (p.content && p.content.toLowerCase().includes(q))
         );
+
         if (filtered.length === 0) {
           searchResultsFull.innerHTML = `<div class="search-empty"><h4>No results found</h4><p>Try searching with a different keyword.</p></div>`;
         } else {
@@ -589,9 +758,18 @@
         homePage.classList.remove('hidden');
         articleView.classList.add('hidden');
         searchSection.classList.remove('open');
-        renderFeed(allPosts);
+        if (allPosts.length > 0 && !isLoading && !loadError) {
+          showPostsState();
+        } else if (isLoading) {
+          showLoadingState();
+        } else if (loadError) {
+          showErrorState();
+        } else {
+          showEmptyState();
+        }
         $$('.bottom-nav .nav-item').forEach(b => b.classList.remove('active'));
         navHome.classList.add('active');
+        // Clear search
         searchInputFull.value = '';
         searchResultsFull.innerHTML = `<div class="search-empty"><h4>Type to search</h4><p>Search articles by title or content</p></div>`;
       }
@@ -615,23 +793,39 @@
         $$('.bottom-nav .nav-item').forEach(b => b.classList.remove('active'));
         navHome.classList.add('active');
         if (!articleView.classList.contains('hidden')) {
-          // stay
+          // Stay on article
         } else {
           homePage.classList.remove('hidden');
         }
       }
 
+      function retryLoad() {
+        loadPosts();
+      }
+
+      // Event Listeners
       let searchTimeout;
       searchInputFull?.addEventListener('input', () => {
         clearTimeout(searchTimeout);
         searchTimeout = setTimeout(() => performSearch(searchInputFull.value), 300);
       });
 
+      // Bottom nav
       navHome?.addEventListener('click', goHome);
       navSearch?.addEventListener('click', openSearch);
-      closeSearchBtn?.addEventListener('click', closeSearch);
-      $('#backFromArticle')?.addEventListener('click', goHome);
 
+      // Close search
+      closeSearchBtn?.addEventListener('click', closeSearch);
+
+      // Back from article
+      $('#backFromArticle')?.addEventListener('click', () => {
+        goHome();
+      });
+
+      // Retry button
+      retryBtn?.addEventListener('click', retryLoad);
+
+      // Click on post cards (home feed)
       document.addEventListener('click', (e) => {
         const target = e.target.closest('[data-id]');
         if (!target) return;
@@ -642,6 +836,7 @@
         }
       });
 
+      // Click on search results
       document.addEventListener('click', (e) => {
         const target = e.target.closest('.search-result-item');
         if (target) {
@@ -650,6 +845,7 @@
         }
       });
 
+      // Keyboard shortcut: Escape to close search or go back
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
           if (searchSection.classList.contains('open')) {
@@ -660,8 +856,33 @@
         }
       });
 
+      // Dark mode toggle - preserve existing functionality
+      const darkModeMedia = window.matchMedia('(prefers-color-scheme: dark)');
+      let darkMode = localStorage.getItem('zishu-insight-dark') === 'true' || 
+                     (localStorage.getItem('zishu-insight-dark') === null && darkModeMedia.matches);
+      
+      function applyDarkMode(isDark) {
+        document.body.classList.toggle('dark', isDark);
+        localStorage.setItem('zishu-insight-dark', isDark);
+      }
+      
+      applyDarkMode(darkMode);
+      
+      // Add dark mode toggle to header
+      const headerRight = document.querySelector('.header-left');
+      const darkToggle = document.createElement('button');
+      darkToggle.innerHTML = '🌓';
+      darkToggle.style.cssText = 'background:none;border:none;font-size:1.5rem;cursor:pointer;padding:4px 8px;';
+      darkToggle.setAttribute('aria-label', 'Toggle dark mode');
+      darkToggle.addEventListener('click', () => {
+        darkMode = !darkMode;
+        applyDarkMode(darkMode);
+      });
+      headerRight.appendChild(darkToggle);
+
+      // Init - show loading state immediately
+      showLoadingState();
       loadPosts();
-      goHome();
     })();
   </script>
 </body>
