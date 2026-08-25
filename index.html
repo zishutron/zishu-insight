@@ -18,7 +18,7 @@
     body {
       background: #f8fafc;
       color: #0b1a2f;
-      padding-bottom: 20px;
+      padding-bottom: 80px;
     }
     body.dark {
       background: #0f172a;
@@ -29,6 +29,7 @@
       margin: 0 auto;
       padding: 0 20px;
     }
+    /* header */
     .top-header {
       display: flex;
       align-items: center;
@@ -78,6 +79,7 @@
       color: #a3b8d9;
     }
 
+    /* search bar in header */
     .header-search {
       display: flex;
       align-items: center;
@@ -86,9 +88,9 @@
       padding: 3px 12px 3px 16px;
       border: 1px solid #d0ddee;
       box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-      flex: 0 1 200px;
+      flex: 0 1 220px;
       min-width: 120px;
-      max-width: 220px;
+      max-width: 240px;
     }
     body.dark .header-search {
       background: #1e2a40;
@@ -115,8 +117,9 @@
       color: #b6cae5;
     }
 
+    /* feed */
     .feed-header {
-      margin: 20px 0 16px;
+      margin: 16px 0 16px;
     }
     .post-card {
       background: white;
@@ -126,6 +129,7 @@
       box-shadow: 0 4px 14px rgba(0,0,0,0.02);
       border: 1px solid #eef3f9;
       transition: 0.1s;
+      cursor: pointer;
     }
     body.dark .post-card {
       background: #1a263b;
@@ -133,6 +137,8 @@
     }
     .post-card:hover {
       border-color: #cbd9ec;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
     }
     .post-card h4 {
       font-size: 1.3rem;
@@ -201,7 +207,7 @@
     }
     .toast {
       position: fixed;
-      bottom: 40px;
+      bottom: 100px;
       left: 50%;
       transform: translateX(-50%);
       background: #0b1a2f;
@@ -226,17 +232,166 @@
     }
     .full-article-content p { margin-bottom: 1.2rem; }
 
+    /* Full article view */
+    #articleView {
+      padding: 20px 0;
+    }
+    #articleView .back-btn {
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      color: #2b6b9e;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+    #articleView .back-btn:hover {
+      text-decoration: underline;
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #ffffffdd;
+      backdrop-filter: blur(12px);
+      border-top: 1px solid #e2e8f0;
+      padding: 8px 0;
+      justify-content: space-around;
+      z-index: 100;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+    }
+    body.dark .bottom-nav {
+      background: #1e293bdd;
+      border-top-color: #334155;
+    }
+    .bottom-nav .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #64748b;
+      font-size: 0.65rem;
+      gap: 2px;
+      font-weight: 500;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 4px 16px;
+      transition: 0.2s;
+      position: relative;
+    }
+    body.dark .bottom-nav .nav-item {
+      color: #94a3b8;
+    }
+    .bottom-nav .nav-item svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .bottom-nav .nav-item.active {
+      color: #1e5f8e;
+    }
+    body.dark .bottom-nav .nav-item.active {
+      color: #60a5fa;
+    }
+    .bottom-nav .nav-item .badge {
+      position: absolute;
+      top: 0;
+      right: 4px;
+      background: #b13e3e;
+      color: white;
+      font-size: 0.6rem;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Search Results Section */
+    #searchResults {
+      padding: 16px 0;
+    }
+    #searchResults .search-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    #searchResults .search-header h3 {
+      font-size: 1.1rem;
+    }
+    #searchResults .search-header .clear-search {
+      background: none;
+      border: none;
+      color: #64748b;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+    #searchResults .search-header .clear-search:hover {
+      color: #b13e3e;
+    }
+
+    .search-result-item {
+      background: white;
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin-bottom: 12px;
+      border: 1px solid #eef3f9;
+      cursor: pointer;
+      transition: 0.1s;
+    }
+    body.dark .search-result-item {
+      background: #1a263b;
+      border-color: #2e405b;
+    }
+    .search-result-item:hover {
+      border-color: #cbd9ec;
+      transform: translateY(-1px);
+    }
+    .search-result-item h4 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .search-result-item .excerpt {
+      font-size: 0.9rem;
+      color: #4a5f7a;
+      line-height: 1.5;
+    }
+    body.dark .search-result-item .excerpt {
+      color: #a3bbd9;
+    }
+
     @media (max-width: 720px) {
       .container { padding: 0 14px; }
       .post-card { padding: 18px; }
+      .bottom-nav { display: flex; }
       .header-search { flex: 1 1 100%; max-width: 100%; order: 10; }
       .header-left { width: 100%; flex-wrap: wrap; }
       .brand { flex: 1 1 auto; }
+      body { padding-bottom: 80px; }
+    }
+    @media (min-width: 721px) {
+      .bottom-nav { display: none !important; }
     }
   </style>
 </head>
 <body>
   <div id="app">
+    <!-- Header -->
     <header class="container top-header">
       <div class="header-left">
         <div class="brand">
@@ -250,18 +405,43 @@
       </div>
     </header>
 
+    <!-- Main Content -->
     <main class="container" id="mainContent">
+      <!-- Home Feed -->
       <section id="homePage">
         <div class="feed-header"></div>
         <div id="postsFeed"></div>
         <div id="emptyFeed" class="empty-state hidden"><h4>No updates yet</h4><p>Check back later for new insights from ZISHU TRON.</p></div>
       </section>
 
+      <!-- Search Results -->
+      <section id="searchResults" class="hidden">
+        <div class="search-header">
+          <h3 id="searchResultTitle">Search Results</h3>
+          <button class="clear-search" id="clearSearch">✕ Clear</button>
+        </div>
+        <div id="searchResultsList"></div>
+        <div id="emptySearch" class="empty-state hidden"><h4>No results found</h4><p>Try searching with a different keyword.</p></div>
+      </section>
+
+      <!-- Full Article View -->
       <section id="articleView" class="hidden">
-        <button id="backFromArticle" style="background:none;border:none;font-size:1.2rem;cursor:pointer;margin-bottom:12px;">← Back to Insights</button>
+        <button class="back-btn" id="backFromArticle">← Back to Insights</button>
         <div id="fullArticleContainer"></div>
       </section>
     </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav" id="bottomNav">
+      <button class="nav-item active" data-page="home" id="navHome">
+        <svg><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Home</span>
+      </button>
+      <button class="nav-item" data-page="search" id="navSearch">
+        <svg><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span>Search</span>
+      </button>
+    </nav>
 
     <div id="toastContainer" class="toast hidden"></div>
   </div>
@@ -282,14 +462,25 @@
       const db = firebase.database();
 
       let allPosts = [];
+      let currentPage = 'home';
+      let searchQuery = '';
 
       const $ = (s) => document.querySelector(s);
+      const $$ = (s) => document.querySelectorAll(s);
       const postsFeed = $('#postsFeed');
       const emptyFeed = $('#emptyFeed');
+      const searchResults = $('#searchResults');
+      const searchResultsList = $('#searchResultsList');
+      const emptySearch = $('#emptySearch');
+      const searchResultTitle = $('#searchResultTitle');
       const toastContainer = $('#toastContainer');
       const searchInput = $('#searchInput');
       const homePage = $('#homePage');
       const articleView = $('#articleView');
+      const fullArticleContainer = $('#fullArticleContainer');
+      const clearSearchBtn = $('#clearSearch');
+      const navHome = $('#navHome');
+      const navSearch = $('#navSearch');
 
       function showToast(msg) {
         toastContainer.textContent = msg;
@@ -308,6 +499,16 @@
           <div class="card-actions">
             <button class="btn-read" data-id="${id}">Read Article</button>
           </div>
+        </div>`;
+      }
+
+      function renderSearchResult(post, id) {
+        const excerpt = post.content?.slice(0, 120) + (post.content?.length > 120 ? '…' : '') || '';
+        const date = post.createdAt ? new Date(post.createdAt).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' }) : 'Recent';
+        return `<div class="search-result-item" data-id="${id}">
+          <h4>${post.title || 'Untitled'}</h4>
+          <div style="font-size:0.8rem;color:#4a5f7a;margin:4px 0;">${post.authorName || 'ZISHU TRON'} · ${date}</div>
+          <div class="excerpt">${excerpt}</div>
         </div>`;
       }
 
@@ -336,48 +537,161 @@
         postsFeed.innerHTML = posts.map(p => renderPostCard(p, p.id)).join('');
       }
 
-      function searchPosts(query) {
-        if (!query.trim()) { renderFeed(allPosts); return; }
-        const q = query.toLowerCase();
+      function performSearch(query) {
+        searchQuery = query.trim();
+        if (!searchQuery) {
+          searchResults.classList.add('hidden');
+          homePage.classList.remove('hidden');
+          updateNav('home');
+          return;
+        }
+
+        const q = searchQuery.toLowerCase();
         const filtered = allPosts.filter(p => 
           (p.title && p.title.toLowerCase().includes(q)) ||
           (p.content && p.content.toLowerCase().includes(q))
         );
-        renderFeed(filtered);
+
+        searchResults.classList.remove('hidden');
+        homePage.classList.add('hidden');
+        articleView.classList.add('hidden');
+        searchResultTitle.textContent = `Search Results for "${searchQuery}" (${filtered.length})`;
+
+        if (filtered.length === 0) {
+          searchResultsList.innerHTML = '';
+          emptySearch.classList.remove('hidden');
+        } else {
+          emptySearch.classList.add('hidden');
+          searchResultsList.innerHTML = filtered.map(p => renderSearchResult(p, p.id)).join('');
+        }
+        updateNav('search');
+        // Close mobile nav search highlight
       }
 
-      function navigate(page) {
+      function openArticle(postId) {
+        const post = allPosts.find(p => p.id === postId);
+        if (!post) { showToast('Article not found.'); return; }
+        homePage.classList.add('hidden');
+        searchResults.classList.add('hidden');
+        articleView.classList.remove('hidden');
+        fullArticleContainer.innerHTML = renderFullArticle(post);
+        // Update nav
+        $$('.bottom-nav .nav-item').forEach(b => b.classList.remove('active'));
+      }
+
+      function goHome() {
+        homePage.classList.remove('hidden');
+        searchResults.classList.add('hidden');
+        articleView.classList.add('hidden');
+        searchInput.value = '';
+        searchQuery = '';
+        updateNav('home');
+        // Re-render feed
+        renderFeed(allPosts);
+      }
+
+      function updateNav(page) {
+        currentPage = page;
+        $$('.bottom-nav .nav-item').forEach(b => b.classList.remove('active'));
         if (page === 'home') {
-          homePage.classList.remove('hidden');
-          articleView.classList.add('hidden');
-        } else if (page === 'article') {
-          homePage.classList.add('hidden');
-          articleView.classList.remove('hidden');
+          navHome.classList.add('active');
+        } else if (page === 'search') {
+          navSearch.classList.add('active');
         }
       }
 
+      function clearSearch() {
+        searchInput.value = '';
+        searchQuery = '';
+        searchResults.classList.add('hidden');
+        homePage.classList.remove('hidden');
+        articleView.classList.add('hidden');
+        renderFeed(allPosts);
+        updateNav('home');
+        // Focus on search input
+        searchInput.focus();
+      }
+
+      // Event Listeners
       let searchTimeout;
       searchInput?.addEventListener('input', () => {
         clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => searchPosts(searchInput.value), 300);
+        searchTimeout = setTimeout(() => performSearch(searchInput.value), 300);
       });
 
-      $('#backFromArticle')?.addEventListener('click', () => navigate('home'));
+      searchInput?.addEventListener('focus', () => {
+        if (searchInput.value.trim()) {
+          performSearch(searchInput.value);
+        }
+      });
 
+      clearSearchBtn?.addEventListener('click', clearSearch);
+
+      // Bottom nav
+      navHome?.addEventListener('click', goHome);
+      navSearch?.addEventListener('click', () => {
+        searchInput.focus();
+        if (searchInput.value.trim()) {
+          performSearch(searchInput.value);
+        } else {
+          // Show search with focus
+          searchResults.classList.remove('hidden');
+          homePage.classList.add('hidden');
+          articleView.classList.add('hidden');
+          searchResultTitle.textContent = 'Type to search…';
+          searchResultsList.innerHTML = '';
+          emptySearch.classList.add('hidden');
+          updateNav('search');
+        }
+      });
+
+      // Back from article
+      $('#backFromArticle')?.addEventListener('click', () => {
+        if (searchQuery) {
+          performSearch(searchQuery);
+        } else {
+          goHome();
+        }
+      });
+
+      // Click on post cards (home feed)
       document.addEventListener('click', (e) => {
         const target = e.target.closest('[data-id]');
         if (!target) return;
         const id = target.dataset.id;
-        if (target.classList.contains('btn-read')) {
-          const post = allPosts.find(p => p.id === id);
-          if (!post) return;
-          $('#fullArticleContainer').innerHTML = renderFullArticle(post);
-          navigate('article');
+        if (target.classList.contains('btn-read') || target.closest('.post-card')) {
+          e.preventDefault();
+          openArticle(id);
         }
       });
 
+      // Click on search results
+      document.addEventListener('click', (e) => {
+        const target = e.target.closest('.search-result-item');
+        if (target) {
+          const id = target.dataset.id;
+          openArticle(id);
+        }
+      });
+
+      // Keyboard shortcut: Escape to go back
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          if (!articleView.classList.contains('hidden')) {
+            if (searchQuery) {
+              performSearch(searchQuery);
+            } else {
+              goHome();
+            }
+          } else if (!searchResults.classList.contains('hidden') && !searchQuery) {
+            goHome();
+          }
+        }
+      });
+
+      // Init
       loadPosts();
-      navigate('home');
+      goHome();
     })();
   </script>
 </body>
