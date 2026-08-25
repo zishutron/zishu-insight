@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+  <title>ZISHU TRON Admin Panel</title>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      background: #f8fafc;
+      color: #0b1a2f;
+      padding: 20px;
+    }
+    body.dark {
+      background: #0f172a;
+      color: #e8edf5;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid #eef3f9;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    body.dark .admin-header {
+      border-bottom-color: #2e405b;
+    }
+    .admin-header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #0b1a2f, #1e3b5c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    body.dark .admin-header h1 {
+      background: linear-gradient(135deg, #d6e4ff, #a0c0f0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .admin-header .back-link {
+      color: #2b6b9e;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .admin-header .back-link:hover {
+      text-decoration: underline;
+    }
+    .admin-panel {
+      background: white;
+      border-radius: 24px;
+      padding: 30px;
+      border: 1px solid #eef3f9;
+    }
+    body.dark .admin-panel {
+      background: #1a263b;
+      border-color: #2e405b;
+    }
+    .admin-panel h2 {
+      font-size: 1.4rem;
+      margin-bottom: 16px;
+    }
+    .field {
+      margin-bottom: 16px;
+    }
+    .field label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .field input,
+    .field textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 16px;
+      border: 1px solid #d0ddee;
+      font-size: 1rem;
+      background: #f8fafc;
+      color: inherit;
+    }
+    body.dark .field input,
+    body.dark .field textarea {
+      background: #0f172a;
+      border-color: #3d5478;
+      color: #e8edf5;
+    }
+    .field textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    .char-counter {
+      font-size: 0.8rem;
+      color: #4a5f7a;
+      text-align: right;
+      margin-top: 2px;
+    }
+    .admin-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+    .btn-primary {
+      background: #0b1a2f;
+      color: white;
+      border: none;
+      padding: 10px 28px;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+    body.dark .btn-primary {
+      background: #d6e4ff;
+      color: #0b1a2f;
+    }
+    .btn-primary:hover {
+      opacity: 0.85;
+    }
+    .btn-danger {
+      background: #b13e3e;
+      color: white;
+      border: none;
+      padding: 10px 28px;
+      border-radius: 60px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-danger:hover {
+      background: #8f2e2e;
+    }
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid #b0c4dd;
+      padding: 10px 28px;
+      border-radius: 60px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .btn-ghost:hover {
+      background: #eef3fa;
+    }
+    .admin-post-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      border-bottom: 1px solid #eef3f9;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    body.dark .admin-post-item {
+      border-bottom-color: #2e405b;
+    }
+    .admin-post-item .title {
+      font-weight: 600;
+      flex: 1;
+    }
+    .admin-post-item .actions {
+      display: flex;
+      gap: 8px;
+    }
+    .admin-post-item .actions button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    .admin-post-item .actions .edit-btn {
+      color: #2b6b9e;
+    }
+    .admin-post-item .actions .edit-btn:hover {
+      background: #2b6b9e20;
+    }
+    .admin-post-item .actions .delete-btn {
+      color: #b13e3e;
+    }
+    .admin-post-item .actions .delete-btn:hover {
+      background: #b13e3e20;
+    }
+    .empty-state {
+      padding: 40px 0;
+      text-align: center;
+      color: #4a5f7a;
+    }
+    .empty-state h4 {
+      font-size: 1.1rem;
+      margin-bottom: 4px;
+    }
+    .hidden {
+      display: none !important;
+    }
+    .toast {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0b1a2f;
+      color: white;
+      padding: 14px 28px;
+      border-radius: 60px;
+      font-weight: 500;
+      z-index: 300;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      max-width: 90%;
+      text-align: center;
+    }
+    body.dark .toast {
+      background: #d6e4ff;
+      color: #0b1a2f;
+    }
+    .login-box {
+      padding: 30px 0;
+      text-align: center;
+    }
+    .login-box p {
+      margin-bottom: 12px;
+      color: #4a5f7a;
+    }
+    .authorized-badge {
+      color: #1c6b3b;
+      font-weight: 600;
+    }
+    .denied-badge {
+      color: #b13e3e;
+      font-weight: 600;
+    }
+    hr {
+      margin: 24px 0;
+      border-color: #eef3f9;
+    }
+    body.dark hr {
+      border-color: #2e405b;
+    }
+    @media (max-width: 720px) {
+      .admin-panel {
+        padding: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="admin-header">
+      <h1>⚙️ ZISHU TRON Admin</h1>
+      <a href="/" class="back-link">← Back to Insights</a>
+    </div>
+    <div class="admin-panel" id="adminPanel">
+      <div id="adminLoginArea"></div>
+      <div id="adminContent" class="hidden">
+        <h2>Manage Articles</h2>
+        <div class="field">
+          <label>Title</label>
+          <input id="adminTitle" maxlength="150" placeholder="Enter article title" />
+          <div class="char-counter" id="adminTitleCounter">0 / 150</div>
+        </div>
+        <div class="field">
+          <label>Content</label>
+          <textarea id="adminContentText" maxlength="50000" placeholder="Write your update here..."></textarea>
+          <div class="char-counter" id="adminContentCounter">0 / 50000</div>
+        </div>
+        <div class="admin-actions">
+          <button class="btn-primary" id="adminPublishBtn">Publish Article</button>
+          <button class="btn-ghost" id="adminCancelEditBtn" style="display:none;">Cancel Edit</button>
+        </div>
+        <hr />
+        <h3 style="margin-bottom:12px;">Your Published Articles</h3>
+        <div id="adminPostsList"></div>
+        <div id="adminEmptyPosts" class="empty-state hidden" style="padding:20px 0;"><h4>No articles published yet.</h4></div>
+      </div>
+    </div>
+  </div>
+  <div id="toastContainer" class="toast hidden"></div>
+
+  <script>
+    (function() {
+      const firebaseConfig = {
+        apiKey: "AIzaSyAL0FS7X7YfhQ-IoqE3a7axcLjgN7cPySM0",
+        authDomain: "stardust-official.firebaseapp.com",
+        databaseURL: "https://stardust-official-default-rtdb.firebaseio.com",
+        projectId: "stardust-official",
+        storageBucket: "stardust-official.firebasestorage.app",
+        messagingSenderId: "1065835601050",
+        appId: "1:1065835601050:web:7b783fef7405199df45323",
+        measurementId: "G-QMXMH4BR3B"
+      };
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+      const db = firebase.database();
+
+      let currentUser = null;
+      let allPosts = [];
+      let editingPostId = null;
+
+      const $ = (s) => document.querySelector(s);
+      const toastContainer = $('#toastContainer');
+      const adminLoginArea = $('#adminLoginArea');
+      const adminContent = $('#adminContent');
+      const adminTitle = $('#adminTitle');
+      const adminContentText = $('#adminContentText');
+      const adminTitleCounter = $('#adminTitleCounter');
+      const adminContentCounter = $('#adminContentCounter');
+      const adminPublishBtn = $('#adminPublishBtn');
+      const adminCancelEditBtn = $('#adminCancelEditBtn');
+      const adminPostsList = $('#adminPostsList');
+      const adminEmptyPosts = $('#adminEmptyPosts');
+
+      function showToast(msg) {
+        toastContainer.textContent = msg;
+        toastContainer.classList.remove('hidden');
+        setTimeout(() => toastContainer.classList.add('hidden'), 4000);
+      }
+
+      function renderAdminPosts() {
+        if (!currentUser) return;
+        const userPosts = allPosts.filter(p => p.authorId === currentUser.uid);
+        if (userPosts.length === 0) {
+          adminPostsList.innerHTML = '';
+          adminEmptyPosts.classList.remove('hidden');
+          return;
+        }
+        adminEmptyPosts.classList.add('hidden');
+        adminPostsList.innerHTML = userPosts.map(p => `
+          <div class="admin-post-item" data-id="${p.id}">
+            <span class="title">${p.title || 'Untitled'}</span>
+            <span style="font-size:0.8rem;color:#4a5f7a;">${p.createdAt ? new Date(p.createdAt).toLocaleDateString() : ''}</span>
+            <div class="actions">
+              <button class="edit-btn" data-id="${p.id}">Edit</button>
+              <button class="delete-btn" data-id="${p.id}">Delete</button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      function loadPosts() {
+        const ref = db.ref('posts').orderByChild('createdAt').limitToLast(50);
+        ref.on('value', (snap) => {
+          const data = snap.val();
+          if (!data) { allPosts = []; return; }
+          allPosts = Object.keys(data).map(key => ({ id: key, ...data[key] })).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+          renderAdminPosts();
+        });
+      }
+
+      function resetAdminForm() {
+        adminTitle.value = '';
+        adminContentText.value = '';
+        adminTitleCounter.textContent = '0 / 150';
+        adminContentCounter.textContent = '0 / 50000';
+        editingPostId = null;
+        adminPublishBtn.textContent = 'Publish Article';
+        adminCancelEditBtn.style.display = 'none';
+      }
+
+      function publishPost() {
+        const title = adminTitle.value.trim();
+        const content = adminContentText.value.trim();
+        if (title.length < 3) { showToast('Title must be at least 3 characters.'); return; }
+        if (content.length < 10) { showToast('Content must be at least 10 characters.'); return; }
+        if (!currentUser) { showToast('Please sign in.'); return; }
+
+        const data = {
+          title: title,
+          content: content,
+          authorId: currentUser.uid,
+          authorName: currentUser.displayName || 'ZISHU TRON Admin',
+          updatedAt: Date.now()
+        };
+
+        if (editingPostId) {
+          db.ref('posts/' + editingPostId).update(data).then(() => {
+            showToast('Article updated.');
+            resetAdminForm();
+            renderAdminPosts();
+          }).catch(() => showToast('Error updating.'));
+        } else {
+          data.createdAt = Date.now();
+          db.ref('posts').push(data).then(() => {
+            showToast('Article published successfully.');
+            resetAdminForm();
+            renderAdminPosts();
+          }).catch(() => showToast('Error publishing.'));
+        }
+      }
+
+      function loadPostForEdit(postId) {
+        const post = allPosts.find(p => p.id === postId);
+        if (!post) return;
+        if (post.authorId !== currentUser?.uid) { showToast('You can only edit your own posts.'); return; }
+        adminTitle.value = post.title || '';
+        adminContentText.value = post.content || '';
+        adminTitleCounter.textContent = `${post.title?.length || 0} / 150`;
+        adminContentCounter.textContent = `${post.content?.length || 0} / 50000`;
+        editingPostId = postId;
+        adminPublishBtn.textContent = 'Save Changes';
+        adminCancelEditBtn.style.display = 'inline-block';
+        adminTitle.scrollIntoView({ behavior: 'smooth' });
+      }
+
+      function deletePost(postId) {
+        if (!confirm('Delete this article permanently?')) return;
+        const post = allPosts.find(p => p.id === postId);
+        if (!post) return;
+        if (post.authorId !== currentUser?.uid) { showToast('You can only delete your own posts.'); return; }
+        db.ref('posts/' + postId).remove().then(() => {
+          showToast('Article deleted.');
+          renderAdminPosts();
+          if (editingPostId === postId) resetAdminForm();
+        }).catch(() => showToast('Error deleting.'));
+      }
+
+      function checkAdminAccess(user) {
+        if (!user) {
+          adminLoginArea.innerHTML = `
+            <div class="login-box">
+              <p>Sign in to access the admin panel.</p>
+              <button class="btn-primary" id="adminLoginBtn">Sign in with Google</button>
+            </div>
+          `;
+          adminContent.classList.add('hidden');
+          const loginBtn = $('#adminLoginBtn');
+          if (loginBtn) {
+            loginBtn.addEventListener('click', () => {
+              const provider = new firebase.auth.GoogleAuthProvider();
+              auth.signInWithPopup(provider).catch((err) => {
+                console.error('Admin login error:', err);
+                showToast('Sign-in failed: ' + (err.message || 'unknown error'));
+              });
+            });
+          }
+          return;
+        }
+
+        const adminRef = db.ref('authorizedAdmins').child(user.uid);
+        adminRef.once('value').then((snap) => {
+          if (snap.exists() && snap.val() === true) {
+            adminLoginArea.innerHTML = `<p><span class="authorized-badge">✓ Authorized</span> as ${user.displayName || user.email}</p>
+              <button class="btn-ghost" id="adminLogoutBtn" style="margin-top:8px;">Sign Out</button>`;
+            $('#adminLogoutBtn')?.addEventListener('click', () => { auth.signOut();
+              showToast('Signed out.'); });
+            adminContent.classList.remove('hidden');
+            loadPosts();
+            renderAdminPosts();
+          } else {
+            adminLoginArea.innerHTML = `
+              <div class="login-box">
+                <p><span class="denied-badge">⛔ Access Denied</span></p>
+                <p style="font-size:0.9rem;margin-top:4px;color:#4a5f7a;">You are not authorized to access the admin panel.</p>
+                <button class="btn-ghost" id="adminLogoutUnauthorizedBtn" style="margin-top:12px;">Sign Out</button>
+              </div>
+            `;
+            $('#adminLogoutUnauthorizedBtn')?.addEventListener('click', () => { auth.signOut();
+              showToast('Signed out.'); });
+            adminContent.classList.add('hidden');
+          }
+        }).catch((err) => {
+          console.error('Error checking admin authorization:', err);
+          adminLoginArea.innerHTML = `<p style="color:#b13e3e;">Error checking authorization. Please try again.</p>`;
+        });
+      }
+
+      // Auth state
+      auth.onAuthStateChanged(user => {
+        currentUser = user;
+        checkAdminAccess(user);
+      });
+
+      // Form events
+      adminTitle?.addEventListener('input', () => {
+        adminTitleCounter.textContent = `${adminTitle.value.length} / 150`;
+      });
+      adminContentText?.addEventListener('input', () => {
+        adminContentCounter.textContent = `${adminContentText.value.length} / 50000`;
+      });
+
+      adminPublishBtn?.addEventListener('click', publishPost);
+      adminCancelEditBtn?.addEventListener('click', resetAdminForm);
+
+      // Delegated events
+      document.addEventListener('click', (e) => {
+        const target = e.target.closest('[data-id]');
+        if (!target) return;
+        const id = target.dataset.id;
+        if (target.classList.contains('edit-btn')) {
+          loadPostForEdit(id);
+        }
+        if (target.classList.contains('delete-btn')) {
+          deletePost(id);
+        }
+      });
+
+      // Initial load
+      loadPosts();
+    })();
+  </script>
+</body>
+</html>
