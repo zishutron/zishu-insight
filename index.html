@@ -29,7 +29,7 @@
       margin: 0 auto;
       padding: 0 20px;
     }
-    /* header */
+    /* header - NO SEARCH BAR */
     .top-header {
       display: flex;
       align-items: center;
@@ -77,44 +77,6 @@
     }
     body.dark .brand span {
       color: #a3b8d9;
-    }
-
-    /* search bar in header */
-    .header-search {
-      display: flex;
-      align-items: center;
-      background: white;
-      border-radius: 60px;
-      padding: 3px 12px 3px 16px;
-      border: 1px solid #d0ddee;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-      flex: 0 1 220px;
-      min-width: 120px;
-      max-width: 240px;
-    }
-    body.dark .header-search {
-      background: #1e2a40;
-      border-color: #3d5478;
-    }
-    .header-search input {
-      border: none;
-      background: transparent;
-      padding: 8px 6px;
-      font-size: 0.85rem;
-      width: 100%;
-      outline: none;
-      color: inherit;
-    }
-    .header-search button {
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      padding: 2px 2px 2px 6px;
-      color: #1e3b5c;
-      font-size: 1rem;
-    }
-    body.dark .header-search button {
-      color: #b6cae5;
     }
 
     /* feed */
@@ -254,7 +216,7 @@
 
     /* Bottom Navigation */
     .bottom-nav {
-      display: none;
+      display: flex;
       position: fixed;
       bottom: 0;
       left: 0;
@@ -305,45 +267,71 @@
     body.dark .bottom-nav .nav-item.active {
       color: #60a5fa;
     }
-    .bottom-nav .nav-item .badge {
-      position: absolute;
-      top: 0;
-      right: 4px;
-      background: #b13e3e;
-      color: white;
-      font-size: 0.6rem;
-      border-radius: 50%;
-      width: 18px;
-      height: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
 
-    /* Search Results Section */
-    #searchResults {
-      padding: 16px 0;
+    /* Search Section - Full Screen */
+    #searchSection {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #f8fafc;
+      z-index: 50;
+      padding: 20px;
+      display: none;
+      flex-direction: column;
     }
-    #searchResults .search-header {
+    body.dark #searchSection {
+      background: #0f172a;
+    }
+    #searchSection.open {
       display: flex;
-      justify-content: space-between;
+    }
+    .search-header-full {
+      display: flex;
       align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid #e2e8f0;
       margin-bottom: 16px;
     }
-    #searchResults .search-header h3 {
-      font-size: 1.1rem;
+    body.dark .search-header-full {
+      border-bottom-color: #334155;
     }
-    #searchResults .search-header .clear-search {
+    .search-header-full .close-search {
       background: none;
       border: none;
-      color: #64748b;
+      font-size: 1.5rem;
       cursor: pointer;
-      font-size: 0.85rem;
+      color: #64748b;
+      padding: 4px 8px;
     }
-    #searchResults .search-header .clear-search:hover {
+    .search-header-full .close-search:hover {
       color: #b13e3e;
     }
-
+    .search-header-full input {
+      flex: 1;
+      padding: 12px 16px;
+      border-radius: 60px;
+      border: 1px solid #d0ddee;
+      font-size: 1rem;
+      background: white;
+      color: inherit;
+      outline: none;
+    }
+    body.dark .search-header-full input {
+      background: #1e2a40;
+      border-color: #3d5478;
+      color: #e8edf5;
+    }
+    .search-header-full input:focus {
+      border-color: #2b6b9e;
+    }
+    .search-results-full {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 0;
+    }
     .search-result-item {
       background: white;
       border-radius: 16px;
@@ -374,33 +362,34 @@
     body.dark .search-result-item .excerpt {
       color: #a3bbd9;
     }
+    .search-empty {
+      text-align: center;
+      padding: 60px 0;
+      color: #4a5f7a;
+    }
+    .search-empty h4 {
+      font-size: 1.2rem;
+      margin-bottom: 4px;
+    }
 
     @media (max-width: 720px) {
       .container { padding: 0 14px; }
       .post-card { padding: 18px; }
-      .bottom-nav { display: flex; }
-      .header-search { flex: 1 1 100%; max-width: 100%; order: 10; }
-      .header-left { width: 100%; flex-wrap: wrap; }
-      .brand { flex: 1 1 auto; }
       body { padding-bottom: 80px; }
     }
     @media (min-width: 721px) {
-      .bottom-nav { display: none !important; }
+      .bottom-nav { display: flex !important; }
     }
   </style>
 </head>
 <body>
   <div id="app">
-    <!-- Header -->
+    <!-- Header - NO SEARCH BAR -->
     <header class="container top-header">
       <div class="header-left">
         <div class="brand">
           <h1>ZISHU TRON INSIGHT</h1>
           <span>The official updates from ZISHU TRON.</span>
-        </div>
-        <div class="header-search" id="headerSearch">
-          <input type="text" id="searchInput" placeholder="Search insights…" />
-          <button id="searchBtn">⌕</button>
         </div>
       </div>
     </header>
@@ -414,22 +403,26 @@
         <div id="emptyFeed" class="empty-state hidden"><h4>No updates yet</h4><p>Check back later for new insights from ZISHU TRON.</p></div>
       </section>
 
-      <!-- Search Results -->
-      <section id="searchResults" class="hidden">
-        <div class="search-header">
-          <h3 id="searchResultTitle">Search Results</h3>
-          <button class="clear-search" id="clearSearch">✕ Clear</button>
-        </div>
-        <div id="searchResultsList"></div>
-        <div id="emptySearch" class="empty-state hidden"><h4>No results found</h4><p>Try searching with a different keyword.</p></div>
-      </section>
-
       <!-- Full Article View -->
       <section id="articleView" class="hidden">
         <button class="back-btn" id="backFromArticle">← Back to Insights</button>
         <div id="fullArticleContainer"></div>
       </section>
     </main>
+
+    <!-- Full Screen Search Section -->
+    <div id="searchSection">
+      <div class="search-header-full">
+        <button class="close-search" id="closeSearch">✕</button>
+        <input type="text" id="searchInputFull" placeholder="Search insights…" autofocus />
+      </div>
+      <div class="search-results-full" id="searchResultsFull">
+        <div class="search-empty">
+          <h4>Type to search</h4>
+          <p>Search articles by title or content</p>
+        </div>
+      </div>
+    </div>
 
     <!-- Bottom Navigation -->
     <nav class="bottom-nav" id="bottomNav">
@@ -462,25 +455,22 @@
       const db = firebase.database();
 
       let allPosts = [];
-      let currentPage = 'home';
       let searchQuery = '';
 
       const $ = (s) => document.querySelector(s);
       const $$ = (s) => document.querySelectorAll(s);
       const postsFeed = $('#postsFeed');
       const emptyFeed = $('#emptyFeed');
-      const searchResults = $('#searchResults');
-      const searchResultsList = $('#searchResultsList');
-      const emptySearch = $('#emptySearch');
-      const searchResultTitle = $('#searchResultTitle');
       const toastContainer = $('#toastContainer');
-      const searchInput = $('#searchInput');
       const homePage = $('#homePage');
       const articleView = $('#articleView');
       const fullArticleContainer = $('#fullArticleContainer');
-      const clearSearchBtn = $('#clearSearch');
       const navHome = $('#navHome');
       const navSearch = $('#navSearch');
+      const searchSection = $('#searchSection');
+      const searchInputFull = $('#searchInputFull');
+      const searchResultsFull = $('#searchResultsFull');
+      const closeSearchBtn = $('#closeSearch');
 
       function showToast(msg) {
         toastContainer.textContent = msg;
@@ -540,9 +530,7 @@
       function performSearch(query) {
         searchQuery = query.trim();
         if (!searchQuery) {
-          searchResults.classList.add('hidden');
-          homePage.classList.remove('hidden');
-          updateNav('home');
+          searchResultsFull.innerHTML = `<div class="search-empty"><h4>Type to search</h4><p>Search articles by title or content</p></div>`;
           return;
         }
 
@@ -552,106 +540,79 @@
           (p.content && p.content.toLowerCase().includes(q))
         );
 
-        searchResults.classList.remove('hidden');
-        homePage.classList.add('hidden');
-        articleView.classList.add('hidden');
-        searchResultTitle.textContent = `Search Results for "${searchQuery}" (${filtered.length})`;
-
         if (filtered.length === 0) {
-          searchResultsList.innerHTML = '';
-          emptySearch.classList.remove('hidden');
+          searchResultsFull.innerHTML = `<div class="search-empty"><h4>No results found</h4><p>Try searching with a different keyword.</p></div>`;
         } else {
-          emptySearch.classList.add('hidden');
-          searchResultsList.innerHTML = filtered.map(p => renderSearchResult(p, p.id)).join('');
+          searchResultsFull.innerHTML = filtered.map(p => renderSearchResult(p, p.id)).join('');
         }
-        updateNav('search');
-        // Close mobile nav search highlight
       }
 
       function openArticle(postId) {
         const post = allPosts.find(p => p.id === postId);
         if (!post) { showToast('Article not found.'); return; }
         homePage.classList.add('hidden');
-        searchResults.classList.add('hidden');
         articleView.classList.remove('hidden');
+        searchSection.classList.remove('open');
         fullArticleContainer.innerHTML = renderFullArticle(post);
-        // Update nav
         $$('.bottom-nav .nav-item').forEach(b => b.classList.remove('active'));
+        navHome.classList.add('active');
       }
 
       function goHome() {
         homePage.classList.remove('hidden');
-        searchResults.classList.add('hidden');
         articleView.classList.add('hidden');
-        searchInput.value = '';
-        searchQuery = '';
-        updateNav('home');
-        // Re-render feed
+        searchSection.classList.remove('open');
         renderFeed(allPosts);
+        $$('.bottom-nav .nav-item').forEach(b => b.classList.remove('active'));
+        navHome.classList.add('active');
+        // Clear search
+        searchInputFull.value = '';
+        searchResultsFull.innerHTML = `<div class="search-empty"><h4>Type to search</h4><p>Search articles by title or content</p></div>`;
       }
 
-      function updateNav(page) {
-        currentPage = page;
+      function openSearch() {
+        searchSection.classList.add('open');
+        searchInputFull.focus();
         $$('.bottom-nav .nav-item').forEach(b => b.classList.remove('active'));
-        if (page === 'home') {
-          navHome.classList.add('active');
-        } else if (page === 'search') {
-          navSearch.classList.add('active');
+        navSearch.classList.add('active');
+        // If there's already text, search
+        if (searchInputFull.value.trim()) {
+          performSearch(searchInputFull.value);
+        } else {
+          searchResultsFull.innerHTML = `<div class="search-empty"><h4>Type to search</h4><p>Search articles by title or content</p></div>`;
         }
       }
 
-      function clearSearch() {
-        searchInput.value = '';
-        searchQuery = '';
-        searchResults.classList.add('hidden');
-        homePage.classList.remove('hidden');
-        articleView.classList.add('hidden');
-        renderFeed(allPosts);
-        updateNav('home');
-        // Focus on search input
-        searchInput.focus();
+      function closeSearch() {
+        searchSection.classList.remove('open');
+        searchInputFull.value = '';
+        searchResultsFull.innerHTML = `<div class="search-empty"><h4>Type to search</h4><p>Search articles by title or content</p></div>`;
+        $$('.bottom-nav .nav-item').forEach(b => b.classList.remove('active'));
+        navHome.classList.add('active');
+        if (!articleView.classList.contains('hidden')) {
+          // Stay on article
+        } else {
+          homePage.classList.remove('hidden');
+        }
       }
 
       // Event Listeners
       let searchTimeout;
-      searchInput?.addEventListener('input', () => {
+      searchInputFull?.addEventListener('input', () => {
         clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => performSearch(searchInput.value), 300);
+        searchTimeout = setTimeout(() => performSearch(searchInputFull.value), 300);
       });
-
-      searchInput?.addEventListener('focus', () => {
-        if (searchInput.value.trim()) {
-          performSearch(searchInput.value);
-        }
-      });
-
-      clearSearchBtn?.addEventListener('click', clearSearch);
 
       // Bottom nav
       navHome?.addEventListener('click', goHome);
-      navSearch?.addEventListener('click', () => {
-        searchInput.focus();
-        if (searchInput.value.trim()) {
-          performSearch(searchInput.value);
-        } else {
-          // Show search with focus
-          searchResults.classList.remove('hidden');
-          homePage.classList.add('hidden');
-          articleView.classList.add('hidden');
-          searchResultTitle.textContent = 'Type to search…';
-          searchResultsList.innerHTML = '';
-          emptySearch.classList.add('hidden');
-          updateNav('search');
-        }
-      });
+      navSearch?.addEventListener('click', openSearch);
+
+      // Close search
+      closeSearchBtn?.addEventListener('click', closeSearch);
 
       // Back from article
       $('#backFromArticle')?.addEventListener('click', () => {
-        if (searchQuery) {
-          performSearch(searchQuery);
-        } else {
-          goHome();
-        }
+        goHome();
       });
 
       // Click on post cards (home feed)
@@ -674,16 +635,12 @@
         }
       });
 
-      // Keyboard shortcut: Escape to go back
+      // Keyboard shortcut: Escape to close search or go back
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-          if (!articleView.classList.contains('hidden')) {
-            if (searchQuery) {
-              performSearch(searchQuery);
-            } else {
-              goHome();
-            }
-          } else if (!searchResults.classList.contains('hidden') && !searchQuery) {
+          if (searchSection.classList.contains('open')) {
+            closeSearch();
+          } else if (!articleView.classList.contains('hidden')) {
             goHome();
           }
         }
