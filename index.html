@@ -30,7 +30,6 @@
       margin: 0 auto;
       padding: 0 20px;
     }
-    /* header */
     .top-header {
       display: flex;
       align-items: center;
@@ -79,7 +78,6 @@
     body.dark .brand span {
       color: #a3b8d9;
     }
-    /* search box in header */
     .header-search {
       display: flex;
       align-items: center;
@@ -117,7 +115,6 @@
       color: #b6cae5;
     }
 
-    /* login button next to brand */
     .header-auth-btn {
       background: #0b1a2f;
       color: white;
@@ -170,23 +167,7 @@
     .nav-links a:hover {
       border-bottom-color: #2b6b9e;
     }
-    .nav-links .btn-outline {
-      border: 1px solid #2b6b9e;
-      border-radius: 30px;
-      padding: 6px 18px;
-      background: transparent;
-      color: #1e3b5c;
-      font-weight: 600;
-    }
-    body.dark .nav-links .btn-outline {
-      border-color: #5f8ec9;
-      color: #c6ddfa;
-    }
-    .nav-links .btn-outline:hover {
-      background: #2b6b9e20;
-    }
 
-    /* mobile bottom nav */
     .bottom-nav {
       display: none;
       position: fixed;
@@ -237,11 +218,9 @@
       color: #79b0f0;
     }
 
-    /* feed */
     .feed-header {
       margin: 16px 0 16px;
     }
-    /* cards */
     .post-card {
       background: white;
       border-radius: 24px;
@@ -330,7 +309,7 @@
     .btn-delete:hover {
       background: #b13e3e20;
     }
-    /* modal */
+
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -456,6 +435,7 @@
       opacity: 0.85;
       transform: scale(0.97);
     }
+
     .profile-header {
       display: flex;
       align-items: center;
@@ -485,6 +465,7 @@
     .profile-info .username {
       color: #4a5f7a;
     }
+
     .empty-state {
       padding: 40px 0;
       text-align: center;
@@ -509,6 +490,8 @@
       font-weight: 500;
       z-index: 300;
       box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      max-width: 90%;
+      text-align: center;
     }
     body.dark .toast {
       background: #d6e4ff;
@@ -540,7 +523,6 @@
 </head>
 <body>
   <div id="app">
-    <!-- header with search & login button next to brand -->
     <header class="container top-header">
       <div class="header-left">
         <div class="brand">
@@ -551,7 +533,6 @@
           <input type="text" id="searchInput" placeholder="Search ZISHU TRON INSIGHT…" />
           <button id="searchBtn">⌕</button>
         </div>
-        <!-- Login button right next to brand -->
         <button id="headerAuthBtn" class="header-auth-btn">Sign in</button>
       </div>
       <div class="nav-links" id="desktopNav">
@@ -561,7 +542,6 @@
       </div>
     </header>
 
-    <!-- main content -->
     <main class="container" id="mainContent">
       <section id="homePage">
         <div class="feed-header"></div>
@@ -638,7 +618,50 @@
       function showToast(msg) {
         toastContainer.textContent = msg;
         toastContainer.classList.remove('hidden');
-        setTimeout(() => toastContainer.classList.add('hidden'), 3000);
+        setTimeout(() => toastContainer.classList.add('hidden'), 5000);
+      }
+
+      // Human-readable error messages with actual Firebase error codes
+      function getFriendlyErrorMessage(error) {
+        const code = error.code || '';
+        const message = error.message || '';
+        
+        // Return specific, actionable messages
+        if (code === 'auth/unauthorized-domain') {
+          return 'Error: This domain is not authorized for Firebase. Please check the Firebase console → Authentication → Settings → Authorized domains.';
+        }
+        if (code === 'auth/operation-not-allowed') {
+          return 'Error: Google Sign-In is disabled. Please enable it in the Firebase console → Authentication → Sign-in methods.';
+        }
+        if (code === 'auth/popup-blocked') {
+          return 'Error: Popup was blocked. Please allow popups for this site and try again.';
+        }
+        if (code === 'auth/popup-closed-by-user') {
+          return 'Sign-in cancelled. You closed the popup.';
+        }
+        if (code === 'auth/network-request-failed') {
+          return 'Network error. Please check your internet connection.';
+        }
+        if (code === 'auth/internal-error') {
+          return 'Internal Firebase error. Please check your Firebase configuration or try again.';
+        }
+        if (code === 'auth/invalid-api-key') {
+          return 'Error: Invalid Firebase API key. Please check your configuration.';
+        }
+        if (code === 'auth/too-many-requests') {
+          return 'Too many sign-in attempts. Please try again later.';
+        }
+        if (code === 'auth/user-disabled') {
+          return 'This account has been disabled. Please contact support.';
+        }
+        if (code === 'auth/user-not-found') {
+          return 'No account found with this email.';
+        }
+        if (code === 'auth/wrong-password') {
+          return 'Invalid password.';
+        }
+        // Generic fallback with actual error code for debugging
+        return `Sign-in failed: ${code || 'unknown error'}. ${message}`;
       }
 
       function renderPostCard(post, id, showActions = false, isOwner = false) {
@@ -728,15 +751,10 @@
                 if (callback) callback();
               })
               .catch((err) => {
-                console.error('Sign-in error:', err);
-                // Show user-friendly message
-                if (err.code === 'auth/popup-closed-by-user') {
-                  showToast('Sign-in cancelled.');
-                } else if (err.code === 'auth/network-request-failed') {
-                  showToast('Network error. Please check your connection.');
-                } else {
-                  showToast('Sign-in failed. Please try again.');
-                }
+                console.error('Sign-in error details:', err);
+                const friendlyMsg = getFriendlyErrorMessage(err);
+                showToast(friendlyMsg);
+                // Don't close modal on error so user can retry
               });
           });
         }
@@ -887,7 +905,6 @@
         });
       }
 
-      // Auth state listener
       auth.onAuthStateChanged(user => {
         currentUser = user;
         if (user) {
