@@ -29,7 +29,6 @@
       margin: 0 auto;
       padding: 0 20px;
     }
-    /* header */
     .top-header {
       display: flex;
       align-items: center;
@@ -79,7 +78,6 @@
       color: #a3b8d9;
     }
 
-    /* small search bar next to brand */
     .header-search {
       display: flex;
       align-items: center;
@@ -228,76 +226,6 @@
     }
     .full-article-content p { margin-bottom: 1.2rem; }
 
-    /* modal overlay */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.45);
-      backdrop-filter: blur(4px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 200;
-      padding: 20px;
-    }
-    .modal-overlay.open {
-      display: flex;
-    }
-    .modal-box {
-      background: white;
-      max-width: 500px;
-      width: 100%;
-      border-radius: 32px;
-      padding: 30px 32px;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-    }
-    body.dark .modal-box {
-      background: #1a263b;
-      color: #e8edf5;
-    }
-    .modal-box h2 {
-      font-size: 1.4rem;
-      margin-bottom: 12px;
-    }
-    .modal-actions {
-      display: flex;
-      gap: 12px;
-      justify-content: flex-end;
-      margin-top: 16px;
-      flex-wrap: wrap;
-    }
-    .btn-primary {
-      background: #0b1a2f;
-      color: white;
-      border: none;
-      padding: 10px 28px;
-      border-radius: 60px;
-      font-weight: 600;
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: 0.15s;
-    }
-    body.dark .btn-primary {
-      background: #d6e4ff;
-      color: #0b1a2f;
-    }
-    .btn-primary:hover {
-      opacity: 0.85;
-    }
-    .btn-ghost {
-      background: transparent;
-      border: 1px solid #b0c4dd;
-      padding: 10px 28px;
-      border-radius: 60px;
-      font-weight: 500;
-      cursor: pointer;
-    }
-    .btn-ghost:hover {
-      background: #eef3fa;
-    }
-
     @media (max-width: 720px) {
       .container { padding: 0 14px; }
       .post-card { padding: 18px; }
@@ -309,14 +237,12 @@
 </head>
 <body>
   <div id="app">
-    <!-- header - NO ADMIN BUTTON -->
     <header class="container top-header">
       <div class="header-left">
         <div class="brand">
           <h1>ZISHU TRON INSIGHT</h1>
           <span>The official updates from ZISHU TRON.</span>
         </div>
-        <!-- small search bar next to brand -->
         <div class="header-search" id="headerSearch">
           <input type="text" id="searchInput" placeholder="Search insights…" />
           <button id="searchBtn">⌕</button>
@@ -324,33 +250,24 @@
       </div>
     </header>
 
-    <!-- main content -->
     <main class="container" id="mainContent">
-      <!-- home page - only shows articles -->
       <section id="homePage">
         <div class="feed-header"></div>
         <div id="postsFeed"></div>
         <div id="emptyFeed" class="empty-state hidden"><h4>No updates yet</h4><p>Check back later for new insights from ZISHU TRON.</p></div>
       </section>
 
-      <!-- full article view -->
       <section id="articleView" class="hidden">
         <button id="backFromArticle" style="background:none;border:none;font-size:1.2rem;cursor:pointer;margin-bottom:12px;">← Back to Insights</button>
         <div id="fullArticleContainer"></div>
       </section>
     </main>
 
-    <!-- modal -->
-    <div class="modal-overlay" id="modalOverlay">
-      <div class="modal-box" id="modalBox"></div>
-    </div>
-
     <div id="toastContainer" class="toast hidden"></div>
   </div>
 
   <script>
     (function(){
-      // NEW FIREBASE CONFIG - FIXED
       const firebaseConfig = {
         apiKey: "AIzaSyAL0FSX7YfhQ-IoqE3a7axcLjgN7cPySM0",
         authDomain: "stardust-official.firebaseapp.com",
@@ -439,7 +356,6 @@
         }
       }
 
-      // Search
       let searchTimeout;
       searchInput?.addEventListener('input', () => {
         clearTimeout(searchTimeout);
@@ -448,7 +364,6 @@
 
       $('#backFromArticle')?.addEventListener('click', () => navigate('home'));
 
-      // Read article
       document.addEventListener('click', (e) => {
         const target = e.target.closest('[data-id]');
         if (!target) return;
@@ -459,12 +374,6 @@
           $('#fullArticleContainer').innerHTML = renderFullArticle(post);
           navigate('article');
         }
-      });
-
-      // Modal close
-      const modalOverlay = $('#modalOverlay');
-      modalOverlay?.addEventListener('click', (e) => {
-        if (e.target === modalOverlay) modalOverlay.classList.remove('open');
       });
 
       loadPosts();
