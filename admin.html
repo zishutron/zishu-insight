@@ -355,15 +355,15 @@
         appId: "1:1065835601050:web:56d326d89b1efb52f45323",
         measurementId: "G-X552DVRG7K"
       };
+      
+      // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
-      const auth = firebase.auth();
       const db = firebase.database();
 
       // ADMIN CREDENTIALS
       const ADMIN_USERNAME = "admin786";
       const ADMIN_PASSWORD = "zishuadmin";
 
-      let currentUser = null;
       let isAdmin = false;
       let allPosts = [];
       let editingPostId = null;
@@ -420,6 +420,9 @@
           if (!data) { allPosts = []; return; }
           allPosts = Object.keys(data).map(key => ({ id: key, ...data[key] })).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
           renderAdminPosts();
+        }, (error) => {
+          console.error('Error loading posts:', error);
+          showToast('Error loading posts: ' + error.message);
         });
       }
 
@@ -436,6 +439,7 @@
       function publishPost() {
         const title = adminTitle.value.trim();
         const content = adminContentText.value.trim();
+        
         if (title.length < 3) { showToast('Title must be at least 3 characters.'); return; }
         if (content.length < 10) { showToast('Content must be at least 10 characters.'); return; }
         if (!isAdmin) { showToast('Please login as admin.'); return; }
@@ -449,24 +453,36 @@
         };
 
         if (editingPostId) {
-          db.ref('posts/' + editingPostId).update(data).then(() => {
-            showToast('Article updated.');
-            resetAdminForm();
-            renderAdminPosts();
-          }).catch(() => showToast('Error updating.'));
+          // Update existing post
+          db.ref('posts/' + editingPostId).update(data)
+            .then(() => {
+              showToast('Article updated successfully!');
+              resetAdminForm();
+              renderAdminPosts();
+            })
+            .catch((error) => {
+              console.error('Error updating post:', error);
+              showToast('Error updating: ' + error.message);
+            });
         } else {
+          // Create new post
           data.createdAt = Date.now();
-          db.ref('posts').push(data).then(() => {
-            showToast('Article published successfully.');
-            resetAdminForm();
-            renderAdminPosts();
-          }).catch(() => showToast('Error publishing.'));
+          db.ref('posts').push(data)
+            .then(() => {
+              showToast('Article published successfully!');
+              resetAdminForm();
+              renderAdminPosts();
+            })
+            .catch((error) => {
+              console.error('Error publishing post:', error);
+              showToast('Error publishing: ' + error.message);
+            });
         }
       }
 
       function loadPostForEdit(postId) {
         const post = allPosts.find(p => p.id === postId);
-        if (!post) return;
+        if (!post) { showToast('Post not found.'); return; }
         if (post.authorId !== 'admin786') { showToast('You can only edit your own posts.'); return; }
         adminTitle.value = post.title || '';
         adminContentText.value = post.content || '';
@@ -481,13 +497,19 @@
       function deletePost(postId) {
         if (!confirm('Delete this article permanently?')) return;
         const post = allPosts.find(p => p.id === postId);
-        if (!post) return;
+        if (!post) { showToast('Post not found.'); return; }
         if (post.authorId !== 'admin786') { showToast('You can only delete your own posts.'); return; }
-        db.ref('posts/' + postId).remove().then(() => {
-          showToast('Article deleted.');
-          renderAdminPosts();
-          if (editingPostId === postId) resetAdminForm();
-        }).catch(() => showToast('Error deleting.'));
+        
+        db.ref('posts/' + postId).remove()
+          .then(() => {
+            showToast('Article deleted successfully!');
+            renderAdminPosts();
+            if (editingPostId === postId) resetAdminForm();
+          })
+          .catch((error) => {
+            console.error('Error deleting post:', error);
+            showToast('Error deleting: ' + error.message);
+          });
       }
 
       function handleLogin() {
