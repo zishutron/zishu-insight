@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
-  <title>ZISHU TRON INSIGHT — Official ZISHU TRON Updates</title>
+  <title>ZISHU TRON INSIGHT</title>
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -13,124 +13,141 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
     body {
-      background: #f8fafc;
-      color: #0b1a2f;
+      background: #f8f7ff;
+      color: #1a1030;
       padding-bottom: 80px;
+      transition: background 0.2s, color 0.2s;
     }
     body.dark {
-      background: #0f172a;
-      color: #e8edf5;
+      background: #0d0b1a;
+      color: #eae6f5;
     }
     .container {
       max-width: 1100px;
       margin: 0 auto;
       padding: 0 20px;
     }
-    /* header - NO SEARCH BAR */
+    /* header – clean, no brand text */
     .top-header {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 14px 0;
-      border-bottom: 1px solid rgba(0,0,0,0.06);
+      justify-content: flex-end;
+      padding: 14px 0 10px;
+      border-bottom: 1px solid rgba(120, 80, 200, 0.15);
       flex-wrap: wrap;
       gap: 10px 16px;
     }
     body.dark .top-header {
-      border-bottom-color: rgba(255,255,255,0.06);
+      border-bottom-color: rgba(160, 130, 220, 0.2);
     }
     .header-left {
+      flex: 1;
+    }
+    /* dark mode toggle */
+    .theme-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px 8px;
+      border-radius: 40px;
       display: flex;
       align-items: center;
-      gap: 16px;
-      flex-wrap: wrap;
-      flex: 1 1 auto;
+      justify-content: center;
+      color: #4a3a6b;
+      transition: 0.2s;
     }
-    .brand {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.2;
-      flex-shrink: 0;
+    body.dark .theme-toggle {
+      color: #c8b8f0;
     }
-    .brand h1 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      background: linear-gradient(135deg, #0b1a2f, #1e3b5c);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+    .theme-toggle svg {
+      width: 28px;
+      height: 28px;
+      stroke: currentColor;
+      stroke-width: 2;
+      fill: none;
     }
-    body.dark .brand h1 {
-      background: linear-gradient(135deg, #d6e4ff, #a0c0f0);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .brand span {
-      font-size: 0.75rem;
-      color: #4a5b6e;
-      letter-spacing: 0.02em;
-    }
-    body.dark .brand span {
-      color: #a3b8d9;
+    .theme-toggle:hover {
+      background: rgba(120, 80, 200, 0.08);
     }
 
     /* feed */
     .feed-header {
-      margin: 16px 0 16px;
+      margin: 10px 0 6px;
     }
     .post-card {
       background: white;
-      border-radius: 24px;
+      border-radius: 28px;
       padding: 24px 28px;
       margin-bottom: 20px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.02);
-      border: 1px solid #eef3f9;
-      transition: 0.1s;
-      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(80, 50, 160, 0.04);
+      border: 1px solid #ede8f8;
+      transition: 0.15s;
+      cursor: default;
     }
     body.dark .post-card {
-      background: #1a263b;
-      border-color: #2e405b;
+      background: #18152e;
+      border-color: #322d50;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
     }
     .post-card:hover {
-      border-color: #cbd9ec;
+      border-color: #b8a8e0;
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+      box-shadow: 0 12px 32px rgba(80, 50, 160, 0.08);
+    }
+    body.dark .post-card:hover {
+      border-color: #7a6aa8;
     }
     .post-card h4 {
-      font-size: 1.3rem;
+      font-size: 1.5rem;
       font-weight: 700;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
+      color: #1f1538;
+    }
+    body.dark .post-card h4 {
+      color: #e2d9fc;
     }
     .post-meta {
       display: flex;
       gap: 16px;
       flex-wrap: wrap;
       font-size: 0.85rem;
-      color: #4a5f7a;
-      margin: 10px 0 12px;
+      color: #5a4a7a;
+      margin: 8px 0 12px;
     }
     body.dark .post-meta {
-      color: #a3bbd9;
+      color: #b0a0d0;
     }
     .post-meta strong {
-      color: #0b1a2f;
+      color: #1f1538;
     }
     body.dark .post-meta strong {
-      color: #d0e0fc;
+      color: #d6ccf5;
+    }
+    /* full article content – clean, readable */
+    .full-article-content {
+      line-height: 1.8;
+      font-size: 1.05rem;
+      max-width: 700px;
+      margin: 0 auto;
+      color: #1f1538;
+    }
+    body.dark .full-article-content {
+      color: #ded6f0;
+    }
+    .full-article-content p {
+      margin-bottom: 1.2rem;
     }
     .post-excerpt {
-      color: #1f3147;
+      color: #2f234a;
       line-height: 1.6;
       margin: 8px 0 14px;
+      font-size: 1rem;
     }
     body.dark .post-excerpt {
-      color: #c6d6ed;
+      color: #c8bce0;
     }
     .card-actions {
       display: flex;
@@ -139,26 +156,30 @@
       flex-wrap: wrap;
     }
     .btn-read {
-      background: #eef3fa;
+      background: #ede6fc;
       border: none;
-      padding: 8px 22px;
+      padding: 8px 24px;
       border-radius: 40px;
       font-weight: 600;
-      color: #0b1a2f;
+      color: #2a1a50;
       cursor: pointer;
+      transition: 0.15s;
     }
     body.dark .btn-read {
-      background: #2e405f;
-      color: #e8edf5;
+      background: #2f2850;
+      color: #e0d8f5;
     }
     .btn-read:hover {
-      background: #d7e1ee;
+      background: #d8ccf5;
+    }
+    body.dark .btn-read:hover {
+      background: #423b6a;
     }
 
     .empty-state {
       padding: 60px 0;
       text-align: center;
-      color: #4a5f7a;
+      color: #5a4a7a;
     }
     .empty-state h4 {
       font-size: 1.3rem;
@@ -172,7 +193,7 @@
       bottom: 100px;
       left: 50%;
       transform: translateX(-50%);
-      background: #0b1a2f;
+      background: #2a1a50;
       color: white;
       padding: 14px 28px;
       border-radius: 60px;
@@ -183,16 +204,9 @@
       text-align: center;
     }
     body.dark .toast {
-      background: #d6e4ff;
-      color: #0b1a2f;
+      background: #c8b8f0;
+      color: #1a1030;
     }
-    .full-article-content {
-      line-height: 1.8;
-      font-size: 1.05rem;
-      max-width: 700px;
-      margin: 0 auto;
-    }
-    .full-article-content p { margin-bottom: 1.2rem; }
 
     /* Full article view */
     #articleView {
@@ -201,14 +215,17 @@
     #articleView .back-btn {
       background: none;
       border: none;
-      font-size: 1.1rem;
-      color: #2b6b9e;
+      font-size: 1rem;
+      color: #5a3a9e;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 8px;
       margin-bottom: 20px;
       font-weight: 500;
+    }
+    body.dark #articleView .back-btn {
+      color: #b098e0;
     }
     #articleView .back-btn:hover {
       text-decoration: underline;
@@ -221,24 +238,24 @@
       bottom: 0;
       left: 0;
       right: 0;
-      background: #ffffffdd;
+      background: rgba(248, 247, 255, 0.9);
       backdrop-filter: blur(12px);
-      border-top: 1px solid #e2e8f0;
+      border-top: 1px solid #e0d8f0;
       padding: 8px 0;
       justify-content: space-around;
       z-index: 100;
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+      box-shadow: 0 -4px 20px rgba(80, 50, 160, 0.06);
     }
     body.dark .bottom-nav {
-      background: #1e293bdd;
-      border-top-color: #334155;
+      background: rgba(20, 16, 38, 0.9);
+      border-top-color: #322d50;
     }
     .bottom-nav .nav-item {
       display: flex;
       flex-direction: column;
       align-items: center;
       text-decoration: none;
-      color: #64748b;
+      color: #6a5a8a;
       font-size: 0.65rem;
       gap: 2px;
       font-weight: 500;
@@ -250,7 +267,7 @@
       position: relative;
     }
     body.dark .bottom-nav .nav-item {
-      color: #94a3b8;
+      color: #9484b8;
     }
     .bottom-nav .nav-item svg {
       width: 24px;
@@ -262,10 +279,10 @@
       stroke-linejoin: round;
     }
     .bottom-nav .nav-item.active {
-      color: #1e5f8e;
+      color: #4a2a8a;
     }
     body.dark .bottom-nav .nav-item.active {
-      color: #60a5fa;
+      color: #b098e0;
     }
 
     /* Search Section - Full Screen */
@@ -275,14 +292,14 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: #f8fafc;
+      background: #f8f7ff;
       z-index: 50;
       padding: 20px;
       display: none;
       flex-direction: column;
     }
     body.dark #searchSection {
-      background: #0f172a;
+      background: #0d0b1a;
     }
     #searchSection.open {
       display: flex;
@@ -292,40 +309,40 @@
       align-items: center;
       gap: 12px;
       padding: 12px 0;
-      border-bottom: 1px solid #e2e8f0;
+      border-bottom: 1px solid #e0d8f0;
       margin-bottom: 16px;
     }
     body.dark .search-header-full {
-      border-bottom-color: #334155;
+      border-bottom-color: #322d50;
     }
     .search-header-full .close-search {
       background: none;
       border: none;
       font-size: 1.5rem;
       cursor: pointer;
-      color: #64748b;
+      color: #6a5a8a;
       padding: 4px 8px;
     }
     .search-header-full .close-search:hover {
-      color: #b13e3e;
+      color: #8a3a3a;
     }
     .search-header-full input {
       flex: 1;
       padding: 12px 16px;
       border-radius: 60px;
-      border: 1px solid #d0ddee;
+      border: 1px solid #d0c8e8;
       font-size: 1rem;
       background: white;
       color: inherit;
       outline: none;
     }
     body.dark .search-header-full input {
-      background: #1e2a40;
-      border-color: #3d5478;
-      color: #e8edf5;
+      background: #1a1730;
+      border-color: #423b6a;
+      color: #eae6f5;
     }
     .search-header-full input:focus {
-      border-color: #2b6b9e;
+      border-color: #5a3a9e;
     }
     .search-results-full {
       flex: 1;
@@ -334,19 +351,19 @@
     }
     .search-result-item {
       background: white;
-      border-radius: 16px;
+      border-radius: 20px;
       padding: 16px 20px;
       margin-bottom: 12px;
-      border: 1px solid #eef3f9;
+      border: 1px solid #ede8f8;
       cursor: pointer;
       transition: 0.1s;
     }
     body.dark .search-result-item {
-      background: #1a263b;
-      border-color: #2e405b;
+      background: #18152e;
+      border-color: #322d50;
     }
     .search-result-item:hover {
-      border-color: #cbd9ec;
+      border-color: #b8a8e0;
       transform: translateY(-1px);
     }
     .search-result-item h4 {
@@ -356,16 +373,16 @@
     }
     .search-result-item .excerpt {
       font-size: 0.9rem;
-      color: #4a5f7a;
+      color: #5a4a7a;
       line-height: 1.5;
     }
     body.dark .search-result-item .excerpt {
-      color: #a3bbd9;
+      color: #b0a0d0;
     }
     .search-empty {
       text-align: center;
       padding: 60px 0;
-      color: #4a5f7a;
+      color: #5a4a7a;
     }
     .search-empty h4 {
       font-size: 1.2rem;
@@ -376,6 +393,7 @@
       .container { padding: 0 14px; }
       .post-card { padding: 18px; }
       body { padding-bottom: 80px; }
+      .post-card h4 { font-size: 1.25rem; }
     }
     @media (min-width: 721px) {
       .bottom-nav { display: flex !important; }
@@ -384,14 +402,12 @@
 </head>
 <body>
   <div id="app">
-    <!-- Header - NO SEARCH BAR -->
+    <!-- Header – no brand text, only dark toggle -->
     <header class="container top-header">
-      <div class="header-left">
-        <div class="brand">
-          <h1>ZISHU TRON INSIGHT</h1>
-          <span>The official updates from ZISHU TRON.</span>
-        </div>
-      </div>
+      <div class="header-left"></div>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
     </header>
 
     <!-- Main Content -->
@@ -471,6 +487,19 @@
       const searchInputFull = $('#searchInputFull');
       const searchResultsFull = $('#searchResultsFull');
       const closeSearchBtn = $('#closeSearch');
+      const themeToggle = $('#themeToggle');
+
+      // --- Theme ---
+      function setTheme(dark) {
+        document.body.classList.toggle('dark', dark);
+        localStorage.setItem('zishu-theme', dark ? 'dark' : 'light');
+      }
+      const saved = localStorage.getItem('zishu-theme');
+      if (saved === 'dark') setTheme(true);
+      themeToggle.addEventListener('click', () => {
+        const isDark = document.body.classList.contains('dark');
+        setTheme(!isDark);
+      });
 
       function showToast(msg) {
         toastContainer.textContent = msg;
@@ -497,7 +526,7 @@
         const date = post.createdAt ? new Date(post.createdAt).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' }) : 'Recent';
         return `<div class="search-result-item" data-id="${id}">
           <h4>${post.title || 'Untitled'}</h4>
-          <div style="font-size:0.8rem;color:#4a5f7a;margin:4px 0;">${post.authorName || 'ZISHU TRON'} · ${date}</div>
+          <div style="font-size:0.8rem;color:#5a4a7a;margin:4px 0;">${post.authorName || 'ZISHU TRON'} · ${date}</div>
           <div class="excerpt">${excerpt}</div>
         </div>`;
       }
@@ -505,8 +534,8 @@
       function renderFullArticle(post) {
         const date = post.createdAt ? new Date(post.createdAt).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' }) : 'Recent';
         const updated = post.updatedAt ? new Date(post.updatedAt).toLocaleDateString() : '';
-        return `<h2 style="font-size:2rem;margin-bottom:6px;">${post.title}</h2>
-          <div style="color:#4a5f7a;margin-bottom:12px;">By ${post.authorName || 'ZISHU TRON'} · Published: ${date} ${updated ? '· Updated: '+updated : ''}</div>
+        return `<h2 style="font-size:2rem;margin-bottom:6px;color:inherit;">${post.title}</h2>
+          <div style="color:#5a4a7a;margin-bottom:12px;">By ${post.authorName || 'ZISHU TRON'} · Published: ${date} ${updated ? '· Updated: '+updated : ''}</div>
           <div class="full-article-content">${post.content?.replace(/\n/g, '<br>') || ''}</div>`;
       }
 
@@ -533,13 +562,11 @@
           searchResultsFull.innerHTML = `<div class="search-empty"><h4>Type to search</h4><p>Search articles by title or content</p></div>`;
           return;
         }
-
         const q = searchQuery.toLowerCase();
         const filtered = allPosts.filter(p => 
           (p.title && p.title.toLowerCase().includes(q)) ||
           (p.content && p.content.toLowerCase().includes(q))
         );
-
         if (filtered.length === 0) {
           searchResultsFull.innerHTML = `<div class="search-empty"><h4>No results found</h4><p>Try searching with a different keyword.</p></div>`;
         } else {
@@ -565,7 +592,6 @@
         renderFeed(allPosts);
         $$('.bottom-nav .nav-item').forEach(b => b.classList.remove('active'));
         navHome.classList.add('active');
-        // Clear search
         searchInputFull.value = '';
         searchResultsFull.innerHTML = `<div class="search-empty"><h4>Type to search</h4><p>Search articles by title or content</p></div>`;
       }
@@ -575,7 +601,6 @@
         searchInputFull.focus();
         $$('.bottom-nav .nav-item').forEach(b => b.classList.remove('active'));
         navSearch.classList.add('active');
-        // If there's already text, search
         if (searchInputFull.value.trim()) {
           performSearch(searchInputFull.value);
         } else {
@@ -590,32 +615,23 @@
         $$('.bottom-nav .nav-item').forEach(b => b.classList.remove('active'));
         navHome.classList.add('active');
         if (!articleView.classList.contains('hidden')) {
-          // Stay on article
+          // stay
         } else {
           homePage.classList.remove('hidden');
         }
       }
 
-      // Event Listeners
       let searchTimeout;
       searchInputFull?.addEventListener('input', () => {
         clearTimeout(searchTimeout);
         searchTimeout = setTimeout(() => performSearch(searchInputFull.value), 300);
       });
 
-      // Bottom nav
       navHome?.addEventListener('click', goHome);
       navSearch?.addEventListener('click', openSearch);
-
-      // Close search
       closeSearchBtn?.addEventListener('click', closeSearch);
+      $('#backFromArticle')?.addEventListener('click', goHome);
 
-      // Back from article
-      $('#backFromArticle')?.addEventListener('click', () => {
-        goHome();
-      });
-
-      // Click on post cards (home feed)
       document.addEventListener('click', (e) => {
         const target = e.target.closest('[data-id]');
         if (!target) return;
@@ -626,7 +642,6 @@
         }
       });
 
-      // Click on search results
       document.addEventListener('click', (e) => {
         const target = e.target.closest('.search-result-item');
         if (target) {
@@ -635,7 +650,6 @@
         }
       });
 
-      // Keyboard shortcut: Escape to close search or go back
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
           if (searchSection.classList.contains('open')) {
@@ -646,7 +660,6 @@
         }
       });
 
-      // Init
       loadPosts();
       goHome();
     })();
