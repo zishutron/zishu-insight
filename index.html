@@ -25,9 +25,6 @@
       background: #0f172a;
       color: #e8edf5;
     }
-    a, button {
-      transition: all 0.15s;
-    }
     .container {
       max-width: 1100px;
       margin: 0 auto;
@@ -41,7 +38,7 @@
       padding: 16px 0;
       border-bottom: 1px solid rgba(0,0,0,0.06);
       flex-wrap: wrap;
-      gap: 12px 20px;
+      gap: 12px 16px;
     }
     body.dark .top-header {
       border-bottom-color: rgba(255,255,255,0.06);
@@ -49,13 +46,15 @@
     .header-left {
       display: flex;
       align-items: center;
-      gap: 24px;
+      gap: 20px;
       flex-wrap: wrap;
+      flex: 1 1 auto;
     }
     .brand {
       display: flex;
       flex-direction: column;
       line-height: 1.2;
+      flex-shrink: 0;
     }
     .brand h1 {
       font-size: 1.5rem;
@@ -80,7 +79,7 @@
     body.dark .brand span {
       color: #a3b8d9;
     }
-    /* search box in header */
+    /* search box in header — top right of brand */
     .header-search {
       display: flex;
       align-items: center;
@@ -89,8 +88,9 @@
       padding: 4px 16px 4px 20px;
       border: 1px solid #d0ddee;
       box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-      flex: 0 1 280px;
+      flex: 1 1 240px;
       min-width: 160px;
+      max-width: 320px;
     }
     body.dark .header-search {
       background: #1e2a40;
@@ -120,6 +120,7 @@
       display: flex;
       gap: 20px;
       align-items: center;
+      flex-shrink: 0;
     }
     .nav-links a {
       text-decoration: none;
@@ -201,18 +202,9 @@
     body.dark .bottom-nav .nav-item.active {
       color: #79b0f0;
     }
-    /* feed */
+    /* feed — no "Latest Updates" heading */
     .feed-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 24px 0 16px;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    .feed-header h3 {
-      font-size: 1.6rem;
-      font-weight: 600;
+      margin: 20px 0 16px;
     }
     /* cards */
     .post-card {
@@ -501,8 +493,9 @@
       .container { padding: 0 14px; }
       .modal-box { padding: 20px; }
       .post-card { padding: 18px; }
-      .header-search { flex: 1 1 100%; order: 10; min-width: unset; }
-      .header-left { width: 100%; justify-content: space-between; }
+      .header-left { width: 100%; flex-wrap: wrap; }
+      .header-search { flex: 1 1 100%; max-width: 100%; order: 10; }
+      .brand { flex: 1 1 auto; }
     }
     @media (min-width: 721px) {
       .bottom-nav { display: none !important; }
@@ -511,7 +504,7 @@
 </head>
 <body>
   <div id="app">
-    <!-- header -->
+    <!-- header with search at top right of brand -->
     <header class="container top-header">
       <div class="header-left">
         <div class="brand">
@@ -533,12 +526,9 @@
 
     <!-- main content -->
     <main class="container" id="mainContent">
-      <!-- home feed -->
+      <!-- home feed — no "Latest Updates" heading -->
       <section id="homePage">
-        <div class="feed-header">
-          <h3>Latest Updates</h3>
-          <!-- empty placeholder for alignment -->
-        </div>
+        <div class="feed-header"></div>
         <div id="postsFeed"></div>
         <div id="emptyFeed" class="empty-state hidden"><h4>No updates yet</h4><p>ZISHU TRON updates will appear here when the first article is published.</p></div>
       </section>
@@ -598,7 +588,6 @@
       let currentPage = 'home';
       let allPosts = [];
       let userPosts = [];
-      let selectedPostId = null;
 
       const $ = (s) => document.querySelector(s);
       const $$ = (s) => document.querySelectorAll(s);
@@ -697,9 +686,17 @@
           <p style="margin:12px 0;">You can read all ZISHU TRON updates without an account. Sign in with Google only when you want to publish or manage your content.</p>
           <div class="modal-actions"><button class="btn-primary" id="googleLoginBtn">Continue with Google</button><button class="btn-ghost" id="closeLoginModal">Cancel</button></div>
         `);
-        $('#googleLoginBtn')?.addEventListener('click', () => {
-          auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(() => { closeModal(); if (callback) callback(); }).catch(() => showToast('Sign-in failed.'));
-        });
+        const loginBtn = $('#googleLoginBtn');
+        if (loginBtn) {
+          loginBtn.addEventListener('click', () => {
+            auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+              .then(() => { closeModal(); if (callback) callback(); })
+              .catch((err) => {
+                console.error(err);
+                showToast('Sign-in failed. Please try again.');
+              });
+          });
+        }
         $('#closeLoginModal')?.addEventListener('click', closeModal);
       }
 
@@ -732,7 +729,14 @@
           if (t.length < 3) { showToast('Title must be at least 3 characters.'); return; }
           if (c.length < 10) { showToast('Content must be at least 10 characters.'); return; }
           if (!currentUser) { showToast('Please sign in.'); closeModal(); return; }
-          const data = { title: t, content: c, authorId: currentUser.uid, authorName: currentUser.displayName || 'ZISHU TRON', authorUsername: currentUser.displayName?.toLowerCase().replace(/\s/g,'_') || 'zishu', updatedAt: Date.now() };
+          const data = { 
+            title: t, 
+            content: c, 
+            authorId: currentUser.uid, 
+            authorName: currentUser.displayName || 'ZISHU TRON', 
+            authorUsername: currentUser.displayName?.toLowerCase().replace(/\s/g,'_') || 'zishu', 
+            updatedAt: Date.now() 
+          };
           if (isEdit && id) {
             db.ref('posts/'+id).update(data).then(() => { showToast('Update saved.'); closeModal(); }).catch(() => showToast('Error saving.'));
           } else {
