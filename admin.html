@@ -13,20 +13,21 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
     body {
-      background: #f8fafc;
-      color: #0b1a2f;
+      background: #f8f7ff;
+      color: #1a1030;
       padding: 20px;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: background 0.2s, color 0.2s;
     }
     body.dark {
-      background: #0f172a;
-      color: #e8edf5;
+      background: #0d0b1a;
+      color: #eae6f5;
     }
     .container {
       max-width: 900px;
@@ -38,45 +39,73 @@
       justify-content: space-between;
       align-items: center;
       padding: 16px 0;
-      border-bottom: 1px solid #eef3f9;
+      border-bottom: 1px solid #ede8f8;
       margin-bottom: 24px;
       flex-wrap: wrap;
       gap: 12px;
     }
     body.dark .admin-header {
-      border-bottom-color: #2e405b;
+      border-bottom-color: #322d50;
     }
     .admin-header h1 {
       font-size: 1.5rem;
       font-weight: 700;
-      background: linear-gradient(135deg, #0b1a2f, #1e3b5c);
+      background: linear-gradient(135deg, #2a1a50, #5a3a9e);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
     body.dark .admin-header h1 {
-      background: linear-gradient(135deg, #d6e4ff, #a0c0f0);
+      background: linear-gradient(135deg, #c8b8f0, #b098e0);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
     .admin-header .back-link {
-      color: #2b6b9e;
+      color: #5a3a9e;
       text-decoration: none;
       font-weight: 500;
     }
+    body.dark .admin-header .back-link {
+      color: #b098e0;
+    }
     .admin-header .back-link:hover {
       text-decoration: underline;
+    }
+    .theme-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px 8px;
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #4a3a6b;
+      transition: 0.2s;
+    }
+    body.dark .theme-toggle {
+      color: #c8b8f0;
+    }
+    .theme-toggle svg {
+      width: 28px;
+      height: 28px;
+      stroke: currentColor;
+      stroke-width: 2;
+      fill: none;
+    }
+    .theme-toggle:hover {
+      background: rgba(120, 80, 200, 0.08);
     }
     .admin-panel {
       background: white;
       border-radius: 24px;
       padding: 30px;
-      border: 1px solid #eef3f9;
+      border: 1px solid #ede8f8;
     }
     body.dark .admin-panel {
-      background: #1a263b;
-      border-color: #2e405b;
+      background: #18152e;
+      border-color: #322d50;
     }
     .admin-panel h2 {
       font-size: 1.4rem;
@@ -95,16 +124,16 @@
       width: 100%;
       padding: 12px 16px;
       border-radius: 16px;
-      border: 1px solid #d0ddee;
+      border: 1px solid #d0c8e8;
       font-size: 1rem;
-      background: #f8fafc;
+      background: #f8f7ff;
       color: inherit;
     }
     body.dark .field input,
     body.dark .field textarea {
-      background: #0f172a;
-      border-color: #3d5478;
-      color: #e8edf5;
+      background: #0d0b1a;
+      border-color: #423b6a;
+      color: #eae6f5;
     }
     .field textarea {
       min-height: 120px;
@@ -112,9 +141,12 @@
     }
     .char-counter {
       font-size: 0.8rem;
-      color: #4a5f7a;
+      color: #5a4a7a;
       text-align: right;
       margin-top: 2px;
+    }
+    body.dark .char-counter {
+      color: #b0a0d0;
     }
     .admin-actions {
       display: flex;
@@ -123,7 +155,7 @@
       margin-top: 16px;
     }
     .btn-primary {
-      background: #0b1a2f;
+      background: #2a1a50;
       color: white;
       border: none;
       padding: 10px 28px;
@@ -134,8 +166,8 @@
       transition: 0.15s;
     }
     body.dark .btn-primary {
-      background: #d6e4ff;
-      color: #0b1a2f;
+      background: #c8b8f0;
+      color: #1a1030;
     }
     .btn-primary:hover {
       opacity: 0.85;
@@ -154,14 +186,21 @@
     }
     .btn-ghost {
       background: transparent;
-      border: 1px solid #b0c4dd;
+      border: 1px solid #b8a8e0;
       padding: 10px 28px;
       border-radius: 60px;
       font-weight: 500;
       cursor: pointer;
     }
+    body.dark .btn-ghost {
+      border-color: #5a4a8a;
+      color: #eae6f5;
+    }
     .btn-ghost:hover {
-      background: #eef3fa;
+      background: #ede8f8;
+    }
+    body.dark .btn-ghost:hover {
+      background: #2a1a50;
     }
     .btn-success {
       background: #1c6b3b;
@@ -180,12 +219,12 @@
       justify-content: space-between;
       align-items: center;
       padding: 12px 16px;
-      border-bottom: 1px solid #eef3f9;
+      border-bottom: 1px solid #ede8f8;
       flex-wrap: wrap;
       gap: 8px;
     }
     body.dark .admin-post-item {
-      border-bottom-color: #2e405b;
+      border-bottom-color: #322d50;
     }
     .admin-post-item .title {
       font-weight: 600;
@@ -205,10 +244,13 @@
       font-weight: 500;
     }
     .admin-post-item .actions .edit-btn {
-      color: #2b6b9e;
+      color: #5a3a9e;
+    }
+    body.dark .admin-post-item .actions .edit-btn {
+      color: #b098e0;
     }
     .admin-post-item .actions .edit-btn:hover {
-      background: #2b6b9e20;
+      background: #5a3a9e20;
     }
     .admin-post-item .actions .delete-btn {
       color: #b13e3e;
@@ -219,7 +261,7 @@
     .empty-state {
       padding: 40px 0;
       text-align: center;
-      color: #4a5f7a;
+      color: #5a4a7a;
     }
     .empty-state h4 {
       font-size: 1.1rem;
@@ -233,7 +275,7 @@
       bottom: 40px;
       left: 50%;
       transform: translateX(-50%);
-      background: #0b1a2f;
+      background: #2a1a50;
       color: white;
       padding: 14px 28px;
       border-radius: 60px;
@@ -244,8 +286,8 @@
       text-align: center;
     }
     body.dark .toast {
-      background: #d6e4ff;
-      color: #0b1a2f;
+      background: #c8b8f0;
+      color: #1a1030;
     }
     .login-box {
       padding: 30px 20px;
@@ -278,10 +320,15 @@
     }
     hr {
       margin: 24px 0;
-      border-color: #eef3f9;
+      border-color: #ede8f8;
     }
     body.dark hr {
-      border-color: #2e405b;
+      border-color: #322d50;
+    }
+    .header-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
     }
     @media (max-width: 720px) {
       .admin-panel {
@@ -294,7 +341,12 @@
   <div class="container">
     <div class="admin-header">
       <h1>⚙️ ZISHU TRON Admin</h1>
-      <a href="/zishu-insight/" class="back-link">← Back to Insights</a>
+      <div class="header-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
+        <a href="/zishu-insight/" class="back-link">← Back to Insights</a>
+      </div>
     </div>
     <div class="admin-panel" id="adminPanel">
       <!-- Login Area -->
@@ -356,11 +408,9 @@
         measurementId: "G-X552DVRG7K"
       };
       
-      // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
       const db = firebase.database();
 
-      // ADMIN CREDENTIALS
       const ADMIN_USERNAME = "admin786";
       const ADMIN_PASSWORD = "zishuadmin";
 
@@ -385,6 +435,19 @@
       const loginBtn = $('#loginBtn');
       const loginError = $('#loginError');
       const logoutBtn = $('#logoutBtn');
+      const themeToggle = $('#themeToggle');
+
+      // --- Theme ---
+      function setTheme(dark) {
+        document.body.classList.toggle('dark', dark);
+        localStorage.setItem('zishu-theme', dark ? 'dark' : 'light');
+      }
+      const saved = localStorage.getItem('zishu-theme');
+      if (saved === 'dark') setTheme(true);
+      themeToggle.addEventListener('click', () => {
+        const isDark = document.body.classList.contains('dark');
+        setTheme(!isDark);
+      });
 
       function showToast(msg) {
         toastContainer.textContent = msg;
@@ -404,7 +467,7 @@
         adminPostsList.innerHTML = userPosts.map(p => `
           <div class="admin-post-item" data-id="${p.id}">
             <span class="title">${p.title || 'Untitled'}</span>
-            <span style="font-size:0.8rem;color:#4a5f7a;">${p.createdAt ? new Date(p.createdAt).toLocaleDateString() : ''}</span>
+            <span style="font-size:0.8rem;color:#5a4a7a;">${p.createdAt ? new Date(p.createdAt).toLocaleDateString() : ''}</span>
             <div class="actions">
               <button class="edit-btn" data-id="${p.id}">Edit</button>
               <button class="delete-btn" data-id="${p.id}">Delete</button>
@@ -453,7 +516,6 @@
         };
 
         if (editingPostId) {
-          // Update existing post
           db.ref('posts/' + editingPostId).update(data)
             .then(() => {
               showToast('Article updated successfully!');
@@ -465,7 +527,6 @@
               showToast('Error updating: ' + error.message);
             });
         } else {
-          // Create new post
           data.createdAt = Date.now();
           db.ref('posts').push(data)
             .then(() => {
@@ -549,7 +610,6 @@
             <div id="loginError" class="login-error hidden"></div>
           </div>
         `;
-        // Re-bind events
         document.getElementById('loginBtn')?.addEventListener('click', handleLogin);
         document.getElementById('loginPassword')?.addEventListener('keypress', (e) => {
           if (e.key === 'Enter') handleLogin();
@@ -561,7 +621,6 @@
         showToast('Logged out.');
       }
 
-      // Login events
       loginBtn?.addEventListener('click', handleLogin);
       loginPassword?.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') handleLogin();
@@ -572,7 +631,6 @@
 
       logoutBtn?.addEventListener('click', handleLogout);
 
-      // Form events
       adminTitle?.addEventListener('input', () => {
         adminTitleCounter.textContent = `${adminTitle.value.length} / 150`;
       });
@@ -583,7 +641,6 @@
       adminPublishBtn?.addEventListener('click', publishPost);
       adminCancelEditBtn?.addEventListener('click', resetAdminForm);
 
-      // Delegated events for admin post actions
       document.addEventListener('click', (e) => {
         const target = e.target.closest('[data-id]');
         if (!target) return;
@@ -596,7 +653,6 @@
         }
       });
 
-      // Initial load
       loadPosts();
     })();
   </script>
