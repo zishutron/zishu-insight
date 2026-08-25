@@ -35,10 +35,10 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 16px 0;
+      padding: 14px 0;
       border-bottom: 1px solid rgba(0,0,0,0.06);
       flex-wrap: wrap;
-      gap: 12px 16px;
+      gap: 10px 16px;
     }
     body.dark .top-header {
       border-bottom-color: rgba(255,255,255,0.06);
@@ -46,7 +46,7 @@
     .header-left {
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 16px;
       flex-wrap: wrap;
       flex: 1 1 auto;
     }
@@ -79,7 +79,7 @@
     body.dark .brand span {
       color: #a3b8d9;
     }
-    /* search box in header — top right of brand */
+    /* search box in header */
     .header-search {
       display: flex;
       align-items: center;
@@ -88,9 +88,9 @@
       padding: 4px 16px 4px 20px;
       border: 1px solid #d0ddee;
       box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-      flex: 1 1 240px;
-      min-width: 160px;
-      max-width: 320px;
+      flex: 1 1 200px;
+      min-width: 140px;
+      max-width: 280px;
     }
     body.dark .header-search {
       background: #1e2a40;
@@ -116,6 +116,39 @@
     body.dark .header-search button {
       color: #b6cae5;
     }
+
+    /* login button next to brand */
+    .header-auth-btn {
+      background: #0b1a2f;
+      color: white;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: 0.15s;
+      white-space: nowrap;
+    }
+    body.dark .header-auth-btn {
+      background: #d6e4ff;
+      color: #0b1a2f;
+    }
+    .header-auth-btn:hover {
+      opacity: 0.85;
+      transform: scale(0.97);
+    }
+    .header-auth-btn.logged-in {
+      background: #eef3fa;
+      color: #0b1a2f;
+      border: 1px solid #d0ddee;
+    }
+    body.dark .header-auth-btn.logged-in {
+      background: #2e405f;
+      color: #e8edf5;
+      border-color: #3d5478;
+    }
+
     .nav-links {
       display: flex;
       gap: 20px;
@@ -152,6 +185,7 @@
     .nav-links .btn-outline:hover {
       background: #2b6b9e20;
     }
+
     /* mobile bottom nav */
     .bottom-nav {
       display: none;
@@ -202,9 +236,10 @@
     body.dark .bottom-nav .nav-item.active {
       color: #79b0f0;
     }
-    /* feed — no "Latest Updates" heading */
+
+    /* feed */
     .feed-header {
-      margin: 20px 0 16px;
+      margin: 16px 0 16px;
     }
     /* cards */
     .post-card {
@@ -295,7 +330,7 @@
     .btn-delete:hover {
       background: #b13e3e20;
     }
-    /* modal / overlay */
+    /* modal */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -486,7 +521,7 @@
       margin: 0 auto;
     }
     .full-article-content p { margin-bottom: 1.2rem; }
-    /* responsive */
+
     @media (max-width: 720px) {
       .top-header .nav-links { display: none; }
       .bottom-nav { display: flex; }
@@ -496,6 +531,7 @@
       .header-left { width: 100%; flex-wrap: wrap; }
       .header-search { flex: 1 1 100%; max-width: 100%; order: 10; }
       .brand { flex: 1 1 auto; }
+      .header-auth-btn { font-size: 0.8rem; padding: 6px 14px; }
     }
     @media (min-width: 721px) {
       .bottom-nav { display: none !important; }
@@ -504,7 +540,7 @@
 </head>
 <body>
   <div id="app">
-    <!-- header with search at top right of brand -->
+    <!-- header with search & login button next to brand -->
     <header class="container top-header">
       <div class="header-left">
         <div class="brand">
@@ -515,31 +551,29 @@
           <input type="text" id="searchInput" placeholder="Search ZISHU TRON INSIGHT…" />
           <button id="searchBtn">⌕</button>
         </div>
+        <!-- Login button right next to brand -->
+        <button id="headerAuthBtn" class="header-auth-btn">Sign in</button>
       </div>
       <div class="nav-links" id="desktopNav">
         <a href="#" data-page="home">Home</a>
         <a href="#" data-page="create" id="desktopCreate">Create</a>
         <a href="#" data-page="profile" id="desktopProfile">Profile</a>
-        <a href="#" id="authDesktopBtn" class="btn-outline">Sign in</a>
       </div>
     </header>
 
     <!-- main content -->
     <main class="container" id="mainContent">
-      <!-- home feed — no "Latest Updates" heading -->
       <section id="homePage">
         <div class="feed-header"></div>
         <div id="postsFeed"></div>
         <div id="emptyFeed" class="empty-state hidden"><h4>No updates yet</h4><p>ZISHU TRON updates will appear here when the first article is published.</p></div>
       </section>
 
-      <!-- full article view -->
       <section id="articleView" class="hidden">
         <button id="backFromArticle" style="background:none;border:none;font-size:1.2rem;cursor:pointer;margin-bottom:12px;">← Back</button>
         <div id="fullArticleContainer"></div>
       </section>
 
-      <!-- profile page -->
       <section id="profilePage" class="hidden">
         <div id="profileView"></div>
         <hr style="margin:24px 0;border-color:#e2e8f0;" />
@@ -548,18 +582,15 @@
         <div id="emptyUserPosts" class="empty-state hidden"><h4>You haven't published any updates yet.</h4><button class="btn-primary" id="createFirstBtn">Create Your First Update</button></div>
       </section>
 
-      <!-- about / privacy / terms (simplified) -->
       <section id="aboutPage" class="hidden"><h2>About ZISHU TRON</h2><p>ZISHU TRON INSIGHT is the official text-based publishing and company-update platform.</p></section>
       <section id="privacyPage" class="hidden"><h2>Privacy Policy</h2><p>We collect minimal data via Google Sign-In. Articles are public. Account deletion available.</p></section>
       <section id="termsPage" class="hidden"><h2>Terms of Service</h2><p>Users are responsible for content. No illegal or harmful posts. ZISHU TRON reserves rights.</p></section>
     </main>
 
-    <!-- modals -->
     <div class="modal-overlay" id="modalOverlay">
       <div class="modal-box" id="modalBox"></div>
     </div>
 
-    <!-- bottom nav -->
     <nav class="bottom-nav" id="bottomNav">
       <button class="nav-item active" data-page="home"><svg><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Home</span></button>
       <button class="nav-item" data-page="create"><svg><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg><span>Create</span></button>
@@ -602,6 +633,7 @@
       const modalBox = $('#modalBox');
       const toastContainer = $('#toastContainer');
       const searchInput = $('#searchInput');
+      const headerAuthBtn = $('#headerAuthBtn');
 
       function showToast(msg) {
         toastContainer.textContent = msg;
@@ -689,11 +721,22 @@
         const loginBtn = $('#googleLoginBtn');
         if (loginBtn) {
           loginBtn.addEventListener('click', () => {
-            auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
-              .then(() => { closeModal(); if (callback) callback(); })
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider)
+              .then((result) => {
+                closeModal();
+                if (callback) callback();
+              })
               .catch((err) => {
-                console.error(err);
-                showToast('Sign-in failed. Please try again.');
+                console.error('Sign-in error:', err);
+                // Show user-friendly message
+                if (err.code === 'auth/popup-closed-by-user') {
+                  showToast('Sign-in cancelled.');
+                } else if (err.code === 'auth/network-request-failed') {
+                  showToast('Network error. Please check your connection.');
+                } else {
+                  showToast('Sign-in failed. Please try again.');
+                }
               });
           });
         }
@@ -844,16 +887,18 @@
         });
       }
 
+      // Auth state listener
       auth.onAuthStateChanged(user => {
         currentUser = user;
-        const desktopAuthBtn = $('#authDesktopBtn');
         if (user) {
-          desktopAuthBtn.textContent = user.displayName || 'Profile';
-          desktopAuthBtn.onclick = (e) => { e.preventDefault(); navigate('profile'); };
+          headerAuthBtn.textContent = user.displayName || 'Profile';
+          headerAuthBtn.classList.add('logged-in');
+          headerAuthBtn.onclick = (e) => { e.preventDefault(); navigate('profile'); };
           if (currentPage === 'profile') { renderProfile(); loadUserPosts(user.uid); }
         } else {
-          desktopAuthBtn.textContent = 'Sign in';
-          desktopAuthBtn.onclick = (e) => { e.preventDefault(); showLoginDialog(); };
+          headerAuthBtn.textContent = 'Sign in';
+          headerAuthBtn.classList.remove('logged-in');
+          headerAuthBtn.onclick = (e) => { e.preventDefault(); showLoginDialog(); };
         }
       });
 
@@ -863,6 +908,7 @@
       $$('.bottom-nav .nav-item').forEach(btn => {
         btn.addEventListener('click', () => navigate(btn.dataset.page));
       });
+      
       let searchTimeout;
       searchInput?.addEventListener('input', () => {
         clearTimeout(searchTimeout);
