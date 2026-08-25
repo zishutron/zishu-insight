@@ -18,8 +18,7 @@
     body {
       background: #f8fafc;
       color: #0b1a2f;
-      transition: background 0.2s, color 0.2s;
-      padding-bottom: 80px;
+      padding-bottom: 20px;
     }
     body.dark {
       background: #0f172a;
@@ -30,6 +29,7 @@
       margin: 0 auto;
       padding: 0 20px;
     }
+    /* header */
     .top-header {
       display: flex;
       align-items: center;
@@ -78,17 +78,19 @@
     body.dark .brand span {
       color: #a3b8d9;
     }
+
+    /* small search bar next to brand */
     .header-search {
       display: flex;
       align-items: center;
       background: white;
       border-radius: 60px;
-      padding: 4px 16px 4px 20px;
+      padding: 3px 12px 3px 16px;
       border: 1px solid #d0ddee;
       box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-      flex: 1 1 200px;
-      min-width: 140px;
-      max-width: 280px;
+      flex: 0 1 200px;
+      min-width: 120px;
+      max-width: 220px;
     }
     body.dark .header-search {
       background: #1e2a40;
@@ -97,8 +99,8 @@
     .header-search input {
       border: none;
       background: transparent;
-      padding: 10px 8px;
-      font-size: 0.9rem;
+      padding: 8px 6px;
+      font-size: 0.85rem;
       width: 100%;
       outline: none;
       color: inherit;
@@ -107,119 +109,16 @@
       background: transparent;
       border: none;
       cursor: pointer;
-      padding: 4px 4px 4px 8px;
+      padding: 2px 2px 2px 6px;
       color: #1e3b5c;
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
     body.dark .header-search button {
       color: #b6cae5;
     }
 
-    .header-auth-btn {
-      background: #0b1a2f;
-      color: white;
-      border: none;
-      padding: 8px 20px;
-      border-radius: 60px;
-      font-weight: 600;
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: 0.15s;
-      white-space: nowrap;
-    }
-    body.dark .header-auth-btn {
-      background: #d6e4ff;
-      color: #0b1a2f;
-    }
-    .header-auth-btn:hover {
-      opacity: 0.85;
-      transform: scale(0.97);
-    }
-    .header-auth-btn.logged-in {
-      background: #eef3fa;
-      color: #0b1a2f;
-      border: 1px solid #d0ddee;
-    }
-    body.dark .header-auth-btn.logged-in {
-      background: #2e405f;
-      color: #e8edf5;
-      border-color: #3d5478;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 20px;
-      align-items: center;
-      flex-shrink: 0;
-    }
-    .nav-links a {
-      text-decoration: none;
-      color: #1e2c41;
-      font-weight: 500;
-      font-size: 0.95rem;
-      padding: 6px 4px;
-      border-bottom: 2px solid transparent;
-      cursor: pointer;
-    }
-    body.dark .nav-links a {
-      color: #d0dff0;
-    }
-    .nav-links a:hover {
-      border-bottom-color: #2b6b9e;
-    }
-
-    .bottom-nav {
-      display: none;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: #ffffffdd;
-      backdrop-filter: blur(8px);
-      border-top: 1px solid #e2e8f0;
-      padding: 10px 0;
-      justify-content: space-around;
-      z-index: 100;
-      box-shadow: 0 -2px 10px rgba(0,0,0,0.03);
-    }
-    body.dark .bottom-nav {
-      background: #1e293bdd;
-      border-top-color: #334155;
-    }
-    .bottom-nav .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-decoration: none;
-      color: #334155;
-      font-size: 0.7rem;
-      gap: 4px;
-      font-weight: 500;
-      background: transparent;
-      border: none;
-      cursor: pointer;
-    }
-    body.dark .bottom-nav .nav-item {
-      color: #b8cbe0;
-    }
-    .bottom-nav .nav-item svg {
-      width: 24px;
-      height: 24px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-    .bottom-nav .nav-item.active {
-      color: #1e5f8e;
-    }
-    body.dark .bottom-nav .nav-item.active {
-      color: #79b0f0;
-    }
-
     .feed-header {
-      margin: 16px 0 16px;
+      margin: 20px 0 16px;
     }
     .post-card {
       background: white;
@@ -289,185 +188,9 @@
     .btn-read:hover {
       background: #d7e1ee;
     }
-    .btn-edit, .btn-delete {
-      background: transparent;
-      border: none;
-      font-weight: 500;
-      padding: 6px 14px;
-      border-radius: 30px;
-      cursor: pointer;
-    }
-    .btn-edit {
-      color: #2b6b9e;
-    }
-    .btn-delete {
-      color: #b13e3e;
-    }
-    .btn-edit:hover {
-      background: #2b6b9e20;
-    }
-    .btn-delete:hover {
-      background: #b13e3e20;
-    }
-
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.45);
-      backdrop-filter: blur(4px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 200;
-      padding: 20px;
-    }
-    .modal-overlay.open {
-      display: flex;
-    }
-    .modal-box {
-      background: white;
-      max-width: 640px;
-      width: 100%;
-      border-radius: 32px;
-      padding: 30px 32px;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-    }
-    body.dark .modal-box {
-      background: #1a263b;
-      color: #e8edf5;
-    }
-    .modal-box h2 {
-      font-size: 1.6rem;
-      margin-bottom: 12px;
-    }
-    .modal-box .field {
-      margin-bottom: 18px;
-    }
-    .modal-box label {
-      font-weight: 600;
-      display: block;
-      margin-bottom: 4px;
-    }
-    .modal-box input, .modal-box textarea {
-      width: 100%;
-      padding: 14px 16px;
-      border-radius: 16px;
-      border: 1px solid #d0ddee;
-      font-size: 1rem;
-      background: #f8fafc;
-      color: inherit;
-    }
-    body.dark .modal-box input, body.dark .modal-box textarea {
-      background: #0f172a;
-      border-color: #3d5478;
-      color: #e8edf5;
-    }
-    .modal-box textarea {
-      min-height: 160px;
-      resize: vertical;
-    }
-    .char-counter {
-      font-size: 0.8rem;
-      color: #4a5f7a;
-      text-align: right;
-      margin-top: 4px;
-    }
-    .modal-actions {
-      display: flex;
-      gap: 12px;
-      justify-content: flex-end;
-      margin-top: 20px;
-      flex-wrap: wrap;
-    }
-    .btn-danger {
-      background: #b13e3e;
-      color: white;
-      border: none;
-      padding: 10px 24px;
-      border-radius: 60px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .btn-danger:hover {
-      background: #8f2e2e;
-    }
-    .btn-ghost {
-      background: transparent;
-      border: 1px solid #b0c4dd;
-      padding: 10px 24px;
-      border-radius: 60px;
-      font-weight: 500;
-      cursor: pointer;
-    }
-    .btn-ghost:hover {
-      background: #eef3fa;
-    }
-    .btn-success {
-      background: #1c6b3b;
-      color: white;
-      border: none;
-      padding: 10px 24px;
-      border-radius: 60px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .btn-success:hover {
-      background: #14522d;
-    }
-    .btn-primary {
-      background: #0b1a2f;
-      color: white;
-      border: none;
-      padding: 12px 32px;
-      border-radius: 60px;
-      font-weight: 600;
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: 0.15s;
-    }
-    body.dark .btn-primary {
-      background: #d6e4ff;
-      color: #0b1a2f;
-    }
-    .btn-primary:hover {
-      opacity: 0.85;
-      transform: scale(0.97);
-    }
-
-    .profile-header {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin: 20px 0 30px;
-    }
-    .profile-avatar {
-      width: 80px;
-      height: 80px;
-      border-radius: 40px;
-      background: #b0c8e5;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.2rem;
-      font-weight: 600;
-      color: #0b1a2f;
-    }
-    body.dark .profile-avatar {
-      background: #2e405f;
-      color: #d0e0fc;
-    }
-    .profile-info h3 {
-      font-size: 1.6rem;
-    }
-    .profile-info .username {
-      color: #4a5f7a;
-    }
 
     .empty-state {
-      padding: 40px 0;
+      padding: 60px 0;
       text-align: center;
       color: #4a5f7a;
     }
@@ -480,7 +203,7 @@
     }
     .toast {
       position: fixed;
-      bottom: 100px;
+      bottom: 40px;
       left: 50%;
       transform: translateX(-50%);
       background: #0b1a2f;
@@ -505,84 +228,130 @@
     }
     .full-article-content p { margin-bottom: 1.2rem; }
 
-    @media (max-width: 720px) {
-      .top-header .nav-links { display: none; }
-      .bottom-nav { display: flex; }
-      .container { padding: 0 14px; }
-      .modal-box { padding: 20px; }
-      .post-card { padding: 18px; }
-      .header-left { width: 100%; flex-wrap: wrap; }
-      .header-search { flex: 1 1 100%; max-width: 100%; order: 10; }
-      .brand { flex: 1 1 auto; }
-      .header-auth-btn { font-size: 0.8rem; padding: 6px 14px; }
+    /* modal overlay */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 20px;
     }
-    @media (min-width: 721px) {
-      .bottom-nav { display: none !important; }
+    .modal-overlay.open {
+      display: flex;
+    }
+    .modal-box {
+      background: white;
+      max-width: 500px;
+      width: 100%;
+      border-radius: 32px;
+      padding: 30px 32px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    body.dark .modal-box {
+      background: #1a263b;
+      color: #e8edf5;
+    }
+    .modal-box h2 {
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: #0b1a2f;
+      color: white;
+      border: none;
+      padding: 10px 28px;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+    body.dark .btn-primary {
+      background: #d6e4ff;
+      color: #0b1a2f;
+    }
+    .btn-primary:hover {
+      opacity: 0.85;
+    }
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid #b0c4dd;
+      padding: 10px 28px;
+      border-radius: 60px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .btn-ghost:hover {
+      background: #eef3fa;
+    }
+
+    @media (max-width: 720px) {
+      .container { padding: 0 14px; }
+      .post-card { padding: 18px; }
+      .header-search { flex: 1 1 100%; max-width: 100%; order: 10; }
+      .header-left { width: 100%; flex-wrap: wrap; }
+      .brand { flex: 1 1 auto; }
     }
   </style>
 </head>
 <body>
   <div id="app">
+    <!-- header - NO ADMIN BUTTON -->
     <header class="container top-header">
       <div class="header-left">
         <div class="brand">
           <h1>ZISHU TRON INSIGHT</h1>
           <span>The official updates from ZISHU TRON.</span>
         </div>
+        <!-- small search bar next to brand -->
         <div class="header-search" id="headerSearch">
-          <input type="text" id="searchInput" placeholder="Search ZISHU TRON INSIGHT…" />
+          <input type="text" id="searchInput" placeholder="Search insights…" />
           <button id="searchBtn">⌕</button>
         </div>
-        <button id="headerAuthBtn" class="header-auth-btn">Sign in</button>
-      </div>
-      <div class="nav-links" id="desktopNav">
-        <a href="#" data-page="home">Home</a>
-        <a href="#" data-page="create" id="desktopCreate">Create</a>
-        <a href="#" data-page="profile" id="desktopProfile">Profile</a>
       </div>
     </header>
 
+    <!-- main content -->
     <main class="container" id="mainContent">
+      <!-- home page - only shows articles -->
       <section id="homePage">
         <div class="feed-header"></div>
         <div id="postsFeed"></div>
-        <div id="emptyFeed" class="empty-state hidden"><h4>No updates yet</h4><p>ZISHU TRON updates will appear here when the first article is published.</p></div>
+        <div id="emptyFeed" class="empty-state hidden"><h4>No updates yet</h4><p>Check back later for new insights from ZISHU TRON.</p></div>
       </section>
 
+      <!-- full article view -->
       <section id="articleView" class="hidden">
-        <button id="backFromArticle" style="background:none;border:none;font-size:1.2rem;cursor:pointer;margin-bottom:12px;">← Back</button>
+        <button id="backFromArticle" style="background:none;border:none;font-size:1.2rem;cursor:pointer;margin-bottom:12px;">← Back to Insights</button>
         <div id="fullArticleContainer"></div>
       </section>
-
-      <section id="profilePage" class="hidden">
-        <div id="profileView"></div>
-        <hr style="margin:24px 0;border-color:#e2e8f0;" />
-        <h4 style="margin-bottom:12px;">My Updates</h4>
-        <div id="userPostsFeed"></div>
-        <div id="emptyUserPosts" class="empty-state hidden"><h4>You haven't published any updates yet.</h4><button class="btn-primary" id="createFirstBtn">Create Your First Update</button></div>
-      </section>
-
-      <section id="aboutPage" class="hidden"><h2>About ZISHU TRON</h2><p>ZISHU TRON INSIGHT is the official text-based publishing and company-update platform.</p></section>
-      <section id="privacyPage" class="hidden"><h2>Privacy Policy</h2><p>We collect minimal data via Google Sign-In. Articles are public. Account deletion available.</p></section>
-      <section id="termsPage" class="hidden"><h2>Terms of Service</h2><p>Users are responsible for content. No illegal or harmful posts. ZISHU TRON reserves rights.</p></section>
     </main>
 
+    <!-- modal -->
     <div class="modal-overlay" id="modalOverlay">
       <div class="modal-box" id="modalBox"></div>
     </div>
 
-    <nav class="bottom-nav" id="bottomNav">
-      <button class="nav-item active" data-page="home"><svg><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Home</span></button>
-      <button class="nav-item" data-page="create"><svg><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg><span>Create</span></button>
-      <button class="nav-item" data-page="profile"><svg><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Profile</span></button>
-    </nav>
-
     <div id="toastContainer" class="toast hidden"></div>
   </div>
+
   <script>
     (function(){
       const firebaseConfig = {
-        apiKey: "AIzaSyAL0FS7X7YfhQ-Ioq3eA7xjLcN7cPySM0",
+        apiKey: "AIzaSyAL0FS7X7YfhQ-IoqE3a7axcLjgN7cPySM0",
         authDomain: "stardust-official.firebaseapp.com",
         databaseURL: "https://stardust-official-default-rtdb.firebaseio.com",
         projectId: "stardust-official",
@@ -592,91 +361,35 @@
         measurementId: "G-QMXMH4BR3B"
       };
       firebase.initializeApp(firebaseConfig);
-      const auth = firebase.auth();
       const db = firebase.database();
 
-      let currentUser = null;
-      let currentPage = 'home';
       let allPosts = [];
-      let userPosts = [];
 
       const $ = (s) => document.querySelector(s);
-      const $$ = (s) => document.querySelectorAll(s);
-      const homePage = $('#homePage');
-      const articleView = $('#articleView');
-      const profilePage = $('#profilePage');
       const postsFeed = $('#postsFeed');
-      const userPostsFeed = $('#userPostsFeed');
       const emptyFeed = $('#emptyFeed');
-      const emptyUserPosts = $('#emptyUserPosts');
-      const modalOverlay = $('#modalOverlay');
-      const modalBox = $('#modalBox');
       const toastContainer = $('#toastContainer');
       const searchInput = $('#searchInput');
-      const headerAuthBtn = $('#headerAuthBtn');
+      const homePage = $('#homePage');
+      const articleView = $('#articleView');
 
       function showToast(msg) {
         toastContainer.textContent = msg;
         toastContainer.classList.remove('hidden');
-        setTimeout(() => toastContainer.classList.add('hidden'), 5000);
+        setTimeout(() => toastContainer.classList.add('hidden'), 4000);
       }
 
-      // Human-readable error messages with actual Firebase error codes
-      function getFriendlyErrorMessage(error) {
-        const code = error.code || '';
-        const message = error.message || '';
-        
-        // Return specific, actionable messages
-        if (code === 'auth/unauthorized-domain') {
-          return 'Error: This domain is not authorized for Firebase. Please check the Firebase console → Authentication → Settings → Authorized domains.';
-        }
-        if (code === 'auth/operation-not-allowed') {
-          return 'Error: Google Sign-In is disabled. Please enable it in the Firebase console → Authentication → Sign-in methods.';
-        }
-        if (code === 'auth/popup-blocked') {
-          return 'Error: Popup was blocked. Please allow popups for this site and try again.';
-        }
-        if (code === 'auth/popup-closed-by-user') {
-          return 'Sign-in cancelled. You closed the popup.';
-        }
-        if (code === 'auth/network-request-failed') {
-          return 'Network error. Please check your internet connection.';
-        }
-        if (code === 'auth/internal-error') {
-          return 'Internal Firebase error. Please check your Firebase configuration or try again.';
-        }
-        if (code === 'auth/invalid-api-key') {
-          return 'Error: Invalid Firebase API key. Please check your configuration.';
-        }
-        if (code === 'auth/too-many-requests') {
-          return 'Too many sign-in attempts. Please try again later.';
-        }
-        if (code === 'auth/user-disabled') {
-          return 'This account has been disabled. Please contact support.';
-        }
-        if (code === 'auth/user-not-found') {
-          return 'No account found with this email.';
-        }
-        if (code === 'auth/wrong-password') {
-          return 'Invalid password.';
-        }
-        // Generic fallback with actual error code for debugging
-        return `Sign-in failed: ${code || 'unknown error'}. ${message}`;
-      }
-
-      function renderPostCard(post, id, showActions = false, isOwner = false) {
+      function renderPostCard(post, id) {
         const excerpt = post.content?.slice(0, 160) + (post.content?.length > 160 ? '…' : '') || '';
         const date = post.createdAt ? new Date(post.createdAt).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' }) : 'Recent';
         const readTime = Math.ceil((post.content?.length || 0) / 1200) || 1;
-        let actions = `<button class="btn-read" data-id="${id}">Read Article</button>`;
-        if (showActions && isOwner) {
-          actions += `<button class="btn-edit" data-id="${id}">Edit</button><button class="btn-delete" data-id="${id}">Delete</button>`;
-        }
         return `<div class="post-card" data-id="${id}">
           <h4>${post.title || 'Untitled'}</h4>
-          <div class="post-meta">By <strong>${post.authorName || 'ZISHU TRON'}</strong> @${post.authorUsername || 'zishu'} · ${date} · ${readTime} min read</div>
+          <div class="post-meta">By <strong>${post.authorName || 'ZISHU TRON'}</strong> · ${date} · ${readTime} min read</div>
           <div class="post-excerpt">${excerpt}</div>
-          <div class="card-actions">${actions}</div>
+          <div class="card-actions">
+            <button class="btn-read" data-id="${id}">Read Article</button>
+          </div>
         </div>`;
       }
 
@@ -684,7 +397,7 @@
         const date = post.createdAt ? new Date(post.createdAt).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' }) : 'Recent';
         const updated = post.updatedAt ? new Date(post.updatedAt).toLocaleDateString() : '';
         return `<h2 style="font-size:2rem;margin-bottom:6px;">${post.title}</h2>
-          <div style="color:#4a5f7a;margin-bottom:12px;">By ${post.authorName || 'ZISHU TRON'} @${post.authorUsername || 'zishu'} · Published: ${date} ${updated ? '· Updated: '+updated : ''}</div>
+          <div style="color:#4a5f7a;margin-bottom:12px;">By ${post.authorName || 'ZISHU TRON'} · Published: ${date} ${updated ? '· Updated: '+updated : ''}</div>
           <div class="full-article-content">${post.content?.replace(/\n/g, '<br>') || ''}</div>`;
       }
 
@@ -702,19 +415,7 @@
       function renderFeed(posts) {
         if (!posts || posts.length === 0) { postsFeed.innerHTML = ''; emptyFeed.classList.remove('hidden'); return; }
         emptyFeed.classList.add('hidden');
-        postsFeed.innerHTML = posts.map(p => renderPostCard(p, p.id, false, false)).join('');
-      }
-
-      function loadUserPosts(uid) {
-        if (!uid) return;
-        const ref = db.ref('posts').orderByChild('authorId').equalTo(uid);
-        ref.on('value', (snap) => {
-          const data = snap.val();
-          if (!data) { userPosts = []; userPostsFeed.innerHTML = ''; emptyUserPosts.classList.remove('hidden'); return; }
-          userPosts = Object.keys(data).map(key => ({ id: key, ...data[key] })).sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
-          emptyUserPosts.classList.add('hidden');
-          userPostsFeed.innerHTML = userPosts.map(p => renderPostCard(p, p.id, true, true)).join('');
-        });
+        postsFeed.innerHTML = posts.map(p => renderPostCard(p, p.id)).join('');
       }
 
       function searchPosts(query) {
@@ -722,240 +423,48 @@
         const q = query.toLowerCase();
         const filtered = allPosts.filter(p => 
           (p.title && p.title.toLowerCase().includes(q)) ||
-          (p.content && p.content.toLowerCase().includes(q)) ||
-          (p.authorName && p.authorName.toLowerCase().includes(q)) ||
-          (p.authorUsername && p.authorUsername.toLowerCase().includes(q))
+          (p.content && p.content.toLowerCase().includes(q))
         );
         renderFeed(filtered);
       }
 
-      function openModal(html) {
-        modalBox.innerHTML = html;
-        modalOverlay.classList.add('open');
-      }
-      function closeModal() { modalOverlay.classList.remove('open'); }
-
-      function showLoginDialog(callback) {
-        openModal(`
-          <h2>Sign in to continue</h2>
-          <p style="margin:12px 0;">You can read all ZISHU TRON updates without an account. Sign in with Google only when you want to publish or manage your content.</p>
-          <div class="modal-actions"><button class="btn-primary" id="googleLoginBtn">Continue with Google</button><button class="btn-ghost" id="closeLoginModal">Cancel</button></div>
-        `);
-        const loginBtn = $('#googleLoginBtn');
-        if (loginBtn) {
-          loginBtn.addEventListener('click', () => {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider)
-              .then((result) => {
-                closeModal();
-                if (callback) callback();
-              })
-              .catch((err) => {
-                console.error('Sign-in error details:', err);
-                const friendlyMsg = getFriendlyErrorMessage(err);
-                showToast(friendlyMsg);
-                // Don't close modal on error so user can retry
-              });
-          });
-        }
-        $('#closeLoginModal')?.addEventListener('click', closeModal);
-      }
-
-      function openEditor(postData = null) {
-        const title = postData?.title || '';
-        const content = postData?.content || '';
-        const isEdit = !!postData;
-        const id = postData?.id || null;
-        openModal(`
-          <h2>${isEdit ? 'Edit Update' : 'Create New Update'}</h2>
-          <div class="field"><label>Title</label><input id="editorTitle" maxlength="150" value="${title.replace(/"/g,'&quot;')}" placeholder="Enter article title" /><div class="char-counter" id="titleCounter">${title.length}/150</div></div>
-          <div class="field"><label>Content</label><textarea id="editorContent" maxlength="50000" placeholder="Write your update here...">${content.replace(/"/g,'&quot;')}</textarea><div class="char-counter" id="contentCounter">${content.length}/50000</div></div>
-          <div class="modal-actions">
-            <button class="btn-ghost" id="previewEditorBtn">Preview</button>
-            <button class="btn-success" id="publishEditorBtn">${isEdit ? 'Save Changes' : 'Publish Article'}</button>
-            <button class="btn-ghost" id="closeEditorBtn">Cancel</button>
-          </div>
-        `);
-        const titleInput = $('#editorTitle');
-        const contentInput = $('#editorContent');
-        const titleCounter = $('#titleCounter');
-        const contentCounter = $('#contentCounter');
-        titleInput?.addEventListener('input', () => titleCounter.textContent = `${titleInput.value.length}/150`);
-        contentInput?.addEventListener('input', () => contentCounter.textContent = `${contentInput.value.length}/50000`);
-
-        $('#closeEditorBtn')?.addEventListener('click', closeModal);
-        $('#publishEditorBtn')?.addEventListener('click', () => {
-          const t = titleInput.value.trim();
-          const c = contentInput.value.trim();
-          if (t.length < 3) { showToast('Title must be at least 3 characters.'); return; }
-          if (c.length < 10) { showToast('Content must be at least 10 characters.'); return; }
-          if (!currentUser) { showToast('Please sign in.'); closeModal(); return; }
-          const data = { 
-            title: t, 
-            content: c, 
-            authorId: currentUser.uid, 
-            authorName: currentUser.displayName || 'ZISHU TRON', 
-            authorUsername: currentUser.displayName?.toLowerCase().replace(/\s/g,'_') || 'zishu', 
-            updatedAt: Date.now() 
-          };
-          if (isEdit && id) {
-            db.ref('posts/'+id).update(data).then(() => { showToast('Update saved.'); closeModal(); }).catch(() => showToast('Error saving.'));
-          } else {
-            data.createdAt = Date.now();
-            db.ref('posts').push(data).then(() => { showToast('Published successfully.'); closeModal(); }).catch(() => showToast('Error publishing.'));
-          }
-        });
-        $('#previewEditorBtn')?.addEventListener('click', () => {
-          const t = titleInput.value.trim() || 'Untitled';
-          const c = contentInput.value.trim() || 'No content.';
-          openModal(`
-            <h2>Preview</h2>
-            <div style="background:#f8fafc;padding:16px;border-radius:16px;margin:12px 0;max-height:400px;overflow-y:auto;">${renderFullArticle({title:t, content:c, authorName: currentUser?.displayName || 'ZISHU TRON', authorUsername: currentUser?.displayName?.toLowerCase().replace(/\s/g,'_') || 'zishu', createdAt: Date.now() })}</div>
-            <div class="modal-actions"><button class="btn-ghost" id="backToEditorBtn">Back to Editor</button></div>
-          `);
-          $('#backToEditorBtn')?.addEventListener('click', () => { openEditor(postData); });
-        });
-      }
-
-      function confirmDelete(postId) {
-        openModal(`
-          <h2>Delete this update?</h2>
-          <p>This action cannot be undone.</p>
-          <div class="modal-actions"><button class="btn-danger" id="confirmDeleteBtn">Delete</button><button class="btn-ghost" id="cancelDeleteBtn">Cancel</button></div>
-        `);
-        $('#confirmDeleteBtn')?.addEventListener('click', () => {
-          if (!currentUser) { showToast('Sign in required.'); closeModal(); return; }
-          db.ref('posts/'+postId).remove().then(() => { showToast('Update deleted successfully.'); closeModal(); }).catch(() => showToast('Error deleting.'));
-        });
-        $('#cancelDeleteBtn')?.addEventListener('click', closeModal);
-      }
-
       function navigate(page) {
-        currentPage = page;
-        homePage.classList.add('hidden');
-        articleView.classList.add('hidden');
-        profilePage.classList.add('hidden');
-        $$('.bottom-nav .nav-item').forEach(b => b.classList.remove('active'));
-        if (page === 'home') { homePage.classList.remove('hidden'); $$('.bottom-nav .nav-item')[0]?.classList.add('active'); }
-        else if (page === 'article') { articleView.classList.remove('hidden'); }
-        else if (page === 'profile') { 
-          if (!currentUser) { showLoginDialog(() => navigate('profile')); return; }
-          profilePage.classList.remove('hidden'); 
-          $$('.bottom-nav .nav-item')[2]?.classList.add('active');
-          renderProfile();
-          loadUserPosts(currentUser.uid);
-        } else if (page === 'create') {
-          if (!currentUser) { showLoginDialog(() => navigate('create')); return; }
-          openEditor(null);
+        if (page === 'home') {
+          homePage.classList.remove('hidden');
+          articleView.classList.add('hidden');
+        } else if (page === 'article') {
+          homePage.classList.add('hidden');
+          articleView.classList.remove('hidden');
         }
       }
 
-      function renderProfile() {
-        if (!currentUser) return;
-        const p = currentUser;
-        const avatar = p.displayName?.charAt(0)?.toUpperCase() || 'Z';
-        $('#profileView').innerHTML = `
-          <div class="profile-header">
-            <div class="profile-avatar">${avatar}</div>
-            <div class="profile-info"><h3>${p.displayName || 'ZISHU TRON User'}</h3><div class="username">@${p.displayName?.toLowerCase().replace(/\s/g,'_') || 'zishu'}</div><div style="margin-top:4px;">${p.email || ''}</div></div>
-          </div>
-          <div style="display:flex;gap:12px;flex-wrap:wrap;margin:12px 0 20px;"><button class="btn-secondary" id="editProfileBtn">Edit Profile</button><button class="btn-secondary" id="settingsBtn">Settings</button></div>
-        `;
-        $('#editProfileBtn')?.addEventListener('click', () => {
-          openModal(`
-            <h2>Edit Profile</h2>
-            <div class="field"><label>Name</label><input id="editName" value="${p.displayName || ''}" /></div>
-            <div class="field"><label>Username</label><input id="editUsername" value="${p.displayName?.toLowerCase().replace(/\s/g,'_') || 'zishu'}" /></div>
-            <div class="field"><label>Bio</label><textarea id="editBio" rows="2">${p.bio || ''}</textarea></div>
-            <div class="modal-actions"><button class="btn-success" id="saveProfileBtn">Save</button><button class="btn-ghost" id="closeProfileEdit">Cancel</button></div>
-          `);
-          $('#saveProfileBtn')?.addEventListener('click', () => {
-            const name = $('#editName').value.trim();
-            const username = $('#editUsername').value.trim();
-            const bio = $('#editBio').value.trim();
-            if (!name || !username) { showToast('Name and username required.'); return; }
-            db.ref('users/'+currentUser.uid).update({ name, username, bio, updatedAt: Date.now() }).then(() => { showToast('Profile updated.'); closeModal(); }).catch(() => showToast('Error.'));
-          });
-          $('#closeProfileEdit')?.addEventListener('click', closeModal);
-        });
-        $('#settingsBtn')?.addEventListener('click', () => {
-          openModal(`
-            <h2>Settings</h2>
-            <div style="margin:12px 0;"><button class="btn-secondary" id="signOutBtn" style="width:100%;">Sign Out</button></div>
-            <hr />
-            <div style="margin:12px 0;"><button class="btn-danger" id="deleteAccountBtn" style="width:100%;">Delete Account Permanently</button></div>
-            <div class="modal-actions"><button class="btn-ghost" id="closeSettings">Close</button></div>
-          `);
-          $('#signOutBtn')?.addEventListener('click', () => { auth.signOut(); showToast('Signed out.'); closeModal(); navigate('home'); });
-          $('#deleteAccountBtn')?.addEventListener('click', () => {
-            if (!currentUser) return;
-            if (confirm('Delete your account? This will remove all your posts and profile.')) {
-              const uid = currentUser.uid;
-              db.ref('posts').orderByChild('authorId').equalTo(uid).once('value').then(snap => {
-                const updates = {};
-                snap.forEach(child => { updates[child.key] = null; });
-                return db.ref('posts').update(updates);
-              }).then(() => db.ref('users/'+uid).remove())
-              .then(() => currentUser.delete().catch(() => showToast('Re-authentication required. Please sign in again.')))
-              .then(() => { auth.signOut(); showToast('Account deleted.'); closeModal(); navigate('home'); })
-              .catch(e => showToast('Error deleting account.'));
-            }
-          });
-          $('#closeSettings')?.addEventListener('click', closeModal);
-        });
-      }
-
-      auth.onAuthStateChanged(user => {
-        currentUser = user;
-        if (user) {
-          headerAuthBtn.textContent = user.displayName || 'Profile';
-          headerAuthBtn.classList.add('logged-in');
-          headerAuthBtn.onclick = (e) => { e.preventDefault(); navigate('profile'); };
-          if (currentPage === 'profile') { renderProfile(); loadUserPosts(user.uid); }
-        } else {
-          headerAuthBtn.textContent = 'Sign in';
-          headerAuthBtn.classList.remove('logged-in');
-          headerAuthBtn.onclick = (e) => { e.preventDefault(); showLoginDialog(); };
-        }
-      });
-
-      // Event listeners
-      $('#desktopCreate')?.addEventListener('click', (e) => { e.preventDefault(); navigate('create'); });
-      $('#desktopProfile')?.addEventListener('click', (e) => { e.preventDefault(); navigate('profile'); });
-      $$('.bottom-nav .nav-item').forEach(btn => {
-        btn.addEventListener('click', () => navigate(btn.dataset.page));
-      });
-      
+      // Search
       let searchTimeout;
       searchInput?.addEventListener('input', () => {
         clearTimeout(searchTimeout);
         searchTimeout = setTimeout(() => searchPosts(searchInput.value), 300);
       });
+
       $('#backFromArticle')?.addEventListener('click', () => navigate('home'));
 
+      // Read article
       document.addEventListener('click', (e) => {
         const target = e.target.closest('[data-id]');
         if (!target) return;
         const id = target.dataset.id;
-        const post = allPosts.find(p => p.id === id) || userPosts.find(p => p.id === id);
-        if (!post) return;
         if (target.classList.contains('btn-read')) {
-          homePage.classList.add('hidden');
-          articleView.classList.remove('hidden');
+          const post = allPosts.find(p => p.id === id);
+          if (!post) return;
           $('#fullArticleContainer').innerHTML = renderFullArticle(post);
           navigate('article');
         }
-        if (target.classList.contains('btn-edit')) {
-          if (!currentUser || currentUser.uid !== post.authorId) { showToast('You can only edit your own posts.'); return; }
-          openEditor(post);
-        }
-        if (target.classList.contains('btn-delete')) {
-          if (!currentUser || currentUser.uid !== post.authorId) { showToast('You can only delete your own posts.'); return; }
-          confirmDelete(id);
-        }
       });
 
-      modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
+      // Modal close
+      const modalOverlay = $('#modalOverlay');
+      modalOverlay?.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) modalOverlay.classList.remove('open');
+      });
 
       loadPosts();
       navigate('home');
