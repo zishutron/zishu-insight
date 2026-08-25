@@ -19,6 +19,10 @@
       background: #f8fafc;
       color: #0b1a2f;
       padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     body.dark {
       background: #0f172a;
@@ -26,6 +30,7 @@
     }
     .container {
       max-width: 900px;
+      width: 100%;
       margin: 0 auto;
     }
     .admin-header {
@@ -158,6 +163,18 @@
     .btn-ghost:hover {
       background: #eef3fa;
     }
+    .btn-success {
+      background: #1c6b3b;
+      color: white;
+      border: none;
+      padding: 10px 28px;
+      border-radius: 60px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-success:hover {
+      background: #14522d;
+    }
     .admin-post-item {
       display: flex;
       justify-content: space-between;
@@ -231,19 +248,32 @@
       color: #0b1a2f;
     }
     .login-box {
-      padding: 30px 0;
+      padding: 30px 20px;
       text-align: center;
+      max-width: 400px;
+      margin: 0 auto;
     }
-    .login-box p {
-      margin-bottom: 12px;
-      color: #4a5f7a;
+    .login-box h2 {
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+    }
+    .login-box .field {
+      text-align: left;
+    }
+    .login-box .field input {
+      width: 100%;
+    }
+    .login-box .btn-primary {
+      width: 100%;
+      margin-top: 8px;
+    }
+    .login-error {
+      color: #b13e3e;
+      font-size: 0.9rem;
+      margin-top: 8px;
     }
     .authorized-badge {
       color: #1c6b3b;
-      font-weight: 600;
-    }
-    .denied-badge {
-      color: #b13e3e;
       font-weight: 600;
     }
     hr {
@@ -267,9 +297,29 @@
       <a href="/zishu-insight/" class="back-link">← Back to Insights</a>
     </div>
     <div class="admin-panel" id="adminPanel">
-      <div id="adminLoginArea"></div>
+      <!-- Login Area -->
+      <div id="adminLoginArea">
+        <div class="login-box">
+          <h2>Admin Login</h2>
+          <div class="field">
+            <label>Username</label>
+            <input type="text" id="loginUsername" placeholder="Enter username" />
+          </div>
+          <div class="field">
+            <label>Password</label>
+            <input type="password" id="loginPassword" placeholder="Enter password" />
+          </div>
+          <button class="btn-primary" id="loginBtn">Login</button>
+          <div id="loginError" class="login-error hidden"></div>
+        </div>
+      </div>
+
+      <!-- Admin Content -->
       <div id="adminContent" class="hidden">
-        <h2>Manage Articles</h2>
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+          <h2>Manage Articles</h2>
+          <button class="btn-ghost" id="logoutBtn">Logout</button>
+        </div>
         <div class="field">
           <label>Title</label>
           <input id="adminTitle" maxlength="150" placeholder="Enter article title" />
@@ -295,7 +345,6 @@
 
   <script>
     (function() {
-      // NEW FIREBASE CONFIG - FIXED
       const firebaseConfig = {
         apiKey: "AIzaSyAL0FSX7YfhQ-IoqE3a7axcLjgN7cPySM0",
         authDomain: "stardust-official.firebaseapp.com",
@@ -310,7 +359,12 @@
       const auth = firebase.auth();
       const db = firebase.database();
 
+      // ADMIN CREDENTIALS
+      const ADMIN_USERNAME = "admin786";
+      const ADMIN_PASSWORD = "zishuadmin";
+
       let currentUser = null;
+      let isAdmin = false;
       let allPosts = [];
       let editingPostId = null;
 
@@ -326,6 +380,11 @@
       const adminCancelEditBtn = $('#adminCancelEditBtn');
       const adminPostsList = $('#adminPostsList');
       const adminEmptyPosts = $('#adminEmptyPosts');
+      const loginUsername = $('#loginUsername');
+      const loginPassword = $('#loginPassword');
+      const loginBtn = $('#loginBtn');
+      const loginError = $('#loginError');
+      const logoutBtn = $('#logoutBtn');
 
       function showToast(msg) {
         toastContainer.textContent = msg;
@@ -334,8 +393,8 @@
       }
 
       function renderAdminPosts() {
-        if (!currentUser) return;
-        const userPosts = allPosts.filter(p => p.authorId === currentUser.uid);
+        if (!isAdmin) return;
+        const userPosts = allPosts.filter(p => p.authorId === 'admin786');
         if (userPosts.length === 0) {
           adminPostsList.innerHTML = '';
           adminEmptyPosts.classList.remove('hidden');
@@ -379,13 +438,13 @@
         const content = adminContentText.value.trim();
         if (title.length < 3) { showToast('Title must be at least 3 characters.'); return; }
         if (content.length < 10) { showToast('Content must be at least 10 characters.'); return; }
-        if (!currentUser) { showToast('Please sign in.'); return; }
+        if (!isAdmin) { showToast('Please login as admin.'); return; }
 
         const data = {
           title: title,
           content: content,
-          authorId: currentUser.uid,
-          authorName: currentUser.displayName || 'ZISHU TRON Admin',
+          authorId: 'admin786',
+          authorName: 'ZISHU TRON Admin',
           updatedAt: Date.now()
         };
 
@@ -408,7 +467,7 @@
       function loadPostForEdit(postId) {
         const post = allPosts.find(p => p.id === postId);
         if (!post) return;
-        if (post.authorId !== currentUser?.uid) { showToast('You can only edit your own posts.'); return; }
+        if (post.authorId !== 'admin786') { showToast('You can only edit your own posts.'); return; }
         adminTitle.value = post.title || '';
         adminContentText.value = post.content || '';
         adminTitleCounter.textContent = `${post.title?.length || 0} / 150`;
@@ -423,7 +482,7 @@
         if (!confirm('Delete this article permanently?')) return;
         const post = allPosts.find(p => p.id === postId);
         if (!post) return;
-        if (post.authorId !== currentUser?.uid) { showToast('You can only delete your own posts.'); return; }
+        if (post.authorId !== 'admin786') { showToast('You can only delete your own posts.'); return; }
         db.ref('posts/' + postId).remove().then(() => {
           showToast('Article deleted.');
           renderAdminPosts();
@@ -431,61 +490,65 @@
         }).catch(() => showToast('Error deleting.'));
       }
 
-      function checkAdminAccess(user) {
-        if (!user) {
-          adminLoginArea.innerHTML = `
-            <div class="login-box">
-              <p>Sign in to access the admin panel.</p>
-              <button class="btn-primary" id="adminLoginBtn">Sign in with Google</button>
-            </div>
-          `;
-          adminContent.classList.add('hidden');
-          const loginBtn = $('#adminLoginBtn');
-          if (loginBtn) {
-            loginBtn.addEventListener('click', () => {
-              const provider = new firebase.auth.GoogleAuthProvider();
-              auth.signInWithPopup(provider).catch((err) => {
-                console.error('Admin login error:', err);
-                showToast('Sign-in failed: ' + (err.message || 'unknown error'));
-              });
-            });
-          }
-          return;
-        }
+      function handleLogin() {
+        const username = loginUsername.value.trim();
+        const password = loginPassword.value.trim();
 
-        const adminRef = db.ref('authorizedAdmins').child(user.uid);
-        adminRef.once('value').then((snap) => {
-          if (snap.exists() && snap.val() === true) {
-            adminLoginArea.innerHTML = `<p><span class="authorized-badge">✓ Authorized</span> as ${user.displayName || user.email}</p>
-              <button class="btn-ghost" id="adminLogoutBtn" style="margin-top:8px;">Sign Out</button>`;
-            $('#adminLogoutBtn')?.addEventListener('click', () => { auth.signOut();
-              showToast('Signed out.'); });
-            adminContent.classList.remove('hidden');
-            loadPosts();
-            renderAdminPosts();
-          } else {
-            adminLoginArea.innerHTML = `
-              <div class="login-box">
-                <p><span class="denied-badge">⛔ Access Denied</span></p>
-                <p style="font-size:0.9rem;margin-top:4px;color:#4a5f7a;">You are not authorized to access the admin panel.</p>
-                <button class="btn-ghost" id="adminLogoutUnauthorizedBtn" style="margin-top:12px;">Sign Out</button>
-              </div>
-            `;
-            $('#adminLogoutUnauthorizedBtn')?.addEventListener('click', () => { auth.signOut();
-              showToast('Signed out.'); });
-            adminContent.classList.add('hidden');
-          }
-        }).catch((err) => {
-          console.error('Error checking admin authorization:', err);
-          adminLoginArea.innerHTML = `<p style="color:#b13e3e;">Error checking authorization. Please try again.</p>`;
-        });
+        if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+          isAdmin = true;
+          loginError.classList.add('hidden');
+          adminLoginArea.innerHTML = `<p style="text-align:center;padding:10px 0;"><span class="authorized-badge">✓ Logged in as Admin</span></p>`;
+          adminContent.classList.remove('hidden');
+          loadPosts();
+          renderAdminPosts();
+          showToast('Welcome Admin!');
+        } else {
+          loginError.textContent = 'Invalid username or password.';
+          loginError.classList.remove('hidden');
+        }
       }
 
-      // Auth state
-      auth.onAuthStateChanged(user => {
-        currentUser = user;
-        checkAdminAccess(user);
+      function handleLogout() {
+        isAdmin = false;
+        editingPostId = null;
+        adminContent.classList.add('hidden');
+        adminLoginArea.innerHTML = `
+          <div class="login-box">
+            <h2>Admin Login</h2>
+            <div class="field">
+              <label>Username</label>
+              <input type="text" id="loginUsername" placeholder="Enter username" />
+            </div>
+            <div class="field">
+              <label>Password</label>
+              <input type="password" id="loginPassword" placeholder="Enter password" />
+            </div>
+            <button class="btn-primary" id="loginBtn">Login</button>
+            <div id="loginError" class="login-error hidden"></div>
+          </div>
+        `;
+        // Re-bind events
+        document.getElementById('loginBtn')?.addEventListener('click', handleLogin);
+        document.getElementById('loginPassword')?.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') handleLogin();
+        });
+        document.getElementById('loginUsername')?.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') document.getElementById('loginPassword')?.focus();
+        });
+        resetAdminForm();
+        showToast('Logged out.');
+      }
+
+      // Login events
+      loginBtn?.addEventListener('click', handleLogin);
+      loginPassword?.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleLogin();
       });
+      loginUsername?.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') loginPassword?.focus();
+      });
+
+      logoutBtn?.addEventListener('click', handleLogout);
 
       // Form events
       adminTitle?.addEventListener('input', () => {
@@ -498,7 +561,7 @@
       adminPublishBtn?.addEventListener('click', publishPost);
       adminCancelEditBtn?.addEventListener('click', resetAdminForm);
 
-      // Delegated events
+      // Delegated events for admin post actions
       document.addEventListener('click', (e) => {
         const target = e.target.closest('[data-id]');
         if (!target) return;
