@@ -8,7 +8,6 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-  <!-- SVG icons (inline) -->
   <style>
     * {
       margin: 0;
@@ -39,16 +38,24 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 18px 0;
+      padding: 16px 0;
       border-bottom: 1px solid rgba(0,0,0,0.06);
       flex-wrap: wrap;
+      gap: 12px 20px;
     }
     body.dark .top-header {
       border-bottom-color: rgba(255,255,255,0.06);
     }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
     .brand {
       display: flex;
       flex-direction: column;
+      line-height: 1.2;
     }
     .brand h1 {
       font-size: 1.5rem;
@@ -66,16 +73,52 @@
       background-clip: text;
     }
     .brand span {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: #4a5b6e;
       letter-spacing: 0.02em;
     }
     body.dark .brand span {
       color: #a3b8d9;
     }
+    /* search box in header */
+    .header-search {
+      display: flex;
+      align-items: center;
+      background: white;
+      border-radius: 60px;
+      padding: 4px 16px 4px 20px;
+      border: 1px solid #d0ddee;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+      flex: 0 1 280px;
+      min-width: 160px;
+    }
+    body.dark .header-search {
+      background: #1e2a40;
+      border-color: #3d5478;
+    }
+    .header-search input {
+      border: none;
+      background: transparent;
+      padding: 10px 8px;
+      font-size: 0.9rem;
+      width: 100%;
+      outline: none;
+      color: inherit;
+    }
+    .header-search button {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 4px 4px 4px 8px;
+      color: #1e3b5c;
+      font-size: 1.1rem;
+    }
+    body.dark .header-search button {
+      color: #b6cae5;
+    }
     .nav-links {
       display: flex;
-      gap: 24px;
+      gap: 20px;
       align-items: center;
     }
     .nav-links a {
@@ -85,6 +128,7 @@
       font-size: 0.95rem;
       padding: 6px 4px;
       border-bottom: 2px solid transparent;
+      cursor: pointer;
     }
     body.dark .nav-links a {
       color: #d0dff0;
@@ -157,111 +201,18 @@
     body.dark .bottom-nav .nav-item.active {
       color: #79b0f0;
     }
-    /* hero */
-    .hero {
-      padding: 40px 0 20px;
-    }
-    .hero h2 {
-      font-size: 2.4rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-    }
-    .hero p {
-      font-size: 1.1rem;
-      color: #2a3d57;
-      max-width: 700px;
-      margin-top: 8px;
-    }
-    body.dark .hero p {
-      color: #b6cae5;
-    }
-    .hero-actions {
-      margin-top: 20px;
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-    .btn-primary {
-      background: #0b1a2f;
-      color: white;
-      border: none;
-      padding: 12px 32px;
-      border-radius: 60px;
-      font-weight: 600;
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: 0.15s;
-    }
-    body.dark .btn-primary {
-      background: #d6e4ff;
-      color: #0b1a2f;
-    }
-    .btn-primary:hover {
-      opacity: 0.85;
-      transform: scale(0.97);
-    }
-    .btn-secondary {
-      background: transparent;
-      border: 1.5px solid #1e3b5c;
-      padding: 12px 32px;
-      border-radius: 60px;
-      font-weight: 600;
-      font-size: 0.95rem;
-      cursor: pointer;
-      color: #1e3b5c;
-    }
-    body.dark .btn-secondary {
-      border-color: #8cb0df;
-      color: #d0e0fc;
-    }
-    .btn-secondary:hover {
-      background: #1e3b5c10;
-    }
     /* feed */
     .feed-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin: 30px 0 16px;
+      margin: 24px 0 16px;
       flex-wrap: wrap;
       gap: 12px;
     }
     .feed-header h3 {
       font-size: 1.6rem;
       font-weight: 600;
-    }
-    .search-box {
-      display: flex;
-      align-items: center;
-      background: white;
-      border-radius: 60px;
-      padding: 6px 16px 6px 20px;
-      border: 1px solid #d0ddee;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-    }
-    body.dark .search-box {
-      background: #1e2a40;
-      border-color: #3d5478;
-    }
-    .search-box input {
-      border: none;
-      background: transparent;
-      padding: 10px 8px;
-      font-size: 0.95rem;
-      min-width: 200px;
-      outline: none;
-      color: inherit;
-    }
-    .search-box button {
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      padding: 4px 4px 4px 8px;
-      color: #1e3b5c;
-    }
-    body.dark .search-box button {
-      color: #b6cae5;
     }
     /* cards */
     .post-card {
@@ -459,6 +410,25 @@
     .btn-success:hover {
       background: #14522d;
     }
+    .btn-primary {
+      background: #0b1a2f;
+      color: white;
+      border: none;
+      padding: 12px 32px;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+    body.dark .btn-primary {
+      background: #d6e4ff;
+      color: #0b1a2f;
+    }
+    .btn-primary:hover {
+      opacity: 0.85;
+      transform: scale(0.97);
+    }
     .profile-header {
       display: flex;
       align-items: center;
@@ -517,17 +487,6 @@
       background: #d6e4ff;
       color: #0b1a2f;
     }
-    @media (max-width: 720px) {
-      .top-header .nav-links { display: none; }
-      .bottom-nav { display: flex; }
-      .hero h2 { font-size: 1.8rem; }
-      .container { padding: 0 14px; }
-      .modal-box { padding: 20px; }
-      .post-card { padding: 18px; }
-    }
-    @media (min-width: 721px) {
-      .bottom-nav { display: none !important; }
-    }
     .full-article-content {
       line-height: 1.8;
       font-size: 1.05rem;
@@ -535,15 +494,34 @@
       margin: 0 auto;
     }
     .full-article-content p { margin-bottom: 1.2rem; }
+    /* responsive */
+    @media (max-width: 720px) {
+      .top-header .nav-links { display: none; }
+      .bottom-nav { display: flex; }
+      .container { padding: 0 14px; }
+      .modal-box { padding: 20px; }
+      .post-card { padding: 18px; }
+      .header-search { flex: 1 1 100%; order: 10; min-width: unset; }
+      .header-left { width: 100%; justify-content: space-between; }
+    }
+    @media (min-width: 721px) {
+      .bottom-nav { display: none !important; }
+    }
   </style>
 </head>
 <body>
   <div id="app">
     <!-- header -->
     <header class="container top-header">
-      <div class="brand">
-        <h1>ZISHU TRON INSIGHT</h1>
-        <span>The official updates from ZISHU TRON.</span>
+      <div class="header-left">
+        <div class="brand">
+          <h1>ZISHU TRON INSIGHT</h1>
+          <span>The official updates from ZISHU TRON.</span>
+        </div>
+        <div class="header-search" id="headerSearch">
+          <input type="text" id="searchInput" placeholder="Search ZISHU TRON INSIGHT…" />
+          <button id="searchBtn">⌕</button>
+        </div>
       </div>
       <div class="nav-links" id="desktopNav">
         <a href="#" data-page="home">Home</a>
@@ -555,29 +533,17 @@
 
     <!-- main content -->
     <main class="container" id="mainContent">
-      <!-- hero + feed -->
+      <!-- home feed -->
       <section id="homePage">
-        <div class="hero">
-          <h2>ZISHU TRON INSIGHT</h2>
-          <p>The official updates from ZISHU TRON.</p>
-          <p style="font-size:1rem; margin-top:4px;">Discover product updates, announcements, development progress and stories.</p>
-          <div class="hero-actions">
-            <button class="btn-primary" id="exploreBtn">Explore Updates</button>
-            <button class="btn-secondary" id="createHeroBtn">Create Post</button>
-          </div>
-        </div>
         <div class="feed-header">
           <h3>Latest Updates</h3>
-          <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Search ZISHU TRON INSIGHT…" />
-            <button id="searchBtn">⌕</button>
-          </div>
+          <!-- empty placeholder for alignment -->
         </div>
         <div id="postsFeed"></div>
         <div id="emptyFeed" class="empty-state hidden"><h4>No updates yet</h4><p>ZISHU TRON updates will appear here when the first article is published.</p></div>
       </section>
 
-      <!-- full article view (hidden by default) -->
+      <!-- full article view -->
       <section id="articleView" class="hidden">
         <button id="backFromArticle" style="background:none;border:none;font-size:1.2rem;cursor:pointer;margin-bottom:12px;">← Back</button>
         <div id="fullArticleContainer"></div>
@@ -614,7 +580,6 @@
   </div>
   <script>
     (function(){
-      // Firebase config
       const firebaseConfig = {
         apiKey: "AIzaSyAL0FS7X7YfhQ-Ioq3eA7xjLcN7cPySM0",
         authDomain: "stardust-official.firebaseapp.com",
@@ -629,16 +594,12 @@
       const auth = firebase.auth();
       const db = firebase.database();
 
-      // State
       let currentUser = null;
       let currentPage = 'home';
       let allPosts = [];
       let userPosts = [];
       let selectedPostId = null;
-      let isEditing = false;
-      let editPostId = null;
 
-      // DOM refs
       const $ = (s) => document.querySelector(s);
       const $$ = (s) => document.querySelectorAll(s);
       const homePage = $('#homePage');
@@ -653,7 +614,6 @@
       const toastContainer = $('#toastContainer');
       const searchInput = $('#searchInput');
 
-      // Helper
       function showToast(msg) {
         toastContainer.textContent = msg;
         toastContainer.classList.remove('hidden');
@@ -684,7 +644,6 @@
           <div class="full-article-content">${post.content?.replace(/\n/g, '<br>') || ''}</div>`;
       }
 
-      // Load posts feed
       function loadPosts() {
         const ref = db.ref('posts').orderByChild('createdAt').limitToLast(50);
         ref.on('value', (snap) => {
@@ -702,7 +661,6 @@
         postsFeed.innerHTML = posts.map(p => renderPostCard(p, p.id, false, false)).join('');
       }
 
-      // load user posts
       function loadUserPosts(uid) {
         if (!uid) return;
         const ref = db.ref('posts').orderByChild('authorId').equalTo(uid);
@@ -715,7 +673,6 @@
         });
       }
 
-      // search
       function searchPosts(query) {
         if (!query.trim()) { renderFeed(allPosts); return; }
         const q = query.toLowerCase();
@@ -728,14 +685,12 @@
         renderFeed(filtered);
       }
 
-      // Modal helpers
       function openModal(html) {
         modalBox.innerHTML = html;
         modalOverlay.classList.add('open');
       }
       function closeModal() { modalOverlay.classList.remove('open'); }
 
-      // show login dialog
       function showLoginDialog(callback) {
         openModal(`
           <h2>Sign in to continue</h2>
@@ -748,7 +703,6 @@
         $('#closeLoginModal')?.addEventListener('click', closeModal);
       }
 
-      // Create/Edit post modal
       function openEditor(postData = null) {
         const title = postData?.title || '';
         const content = postData?.content || '';
@@ -798,7 +752,6 @@
         });
       }
 
-      // Delete confirm
       function confirmDelete(postId) {
         openModal(`
           <h2>Delete this update?</h2>
@@ -812,7 +765,6 @@
         $('#cancelDeleteBtn')?.addEventListener('click', closeModal);
       }
 
-      // Navigation
       function navigate(page) {
         currentPage = page;
         homePage.classList.add('hidden');
@@ -831,7 +783,6 @@
           if (!currentUser) { showLoginDialog(() => navigate('create')); return; }
           openEditor(null);
         }
-        // update desktop active
       }
 
       function renderProfile() {
@@ -889,15 +840,12 @@
         });
       }
 
-      // Auth state
       auth.onAuthStateChanged(user => {
         currentUser = user;
         const desktopAuthBtn = $('#authDesktopBtn');
         if (user) {
           desktopAuthBtn.textContent = user.displayName || 'Profile';
-          desktopAuthBtn.href = '#';
           desktopAuthBtn.onclick = (e) => { e.preventDefault(); navigate('profile'); };
-          // load user posts if profile visible
           if (currentPage === 'profile') { renderProfile(); loadUserPosts(user.uid); }
         } else {
           desktopAuthBtn.textContent = 'Sign in';
@@ -906,34 +854,25 @@
       });
 
       // Event listeners
-      // Explore
-      $('#exploreBtn')?.addEventListener('click', () => { document.querySelector('.feed-header')?.scrollIntoView({ behavior:'smooth' }); });
-      $('#createHeroBtn')?.addEventListener('click', () => navigate('create'));
       $('#desktopCreate')?.addEventListener('click', (e) => { e.preventDefault(); navigate('create'); });
       $('#desktopProfile')?.addEventListener('click', (e) => { e.preventDefault(); navigate('profile'); });
-      // bottom nav
       $$('.bottom-nav .nav-item').forEach(btn => {
         btn.addEventListener('click', () => navigate(btn.dataset.page));
       });
-      // search
       let searchTimeout;
       searchInput?.addEventListener('input', () => {
         clearTimeout(searchTimeout);
         searchTimeout = setTimeout(() => searchPosts(searchInput.value), 300);
       });
-      // back from article
       $('#backFromArticle')?.addEventListener('click', () => navigate('home'));
 
-      // delegate post actions
       document.addEventListener('click', (e) => {
         const target = e.target.closest('[data-id]');
         if (!target) return;
         const id = target.dataset.id;
         const post = allPosts.find(p => p.id === id) || userPosts.find(p => p.id === id);
         if (!post) return;
-
         if (target.classList.contains('btn-read')) {
-          // show full article
           homePage.classList.add('hidden');
           articleView.classList.remove('hidden');
           $('#fullArticleContainer').innerHTML = renderFullArticle(post);
@@ -949,10 +888,8 @@
         }
       });
 
-      // modal close on overlay click
       modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
 
-      // Init
       loadPosts();
       navigate('home');
     })();
