@@ -368,7 +368,7 @@ async function renderArticle(post, tpl, allPosts){
     coverImage: post.coverImage || '',
     publishedAt,
     updatedAt,
-    featured: !!post.featured
+    pinned: !!post.pinned
   };
 }
 
@@ -435,7 +435,7 @@ function buildIndex(articles){
       authorName: a.author,
       publishedAt: a.publishedAt,
       readingTime: a.readingTime,
-      featured: !!a.featured
+      pinned: !!a.pinned
     }));
   return { generatedAt: new Date().toISOString(), count: idx.length, articles: idx };
 }
