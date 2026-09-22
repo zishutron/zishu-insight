@@ -5,19 +5,15 @@
     <link>https://zishutron.github.io/zishu-insight/</link>
     <description>The official publishing platform of ZISHU TRON. Product announcements, engineering deep dives, and company updates.</description>
     <language>en</language>
-    <lastBuildDate>Tue, 22 Sep 2026 06:16:13 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 22 Sep 2026 06:31:19 GMT</lastBuildDate>
     <atom:link href="https://zishutron.github.io/zishu-insight/rss.xml" rel="self" type="application/rss+xml"/>
     <item>
       <title>RING FOR ME</title>
       <link>https://zishutron.github.io/zishu-insight/articles/ring-for-me/</link>
       <guid isPermaLink="true">https://zishutron.github.io/zishu-insight/articles/ring-for-me/</guid>
       <pubDate>Tue, 22 Sep 2026 05:57:11 GMT</pubDate>
-      <description>I Built RING FOR ME — A Different Way to Discover People Nearby ✦
-
-Someone nearby. One Ring away.
-
-I’ve been working on something I’ve wanted to turn into a real product for a while: RING FOR ME — a p</description>
-      
+      <description>Ring for me find someone who like you:</description>
+      <category>Product</category>
     </item>
   </channel>
 </rss>

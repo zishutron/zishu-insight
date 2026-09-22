@@ -1,19 +1,21 @@
 {
-  "generatedAt": "2026-09-22T06:16:13.567Z",
+  "generatedAt": "2026-09-22T06:31:19.558Z",
   "count": 1,
   "articles": [
     {
       "id": "-P0tnt49djFkZg62cCAy",
       "slug": "ring-for-me",
       "title": "RING FOR ME",
-      "description": "I Built RING FOR ME — A Different Way to Discover People Nearby ✦\n\nSomeone nearby. One Ring away.\n\nI’ve been working on something I’ve wanted to turn into a real product for a while: RING FOR ME — a p",
-      "category": "",
-      "tags": [],
+      "description": "Ring for me find someone who like you:",
+      "category": "Product",
+      "tags": [
+        "publishing"
+      ],
       "coverImage": "",
       "authorName": "ZISHU TRON Admin",
       "publishedAt": 1790056631461,
       "readingTime": 4,
-      "featured": false
+      "featured": true
     }
   ]
 }
