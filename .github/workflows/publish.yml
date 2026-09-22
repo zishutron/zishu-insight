@@ -1,0 +1,57 @@
+name: Publish Insight
+on:
+  workflow_dispatch:
+  schedule:
+    # Rebuild every hour on the hour (UTC). Adjust as needed.
+    - cron: '0 * * * *'
+  push:
+    branches: [ main ]
+    paths:
+      - 'scripts/**'
+      - 'article.html'
+      - 'index.html'
+      - 'admin.html'
+      - '.github/workflows/publish.yml'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Generate static article pages
+        env:
+          FIREBASE_DB_URL: ${{ secrets.FIREBASE_DB_URL }}
+          SITE_BASE_URL: ${{ vars.SITE_BASE_URL }}
+        run: |
+          node scripts/build-static.mjs
+      - name: Commit generated files
+        run: |
+          git config user.name "zishu-bot"
+          git config user.email "bot@zishutron.invalid"
+          git add articles sitemap.xml rss.xml articles-index.json 404.html
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: rebuild static articles [skip ci]"
+            git push
+          else
+            echo "No changes."
+          fi
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
