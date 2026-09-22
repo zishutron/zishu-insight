@@ -7,4 +7,4 @@ Disallow: /articles-index.json
 Disallow: /*?utm_
 Disallow: /*?ref=
 
-Sitemap: https://zishutron.github.io/zishu-insight/sitemap.xml
+Sitemap: https://zishu-insight.zishuai.cloud/sitemap.xml
