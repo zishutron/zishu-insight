@@ -60,7 +60,7 @@ button{font-family:inherit;cursor:pointer}
 .container{max-width:var(--maxw);margin:0 auto;padding:0 24px}
 .hidden{display:none !important}
 
-/* Header */
+/* ========= Header ========= */
 .site-header{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:saturate(180%) blur(12px);-webkit-backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--border)}
 .header-inner{display:flex;align-items:center;gap:20px;height:64px}
 .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--text);flex-shrink:0}
@@ -83,7 +83,7 @@ button{font-family:inherit;cursor:pointer}
   .brand-text .b1{font-size:15px}
 }
 
-/* Hero */
+/* ========= Hero ========= */
 .hero{padding:40px 0 16px}
 .hero .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-text);background:var(--accent-soft);padding:6px 12px;border-radius:100px;margin-bottom:16px}
 [data-theme="dark"] .hero .eyebrow{color:var(--accent)}
@@ -97,51 +97,8 @@ button{font-family:inherit;cursor:pointer}
   .hero p{font-size:14.5px}
 }
 
-/* Pinned hero article */
+/* ========= Pinned hero article ========= */
 .pinned-slot{margin-top:26px}
-
-/* Toolbar */
-.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:36px 0 16px}
-.toolbar h2{font-family:var(--serif);font-size:1.35rem;font-weight:700;letter-spacing:-.02em;margin-right:auto;color:var(--text)}
-.chip{display:inline-flex;align-items:center;height:34px;padding:0 14px;border-radius:100px;border:1px solid var(--border);background:var(--bg);color:var(--text-2);font-size:13px;font-weight:500;cursor:pointer;transition:.12s}
-.chip:hover{background:var(--bg-sub);text-decoration:none;color:var(--text)}
-.chip.active{background:var(--text);color:var(--bg);border-color:var(--text)}
-@media (max-width:720px){
-  .toolbar{margin:24px 0 14px}
-  .toolbar h2{font-size:1.2rem;flex-basis:100%;margin-bottom:4px}
-}
-
-/* Article cards — clean list */
-.feed{display:grid;gap:0;border-top:1px solid var(--border)}
-.card{display:grid;grid-template-columns:1fr 190px;gap:28px;padding:24px 4px;border-bottom:1px solid var(--border);color:inherit;transition:.12s}
-.card:hover{text-decoration:none;background:color-mix(in srgb,var(--bg-sub) 40%,transparent)}
-.card:hover h3{color:var(--accent)}
-.card-body{display:flex;flex-direction:column;gap:9px;min-width:0}
-.card .tag{display:inline-block;padding:3px 9px;border-radius:100px;background:var(--accent-soft);color:var(--accent-text);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;align-self:flex-start}
-[data-theme="dark"] .card .tag{color:var(--accent)}
-.card h3{font-family:var(--serif);font-size:1.25rem;font-weight:700;letter-spacing:-.015em;line-height:1.3;transition:color .12s;color:var(--text);word-break:break-word}
-.card .excerpt{color:var(--text-2);font-size:14.5px;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.card .meta{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12.5px;color:var(--text-3);margin-top:2px}
-.card .meta .dot{opacity:.5}
-/* Only show thumb if cover image exists */
-.card-thumb{border-radius:var(--radius);overflow:hidden;background:var(--bg-sub);aspect-ratio:16/10}
-.card-thumb img{width:100%;height:100%;object-fit:cover;display:block}
-.card.no-image{grid-template-columns:1fr}
-.card.no-image .card-thumb{display:none}
-@media (max-width:720px){
-  .card{grid-template-columns:1fr;padding:18px 2px;gap:12px}
-  .card-thumb{order:-1;aspect-ratio:16/9}
-  .card.no-image{grid-template-columns:1fr}
-  .card.no-image .card-thumb{display:none}
-  .card h3{font-size:1.1rem}
-  .card .excerpt{font-size:14px}
-}
-@media (max-width:420px){
-  .card{padding:16px 0}
-  .card h3{font-size:1.02rem}
-}
-
-/* Pinned article card (hero) */
 .pinned-card{display:grid;grid-template-columns:1.15fr .85fr;gap:32px;padding:26px;border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--bg-elev);color:inherit;transition:.15s}
 .pinned-card:hover{text-decoration:none;border-color:var(--border-strong);box-shadow:var(--shadow)}
 .pinned-card.no-image{grid-template-columns:1fr}
@@ -164,7 +121,44 @@ button{font-family:inherit;cursor:pointer}
 }
 @media (max-width:480px){.pinned-card{padding:14px}}
 
-/* Skeleton */
+/* ========= Toolbar ========= */
+.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:36px 0 16px}
+.toolbar h2{font-family:var(--serif);font-size:1.35rem;font-weight:700;letter-spacing:-.02em;margin-right:auto;color:var(--text)}
+@media (max-width:720px){
+  .toolbar{margin:24px 0 14px}
+  .toolbar h2{font-size:1.2rem}
+}
+
+/* ========= Article cards ========= */
+.feed{display:grid;gap:0;border-top:1px solid var(--border)}
+.card{display:grid;grid-template-columns:1fr 190px;gap:28px;padding:24px 4px;border-bottom:1px solid var(--border);color:inherit;transition:.12s}
+.card:hover{text-decoration:none;background:color-mix(in srgb,var(--bg-sub) 40%,transparent)}
+.card:hover h3{color:var(--accent)}
+.card-body{display:flex;flex-direction:column;gap:9px;min-width:0}
+.card .tag{display:inline-block;padding:3px 9px;border-radius:100px;background:var(--accent-soft);color:var(--accent-text);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;align-self:flex-start}
+[data-theme="dark"] .card .tag{color:var(--accent)}
+.card h3{font-family:var(--serif);font-size:1.25rem;font-weight:700;letter-spacing:-.015em;line-height:1.3;transition:color .12s;color:var(--text);word-break:break-word}
+.card .excerpt{color:var(--text-2);font-size:14.5px;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card .meta{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12.5px;color:var(--text-3);margin-top:2px}
+.card .meta .dot{opacity:.5}
+.card-thumb{border-radius:var(--radius);overflow:hidden;background:var(--bg-sub);aspect-ratio:16/10}
+.card-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.card.no-image{grid-template-columns:1fr}
+.card.no-image .card-thumb{display:none}
+@media (max-width:720px){
+  .card{grid-template-columns:1fr;padding:18px 2px;gap:12px}
+  .card-thumb{order:-1;aspect-ratio:16/9}
+  .card.no-image{grid-template-columns:1fr}
+  .card.no-image .card-thumb{display:none}
+  .card h3{font-size:1.1rem}
+  .card .excerpt{font-size:14px}
+}
+@media (max-width:420px){
+  .card{padding:16px 0}
+  .card h3{font-size:1.02rem}
+}
+
+/* ========= Skeleton ========= */
 .skel{padding:24px 4px;border-bottom:1px solid var(--border)}
 .skel .s{background:linear-gradient(90deg,var(--bg-sub) 0%,var(--border) 50%,var(--bg-sub) 100%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:6px}
 .skel .l1{height:22px;width:70%;margin-bottom:10px}
@@ -172,12 +166,12 @@ button{font-family:inherit;cursor:pointer}
 .skel .l3{height:14px;width:60%}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-/* States */
+/* ========= States ========= */
 .state{padding:60px 20px;text-align:center;color:var(--text-2)}
 .state h3{font-family:var(--serif);font-size:1.25rem;color:var(--text);margin-bottom:8px;font-weight:700}
 .state p{font-size:14.5px;line-height:1.55}
 
-/* Footer */
+/* ========= Footer ========= */
 .site-footer{border-top:1px solid var(--border);margin-top:72px;padding:40px 0 32px;background:var(--bg-elev)}
 .footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:36px}
 .footer-brand p{color:var(--text-3);font-size:13.5px;margin-top:10px;max-width:300px;line-height:1.55}
@@ -191,7 +185,7 @@ button{font-family:inherit;cursor:pointer}
   .footer-brand{grid-column:1/-1}
 }
 
-/* Search overlay */
+/* ========= Search overlay ========= */
 .search-overlay{position:fixed;inset:0;z-index:80;background:color-mix(in srgb,var(--bg) 96%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;padding:24px 20px;overflow-y:auto}
 .search-overlay.open{display:block;animation:fade .15s}
 @keyframes fade{from{opacity:0}to{opacity:1}}
@@ -212,7 +206,7 @@ button{font-family:inherit;cursor:pointer}
   .search-input-wrap input{font-size:16px}
 }
 
-/* Back to top */
+/* ========= Back to top ========= */
 .to-top{position:fixed;right:20px;bottom:20px;width:44px;height:44px;border-radius:50%;background:var(--text);color:var(--bg);display:none;place-items:center;box-shadow:var(--shadow);border:0;z-index:30;transition:.15s}
 .to-top.show{display:grid}
 .to-top:hover{transform:translateY(-2px)}
@@ -239,7 +233,7 @@ button{font-family:inherit;cursor:pointer}
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       </button>
       <button class="icon-btn" id="themeBtn" aria-label="Toggle theme">
-        <svg viewBox="0 0 24 24" id="themeIcon"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4" y1="12" x2="2" y2="12"/><line x1="22" y1="12" x2="20" y2="12"/></svg>
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4" y1="12" x2="2" y2="12"/><line x1="22" y1="12" x2="20" y2="12"/></svg>
       </button>
     </div>
   </div>
@@ -250,18 +244,26 @@ button{font-family:inherit;cursor:pointer}
     <span class="eyebrow"><span class="dot"></span> Official Publication</span>
     <h1>Engineering, product, and company updates from ZISHU TRON.</h1>
     <p>The official publication. Deep dives on what we're building, why we're building it, and where we're headed next.</p>
-    <div class="pinned-slot" id="pinnedSlot"></div>
+
+    <div class="pinned-slot" id="pinnedSlot">
+      <!-- PINNED_START -->
+      <!-- PINNED_END -->
+    </div>
   </section>
 
   <section class="container" id="latest">
     <div class="toolbar">
       <h2>Latest</h2>
     </div>
+
     <div class="feed" id="feed" aria-busy="true">
+      <!-- ARTICLES_START -->
       <div class="skel"><div class="s l1"></div><div class="s l2"></div><div class="s l3"></div></div>
       <div class="skel"><div class="s l1" style="width:55%"></div><div class="s l2" style="width:88%"></div><div class="s l3"></div></div>
       <div class="skel"><div class="s l1" style="width:65%"></div><div class="s l2" style="width:92%"></div><div class="s l3"></div></div>
+      <!-- ARTICLES_END -->
     </div>
+
     <div class="state hidden" id="emptyState">
       <h3>No articles published yet</h3>
       <p>Check back soon — the first updates from ZISHU TRON are on the way.</p>
@@ -338,7 +340,7 @@ button{font-family:inherit;cursor:pointer}
   const CONFIG = {
     BASE_URL: "https://zishutron.github.io/zishu-insight",
     INDEX_URL: "articles-index.json",
-    FIREBASE_FALLBACK: true,
+    FIREBASE_FALLBACK: false,
     FB_CONFIG: {
       apiKey: "AIzaSyAL0FSX7YfhQ-IoqE3a7axcLjgN7cPySM0",
       authDomain: "stardust-official.firebaseapp.com",
@@ -385,7 +387,30 @@ button{font-family:inherit;cursor:pointer}
     return str.length > n ? str.slice(0, n-1).trim() + '…' : str;
   }
 
-  // Pinned hero article
+  // ===== SSR Hydration =====
+  // Check if the build script already injected articles into HTML.
+  // If yes, we don't need to render them again — just attach interactivity.
+  function detectSSR(){
+    const feed = $('#feed');
+    if(!feed) return false;
+    // If feed contains any `.card` elements, SSR is present
+    return feed.querySelectorAll('.card').length > 0;
+  }
+
+  function hydrateSSR(){
+    // SSR HTML is already in the DOM. We only need to:
+    // 1. Show the feed (remove hidden state if any)
+    // 2. Hide the skeleton loaders (they were replaced by build script)
+    // 3. Enable search — which needs the index JSON
+    $('#emptyState').classList.add('hidden');
+    $('#errorState').classList.add('hidden');
+    $('#feed').classList.remove('hidden');
+    $('#feed').setAttribute('aria-busy', 'false');
+    // Load index JSON for search only (not for rendering)
+    loadIndexForSearch();
+  }
+
+  // ===== Rendering (fallback when SSR not present) =====
   function renderPinned(a){
     if(!a) return '';
     const url = articleUrl(a.slug);
@@ -408,7 +433,6 @@ button{font-family:inherit;cursor:pointer}
       </a>`;
   }
 
-  // Regular card
   function renderCard(a){
     const url = articleUrl(a.slug);
     const tag = a.category ? `<span class="tag">${escapeHtml(a.category)}</span>` : '';
@@ -436,7 +460,6 @@ button{font-family:inherit;cursor:pointer}
 
   function renderFeed(){
     const feed = $('#feed');
-    // Exclude the pinned article from the list
     const pinned = ARTICLES.find(a => a.pinned);
     let list = ARTICLES.filter(a => !(pinned && a.id === pinned.id));
     if(list.length === 0){
@@ -452,7 +475,6 @@ button{font-family:inherit;cursor:pointer}
   }
 
   function renderHome(){
-    // Find pinned article, or fall back to nothing (no auto-featured)
     const pinned = ARTICLES.find(a => a.pinned);
     $('#pinnedSlot').innerHTML = pinned ? renderPinned(pinned) : '';
     renderFeed();
@@ -463,74 +485,75 @@ button{font-family:inherit;cursor:pointer}
     $('#emptyState').classList.add('hidden');
     $('#errorState').classList.remove('hidden');
   }
-  function showEmpty(){
-    $('#feed').classList.add('hidden');
-    $('#errorState').classList.add('hidden');
-    $('#emptyState').classList.remove('hidden');
-  }
 
+  // ===== Data loading =====
   async function loadIndex(){
     try{
-      const res = await fetch(CONFIG.INDEX_URL, {cache:'no-cache'});
+      const res = await fetch(CONFIG.INDEX_URL + '?v=' + Date.now(), {cache:'no-store'});
       if(!res.ok) throw new Error('index missing');
       const data = await res.json();
       if(!Array.isArray(data.articles)) throw new Error('bad index');
       ARTICLES = data.articles;
       return true;
-    }catch(e){ return false; }
+    }catch(e){
+      return false;
+    }
   }
 
-  function loadFirebaseFallback(){
-    return new Promise((resolve, reject) => {
-      const s1 = document.createElement('script');
-      s1.src = "https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
-      s1.onload = () => {
-        const s2 = document.createElement('script');
-        s2.src = "https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js";
-        s2.onload = () => {
-          try{
-            if(!firebase.apps.length) firebase.initializeApp(CONFIG.FB_CONFIG);
-            const db = firebase.database();
-            db.ref('posts').orderByChild('status').equalTo('published').limitToLast(60).once('value')
-              .then(snap => {
-                const val = snap.val() || {};
-                ARTICLES = Object.entries(val).map(([id, p]) => ({
-                  id,
-                  slug: p.slug || id,
-                  title: p.title || 'Untitled',
-                  description: p.description || truncate(p.content || '', 220),
-                  category: p.category || '',
-                  tags: p.tags || null,
-                  coverImage: p.coverImage || '',
-                  authorName: p.authorName || 'ZISHU TRON',
-                  publishedAt: p.publishedAt || p.createdAt || Date.now(),
-                  readingTime: p.readingTime || 1,
-                  pinned: !!p.pinned
-                })).sort((a,b) => (b.publishedAt||0) - (a.publishedAt||0));
-                resolve();
-              })
-              .catch(reject);
-          }catch(e){ reject(e); }
-        };
-        s2.onerror = reject;
-        document.head.appendChild(s2);
-      };
-      s1.onerror = reject;
-      document.head.appendChild(s1);
-    });
+  // Load index just for search (used when SSR already rendered)
+  async function loadIndexForSearch(){
+    await loadIndex();
   }
 
   async function init(){
+    // If SSR already rendered articles, just hydrate search
+    if(detectSSR()){
+      hydrateSSR();
+      return;
+    }
+
+    // Otherwise, load from index and render
     const ok = await loadIndex();
-    if(!ok && CONFIG.FIREBASE_FALLBACK){
-      try{ await loadFirebaseFallback(); }
-      catch(e){ console.error('[insight] load failed', e); showError(); return; }
-    } else if(!ok){ showError(); return; }
-    if(ARTICLES.length === 0){ showEmpty(); return; }
+    if(!ok){
+      if(CONFIG.FIREBASE_FALLBACK){
+        try{
+          const s = document.createElement('script');
+          s.src = "https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
+          await new Promise((res, rej) => { s.onload = res; s.onerror = rej; document.head.appendChild(s); });
+          const s2 = document.createElement('script');
+          s2.src = "https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js";
+          await new Promise((res, rej) => { s2.onload = res; s2.onerror = rej; document.head.appendChild(s2); });
+          if(!firebase.apps.length) firebase.initializeApp(CONFIG.FB_CONFIG);
+          const snap = await firebase.database().ref('posts').orderByChild('status').equalTo('published').limitToLast(60).once('value');
+          const val = snap.val() || {};
+          ARTICLES = Object.entries(val).map(([id, p]) => ({
+            id, slug: p.slug || id, title: p.title || 'Untitled',
+            description: p.description || truncate(p.content || '', 220),
+            category: p.category || '', coverImage: p.coverImage || '',
+            authorName: p.authorName || 'ZISHU TRON',
+            publishedAt: p.publishedAt || p.createdAt || Date.now(),
+            readingTime: p.readingTime || 1, pinned: !!p.pinned
+          })).sort((a,b) => (b.publishedAt||0) - (a.publishedAt||0));
+        }catch(e){
+          console.error('[insight] fallback failed', e);
+          showError();
+          return;
+        }
+      } else {
+        showError();
+        return;
+      }
+    }
+
+    if(ARTICLES.length === 0){
+      $('#feed').classList.add('hidden');
+      $('#emptyState').classList.remove('hidden');
+      return;
+    }
     renderHome();
   }
 
-  // Search
+  // ===== Search =====
   const overlay = $('#searchOverlay');
   const input = $('#searchInput');
   const results = $('#searchResults');
