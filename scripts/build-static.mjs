@@ -7,7 +7,7 @@
  *   /articles-index.json          — lightweight index for homepage + search
  *   /sitemap.xml                  — all public URLs
  *   /rss.xml                      — recent 30 articles
- *   /404.html                     — SPA-ish fallback
+ *   /404.html                     — fallback page
  *
  * Runs in Node 18+. Uses the Firebase REST API (no Admin SDK needed → no
  * privileged credentials stored anywhere in the repo or client).
@@ -22,8 +22,13 @@ import { fileURLToPath } from 'node:url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
 
-const FIREBASE_DB = process.env.FIREBASE_DB_URL || 'https://stardust-official-default-rtdb.firebaseio.com';
-const BASE_URL = process.env.SITE_BASE_URL || 'https://zishutron.github.io/zishu-insight';
+// Strip trailing slashes and whitespace so a malformed secret can't break the fetch
+const FIREBASE_DB = (process.env.FIREBASE_DB_URL || 'https://stardust-official-default-rtdb.firebaseio.com')
+  .trim()
+  .replace(/\/+$/, '');
+const BASE_URL = (process.env.SITE_BASE_URL || 'https://zishutron.github.io/zishu-insight')
+  .trim()
+  .replace(/\/+$/, '');
 const SITE_NAME = 'ZISHU TRON INSIGHT';
 const SITE_DESCRIPTION = 'The official publishing platform of ZISHU TRON. Product announcements, engineering deep dives, and company updates.';
 const MAX_RELATED = 3;
@@ -34,7 +39,17 @@ const ARTICLES_DIR = join(ROOT, 'articles');
 // ---------- helpers ----------
 const escapeHtml = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const escapeXml  = (s) => String(s ?? '').replace(/[<>&'"]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;',"'":'&apos;','"':'&quot;'}[c]));
-const slugify = (s) => String(s || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9\s-]/g,'').trim().replace(/\s+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'').slice(0,90);
+
+const slugify = (s) => String(s || '')
+  .toLowerCase()
+  .normalize('NFKD')
+  .replace(/[\u0300-\u036f]/g, '')
+  .replace(/[^a-z0-9\s-]/g, '')
+  .trim()
+  .replace(/\s+/g, '-')
+  .replace(/-+/g, '-')
+  .replace(/^-|-$/g, '')
+  .slice(0, 90);
 
 function estimateReadingTime(html){
   const text = String(html || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
@@ -46,28 +61,159 @@ function estimateReadingTime(html){
 async function fetchPublishedPosts(){
   const url = `${FIREBASE_DB}/posts.json?orderBy="status"&equalTo="published"`;
   const res = await fetch(url);
-  if(!res.ok) throw new Error(`Firebase fetch failed: ${res.status} ${res.statusText}`);
+  if(!res.ok){
+    const text = await res.text().catch(() => '');
+    throw new Error(`Firebase fetch failed: ${res.status} ${res.statusText} ${text}`);
+  }
   const data = await res.json() || {};
   return Object.entries(data).map(([id, p]) => ({ id, ...p }));
 }
 
-// ---------- Template rendering (tiny mustache-like engine) ----------
-function renderTemplate(tpl, data){
-  // Handle {{#KEY}}...{{/KEY}} conditionals and {{^KEY}}...{{/KEY}} inverted
-  let out = tpl.replace(/\{\{#(\w+)\}\}([\s\S]*?)\{\{\/\1\}\}/g, (_, key, inner) => {
-    const val = data[key];
-    if(!val) return '';
-    if(Array.isArray(val)) return val.map(() => inner).join(''); // not used here
-    return inner;
-  });
-  out = out.replace(/\{\{\^(\w+)\}\}([\s\S]*?)\{\{\/\1\}\}/g, (_, key, inner) => {
-    return data[key] ? '' : inner;
-  });
-  out = out.replace(/\{\{(\w+)\}\}/g, (_, key) => escapeHtml(data[key] ?? ''));
+// ---------- Server-side sanitizer ----------
+// Strips dangerous tags/attributes but keeps a broad allow-list so the admin
+// can render headings, lists, blockquotes, images, code blocks, and link cards.
+function sanitizeServerSide(html){
+  let out = String(html || '');
+  // Remove dangerous container tags entirely (content too)
+  out = out.replace(/<\s*(script|style|iframe|object|embed|form|input|button|noscript|link|meta)[^>]*>[\s\S]*?<\s*\/\s*\1\s*>/gi, '');
+  // Remove self-closing dangerous tags
+  out = out.replace(/<\s*(script|style|iframe|object|embed|form|input|button|noscript|link|meta)[^>]*\/?>/gi, '');
+  // Strip inline event handlers (onclick, onerror, etc.)
+  out = out.replace(/\son\w+\s*=\s*"[^"]*"/gi, '');
+  out = out.replace(/\son\w+\s*=\s*'[^']*'/gi, '');
+  out = out.replace(/\son\w+\s*=\s*[^\s>]+/gi, '');
+  // Strip javascript: URLs (in href/src)
+  out = out.replace(/(href|src)\s*=\s*"\s*javascript:[^"]*"/gi, '$1="#"');
+  out = out.replace(/(href|src)\s*=\s*'\s*javascript:[^']*'/gi, "$1='#'");
   return out;
 }
 
-// ---------- Generate one article page ----------
+// ---------- Link card transformation ----------
+// Converts standalone URLs and markdown links on their own line into
+// highlighted "link cards" for websites, APKs, downloads, and apps.
+// Inline links in paragraphs remain regular underlined links.
+function transformLinksToCards(html){
+  const lines = html.split('\n');
+  const out = [];
+
+  for(const line of lines){
+    const trimmed = line.trim();
+
+    // 1) Markdown link on its own line: [Label](url)
+    const mdMatch = trimmed.match(/^\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)$/);
+    if(mdMatch){
+      out.push(makeLinkCard(mdMatch[2], mdMatch[1]));
+      continue;
+    }
+
+    // 2) Bare URL wrapped in <p>...</p>
+    const bareInP = trimmed.match(/^<p>\s*(https?:\/\/[^\s<]+)\s*<\/p>$/i);
+    if(bareInP){
+      out.push(makeLinkCard(bareInP[1]));
+      continue;
+    }
+
+    // 3) Bare URL on its own line
+    const bare = trimmed.match(/^(https?:\/\/[^\s<]+)$/);
+    if(bare){
+      out.push(makeLinkCard(bare[1]));
+      continue;
+    }
+
+    out.push(line);
+  }
+
+  return out.join('\n');
+}
+
+function makeLinkCard(url, customLabel){
+  let label = customLabel || '';
+  let icon = '🌐';
+  let title = label;
+  let displayUrl = url;
+
+  try{
+    const u = new URL(url);
+    const host = u.hostname.replace(/^www\./, '');
+    const path = u.pathname;
+
+    if(!title){
+      if(path && path !== '/'){
+        const parts = path.split('/').filter(Boolean);
+        const last = parts[parts.length - 1];
+        if(last && !last.includes('.')){
+          title = last.replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+        } else {
+          title = host;
+        }
+      } else {
+        title = host;
+      }
+    }
+
+    // Determine type from URL
+    if(/\.apk($|\?)/i.test(url) || /apk/i.test(url)){
+      label = label || 'Android App';
+      icon = '📱';
+    } else if(/play\.google\.com/i.test(host)){
+      label = label || 'Google Play';
+      icon = '▶';
+    } else if(/apps\.apple\.com/i.test(host)){
+      label = label || 'App Store';
+      icon = '🍎';
+    } else if(/github\.com/i.test(host)){
+      label = label || 'GitHub';
+      icon = '⚡';
+    } else if(/\.(zip|tar|gz|dmg|exe)($|\?)/i.test(url) || /download/i.test(url)){
+      label = label || 'Download';
+      icon = '⬇';
+    } else if(host.includes('zishu') || host.includes('zishutron')){
+      label = label || 'Official Website';
+      icon = '🌐';
+    } else {
+      label = label || 'Website';
+      icon = '🌐';
+    }
+  }catch(e){
+    label = label || 'Link';
+  }
+
+  const arrowSvg = `<svg class="lc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`;
+
+  return `<a class="link-card" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">`
+    + `<div class="lc-icon" aria-hidden="true">${icon}</div>`
+    + `<div class="lc-body">`
+      + `<div class="lc-label">${escapeHtml(label)}</div>`
+      + `<div class="lc-title">${escapeHtml(title)}</div>`
+      + `<div class="lc-url">${escapeHtml(displayUrl)}</div>`
+    + `</div>`
+    + arrowSvg
+  + `</a>`;
+}
+
+// ---------- Tiny template renderer ----------
+// Supports {{KEY}}, {{#KEY}}...{{/KEY}}, {{^KEY}}...{{/KEY}}
+function renderTemplate(tpl, data){
+  // Conditionals {{#KEY}} ... {{/KEY}}
+  let out = tpl.replace(/\{\{#(\w+)\}\}([\s\S]*?)\{\{\/\1\}\}/g, (_, key, inner) => {
+    const val = data[key];
+    if(!val) return '';
+    return inner;
+  });
+  // Inverted {{^KEY}} ... {{/KEY}}
+  out = out.replace(/\{\{\^(\w+)\}\}([\s\S]*?)\{\{\/\1\}\}/g, (_, key, inner) => {
+    return data[key] ? '' : inner;
+  });
+  // Plain {{KEY}} — don't escape values that are already HTML
+  out = out.replace(/\{\{(\w+)\}\}/g, (_, key) => {
+    const v = data[key];
+    if(v === undefined || v === null) return '';
+    return String(v);
+  });
+  return out;
+}
+
+// ---------- Render one article ----------
 async function renderArticle(post, tpl, allPosts){
   const slug = post.slug || slugify(post.title || post.id);
   const canonical = `${BASE_URL}/articles/${slug}/`;
@@ -77,24 +223,27 @@ async function renderArticle(post, tpl, allPosts){
   const description = post.description || String(post.content || '').replace(/<[^>]+>/g,'').slice(0, 200).trim();
   const readingTime = post.readingTime || estimateReadingTime(post.content);
 
-  // tags
-  const tagsArr = Array.isArray(post.tags) ? post.tags
+  // Tags
+  const tagsArr = Array.isArray(post.tags)
+    ? post.tags
     : (post.tags && typeof post.tags === 'object' ? Object.values(post.tags) : []);
   const tagsHtml = tagsArr.length
     ? tagsArr.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('')
     : '';
 
-  // related articles (same category, exclude self, up to MAX_RELATED)
+  // Related articles (same category preferred)
   let related = allPosts.filter(p => p.id !== post.id && p.slug);
   if(post.category){
     const sameCat = related.filter(p => p.category === post.category);
     if(sameCat.length) related = [...sameCat, ...related.filter(p => p.category !== post.category)];
   }
-  related = related.sort((a,b) => (b.publishedAt||b.createdAt||0) - (a.publishedAt||a.createdAt||0)).slice(0, MAX_RELATED);
+  related = related
+    .sort((a,b) => (b.publishedAt||b.createdAt||0) - (a.publishedAt||a.createdAt||0))
+    .slice(0, MAX_RELATED);
   const relatedHtml = related.map(p => `
     <a class="rel-card" href="../../articles/${encodeURIComponent(p.slug)}/">
       <h3>${escapeHtml(p.title || 'Untitled')}</h3>
-      <p>${escapeHtml((p.description || '').slice(0,140))}</p>
+      <p>${escapeHtml((p.description || '').slice(0, 140))}</p>
       <div class="m">${new Date(p.publishedAt || p.createdAt || Date.now()).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'})} · ${p.readingTime || estimateReadingTime(p.content)} min read</div>
     </a>`).join('');
 
@@ -104,7 +253,6 @@ async function renderArticle(post, tpl, allPosts){
     "@type": "BlogPosting",
     "headline": post.title,
     "description": description,
-    "image": post.coverImage ? [post.coverImage] : undefined,
     "author": { "@type": "Person", "name": author },
     "publisher": {
       "@type": "Organization",
@@ -115,12 +263,12 @@ async function renderArticle(post, tpl, allPosts){
     "dateModified": new Date(updatedAt).toISOString(),
     "mainEntityOfPage": { "@type": "WebPage", "@id": canonical },
     "url": canonical,
-    "articleSection": post.category || undefined,
-    "keywords": tagsArr.length ? tagsArr.join(', ') : undefined,
     "wordCount": String(post.content || '').replace(/<[^>]+>/g,' ').split(/\s+/).filter(Boolean).length
   };
+  if(post.coverImage) jsonLd.image = [post.coverImage];
+  if(post.category) jsonLd.articleSection = post.category;
+  if(tagsArr.length) jsonLd.keywords = tagsArr.join(', ');
 
-  // breadcrumb
   const breadcrumbLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -131,45 +279,61 @@ async function renderArticle(post, tpl, allPosts){
     ]
   };
 
+  // Prepare content: sanitize + link-card transformation
+  const rawContent = post.content || '';
+  const safeContent = sanitizeServerSide(rawContent);
+  const finalContent = transformLinksToCards(safeContent);
+
   const data = {
-    TITLE: post.title,
-    DESCRIPTION: description,
+    TITLE: escapeHtml(post.title || ''),
+    DESCRIPTION: escapeHtml(description),
     CANONICAL_URL: canonical,
     CANONICAL_URL_ENCODED: encodeURIComponent(canonical),
-    TITLE_ENCODED: encodeURIComponent(post.title),
+    TITLE_ENCODED: encodeURIComponent(post.title || ''),
     ROBOTS: 'index,follow,max-image-preview:large,max-snippet:-1',
-    AUTHOR: author,
+    AUTHOR: escapeHtml(author),
     PUBLISHED_ISO: new Date(publishedAt).toISOString(),
     PUBLISHED_HUMAN: new Date(publishedAt).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}),
     UPDATED_ISO: new Date(updatedAt).toISOString(),
     UPDATED_HUMAN: updatedAt !== publishedAt ? new Date(updatedAt).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}) : '',
-    CATEGORY: post.category || '',
-    COVER_IMAGE: post.coverImage || '',
+    CATEGORY: post.category ? escapeHtml(post.category) : '',
+    COVER_IMAGE: post.coverImage ? escapeHtml(post.coverImage) : '',
     READING_TIME: String(readingTime),
-    CONTENT_HTML: sanitizeServerSide(post.content || ''),
+    CONTENT_HTML: finalContent,
     TAGS_HTML: tagsHtml,
     RELATED_HTML: relatedHtml,
     JSONLD: JSON.stringify([jsonLd, breadcrumbLd])
   };
 
-  return { html: renderTemplate(tpl, data), slug, canonical, publishedAt, updatedAt, description, title: post.title, category: post.category, tags: tagsArr, author, readingTime, coverImage: post.coverImage || '' };
+  const html = renderTemplate(tpl, data);
+
+  return {
+    html, slug, canonical,
+    id: post.id,
+    title: post.title || 'Untitled',
+    description,
+    category: post.category || '',
+    tags: tagsArr,
+    author,
+    readingTime,
+    coverImage: post.coverImage || '',
+    publishedAt,
+    updatedAt,
+    featured: !!post.featured
+  };
 }
 
-// Basic server-side sanitizer (mirrors client rules; strips scripts & event handlers)
-function sanitizeServerSide(html){
-  return String(html || '')
-    .replace(/<\s*(script|style|iframe|object|embed|form|input|button)[\s\S]*?<\s*\/\s*\1\s*>/gi, '')
-    .replace(/\son\w+\s*=\s*"[^"]*"/gi, '')
-    .replace(/\son\w+\s*=\s*'[^']*'/gi, '')
-    .replace(/javascript:/gi, '');
-}
-
-// ---------- sitemap / rss / 404 ----------
+// ---------- Sitemap / RSS / index ----------
 function buildSitemap(articles){
   const now = new Date().toISOString();
   const urls = [
     { loc: `${BASE_URL}/`, lastmod: now, prio: '1.0', freq: 'daily' },
-    ...articles.map(a => ({ loc: a.canonical, lastmod: new Date(a.updatedAt).toISOString(), prio: '0.8', freq: 'weekly' }))
+    ...articles.map(a => ({
+      loc: a.canonical,
+      lastmod: new Date(a.updatedAt).toISOString(),
+      prio: '0.8',
+      freq: 'weekly'
+    }))
   ];
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -227,17 +391,20 @@ function buildIndex(articles){
   return { generatedAt: new Date().toISOString(), count: idx.length, articles: idx };
 }
 
-const FALLBACK_404 = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Not found — ZISHU TRON INSIGHT</title><meta name="robots" content="noindex"><link rel="canonical" href="${BASE_URL}/"><style>body{font-family:-apple-system,system-ui,sans-serif;background:#faf9fd;color:#0f0a1f;display:grid;place-items:center;min-height:100vh;margin:0;text-align:center;padding:20px}a{color:#3b1e88}h1{font-size:2rem;margin-bottom:8px}p{color:#6b6288}</style></head><body><div><h1>404 — Not found</h1><p>This article may have been moved or unpublished.</p><p style="margin-top:20px"><a href="${BASE_URL}/">← Back to ZISHU TRON INSIGHT</a></p></div></body></html>`;
+const FALLBACK_404 = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Not found — ZISHU TRON INSIGHT</title><meta name="robots" content="noindex"><link rel="canonical" href="${BASE_URL}/"><style>body{font-family:-apple-system,system-ui,sans-serif;background:#fafaf9;color:#0c0a09;display:grid;place-items:center;min-height:100vh;margin:0;text-align:center;padding:20px}a{color:#d97706}h1{font-size:2rem;margin-bottom:8px;font-family:Georgia,serif}p{color:#78716c}</style></head><body><div><h1>404 — Not found</h1><p>This article may have been moved or unpublished.</p><p style="margin-top:20px"><a href="${BASE_URL}/">← Back to ZISHU TRON INSIGHT</a></p></div></body></html>`;
 
-// ---------- main ----------
+// ---------- Main ----------
 async function main(){
   console.log('[build] Fetching published articles…');
+  console.log(`[build] Firebase: ${FIREBASE_DB}`);
+  console.log(`[build] Base URL: ${BASE_URL}`);
+
   const posts = await fetchPublishedPosts();
   console.log(`[build] ${posts.length} published article(s)`);
 
   const tpl = await readFile(TEMPLATE_PATH, 'utf8');
 
-  // Clean previous generated article dirs (keep only what we regenerate)
+  // Clean previous generated article dirs
   if(existsSync(ARTICLES_DIR)){
     await rm(ARTICLES_DIR, { recursive: true, force: true });
   }
@@ -250,20 +417,13 @@ async function main(){
     const dir = join(ARTICLES_DIR, out.slug);
     await mkdir(dir, { recursive: true });
     await writeFile(join(dir, 'index.html'), out.html, 'utf8');
-    rendered.push({ ...out, id: post.id, featured: !!post.featured });
+    rendered.push(out);
     process.stdout.write(`  ✓ /articles/${out.slug}/\n`);
   }
 
-  // Index for the homepage
   await writeFile(join(ROOT, 'articles-index.json'), JSON.stringify(buildIndex(rendered), null, 2), 'utf8');
-
-  // Sitemap
   await writeFile(join(ROOT, 'sitemap.xml'), buildSitemap(rendered), 'utf8');
-
-  // RSS
   await writeFile(join(ROOT, 'rss.xml'), buildRss(rendered), 'utf8');
-
-  // 404
   await writeFile(join(ROOT, '404.html'), FALLBACK_404, 'utf8');
 
   console.log(`[build] Done. ${rendered.length} article page(s) written.`);
