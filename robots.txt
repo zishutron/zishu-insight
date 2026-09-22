@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /articles-index.json
+
+# Block Google from indexing admin-only paths
+Disallow: /*?utm_
+Disallow: /*?ref=
+
+Sitemap: https://zishutron.github.io/zishu-insight/sitemap.xml
