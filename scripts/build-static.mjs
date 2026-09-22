@@ -23,7 +23,7 @@ const ROOT = resolve(__dirname, '..');
 const FIREBASE_DB = (process.env.FIREBASE_DB_URL || 'https://stardust-official-default-rtdb.firebaseio.com')
   .trim()
   .replace(/\/+$/, '');
-const BASE_URL = (process.env.SITE_BASE_URL || 'https://zishutron.github.io/zishu-insight')
+const BASE_URL = (process.env.SITE_BASE_URL || 'https://zishu-insight.zishuai.cloud')
   .trim()
   .replace(/\/+$/, '');
 
