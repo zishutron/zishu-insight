@@ -14,6 +14,7 @@
  *
  * Invoked by .github/workflows/publish.yml (cron + manual dispatch).
  */
+
 import { readFile, writeFile, mkdir, rm } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
@@ -22,6 +23,7 @@ import { fileURLToPath } from 'node:url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
 
+// ---------- Config ----------
 // Strip trailing slashes and whitespace so a malformed secret can't break the fetch
 const FIREBASE_DB = (process.env.FIREBASE_DB_URL || 'https://stardust-official-default-rtdb.firebaseio.com')
   .trim()
@@ -29,6 +31,7 @@ const FIREBASE_DB = (process.env.FIREBASE_DB_URL || 'https://stardust-official-d
 const BASE_URL = (process.env.SITE_BASE_URL || 'https://zishutron.github.io/zishu-insight')
   .trim()
   .replace(/\/+$/, '');
+
 const SITE_NAME = 'ZISHU TRON INSIGHT';
 const SITE_DESCRIPTION = 'The official publishing platform of ZISHU TRON. Product announcements, engineering deep dives, and company updates.';
 const MAX_RELATED = 3;
@@ -36,9 +39,14 @@ const DEFAULT_AUTHOR = 'ZISHU TRON';
 const TEMPLATE_PATH = join(ROOT, 'article.html');
 const ARTICLES_DIR = join(ROOT, 'articles');
 
-// ---------- helpers ----------
-const escapeHtml = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const escapeXml  = (s) => String(s ?? '').replace(/[<>&'"]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;',"'":'&apos;','"':'&quot;'}[c]));
+// ---------- Helpers ----------
+const escapeHtml = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+}[c]));
+
+const escapeXml = (s) => String(s ?? '').replace(/[<>&'"]/g, c => ({
+  '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;'
+}[c]));
 
 const slugify = (s) => String(s || '')
   .toLowerCase()
@@ -57,7 +65,7 @@ function estimateReadingTime(html){
   return Math.max(1, Math.round(words / 220));
 }
 
-// ---------- Firebase REST ----------
+// ---------- Firebase REST fetch ----------
 async function fetchPublishedPosts(){
   const url = `${FIREBASE_DB}/posts.json?orderBy="status"&equalTo="published"`;
   const res = await fetch(url);
@@ -85,6 +93,46 @@ function sanitizeServerSide(html){
   // Strip javascript: URLs (in href/src)
   out = out.replace(/(href|src)\s*=\s*"\s*javascript:[^"]*"/gi, '$1="#"');
   out = out.replace(/(href|src)\s*=\s*'\s*javascript:[^']*'/gi, "$1='#'");
+  return out;
+}
+
+// ---------- Markdown-style inline formatting ----------
+// Converts **bold**, *italic*, __bold__, _italic_, ~~strike~~, `code`,
+// and ==highlight== into HTML. Code blocks are protected first so that
+// formatting markers inside code are not transformed.
+function transformMarkdownFormatting(html){
+  let out = String(html || '');
+
+  // Protect code blocks and inline code from further transforms
+  const codePlaceholders = [];
+  out = out.replace(/<pre><code>([\s\S]*?)<\/code><\/pre>/gi, (m) => {
+    const idx = codePlaceholders.length;
+    codePlaceholders.push(m);
+    return `\u0000CODEBLOCK${idx}\u0000`;
+  });
+  out = out.replace(/<code>([\s\S]*?)<\/code>/gi, (m) => {
+    const idx = codePlaceholders.length;
+    codePlaceholders.push(m);
+    return `\u0000CODEINLINE${idx}\u0000`;
+  });
+
+  // ==highlight==  →  <mark>
+  out = out.replace(/==([^=\n]+?)==/g, '<mark>$1</mark>');
+  // **bold**  →  <strong>
+  out = out.replace(/\*\*([^*\n]+?)\*\*/g, '<strong>$1</strong>');
+  // __bold__  →  <strong>
+  out = out.replace(/__([^_\n]+?)__/g, '<strong>$1</strong>');
+  // *italic*  →  <em>  (only when surrounded by word boundaries)
+  out = out.replace(/(^|[\s(])\*([^*\n]+?)\*(?=[\s).,;:!?]|$)/g, '$1<em>$2</em>');
+  // _italic_  →  <em>
+  out = out.replace(/(^|[\s(])_([^_\n]+?)_(?=[\s).,;:!?]|$)/g, '$1<em>$2</em>');
+  // ~~strike~~  →  <del>
+  out = out.replace(/~~([^~\n]+?)~~/g, '<del>$1</del>');
+
+  // Restore code
+  out = out.replace(/\u0000CODEBLOCK(\d+)\u0000/g, (_, i) => codePlaceholders[Number(i)]);
+  out = out.replace(/\u0000CODEINLINE(\d+)\u0000/g, (_, i) => codePlaceholders[Number(i)]);
+
   return out;
 }
 
@@ -130,7 +178,7 @@ function makeLinkCard(url, customLabel){
   let label = customLabel || '';
   let icon = '🌐';
   let title = label;
-  let displayUrl = url;
+  const displayUrl = url;
 
   try{
     const u = new URL(url);
@@ -151,7 +199,7 @@ function makeLinkCard(url, customLabel){
       }
     }
 
-    // Determine type from URL
+    // Type detection from URL
     if(/\.apk($|\?)/i.test(url) || /apk/i.test(url)){
       label = label || 'Android App';
       icon = '📱';
@@ -204,7 +252,7 @@ function renderTemplate(tpl, data){
   out = out.replace(/\{\{\^(\w+)\}\}([\s\S]*?)\{\{\/\1\}\}/g, (_, key, inner) => {
     return data[key] ? '' : inner;
   });
-  // Plain {{KEY}} — don't escape values that are already HTML
+  // Plain {{KEY}} — values are pre-escaped where needed
   out = out.replace(/\{\{(\w+)\}\}/g, (_, key) => {
     const v = data[key];
     if(v === undefined || v === null) return '';
@@ -279,10 +327,11 @@ async function renderArticle(post, tpl, allPosts){
     ]
   };
 
-  // Prepare content: sanitize + link-card transformation
+  // Pipeline: sanitize → format markdown → transform links to cards
   const rawContent = post.content || '';
   const safeContent = sanitizeServerSide(rawContent);
-  const finalContent = transformLinksToCards(safeContent);
+  const formattedContent = transformMarkdownFormatting(safeContent);
+  const finalContent = transformLinksToCards(formattedContent);
 
   const data = {
     TITLE: escapeHtml(post.title || ''),
