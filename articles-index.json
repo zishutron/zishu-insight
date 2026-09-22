@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-22T06:48:16.900Z",
+  "generatedAt": "2026-09-22T07:01:34.348Z",
   "count": 1,
   "articles": [
     {
@@ -11,11 +11,11 @@
       "tags": [
         "publishing"
       ],
-      "coverImage": "",
-      "authorName": "ZISHU TRON Admin",
+      "coverImage": "https://i.ibb.co/MxCJn9T1/file-00000000672081f8b21d29d30298e881.png",
+      "authorName": "ZISHU TRON",
       "publishedAt": 1790056631461,
       "readingTime": 4,
-      "featured": true
+      "featured": false
     }
   ]
 }
