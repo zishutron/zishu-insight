@@ -2,8 +2,8 @@ name: Publish Insight
 on:
   workflow_dispatch:
   schedule:
-    # Rebuild every hour on the hour (UTC). Adjust as needed.
-    - cron: '0 * * * *'
+    # Har 10 minute me check karta hai naye articles ke liye
+    - cron: '*/10 * * * *'
   push:
     branches: [ main ]
     paths:
