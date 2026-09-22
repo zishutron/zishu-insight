@@ -1,660 +1,1021 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
-  <title>ZISHU TRON Admin Panel</title>
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    }
-    body {
-      background: #f8f7ff;
-      color: #1a1030;
-      padding: 20px;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s, color 0.2s;
-    }
-    body.dark {
-      background: #0d0b1a;
-      color: #eae6f5;
-    }
-    .container {
-      max-width: 900px;
-      width: 100%;
-      margin: 0 auto;
-    }
-    .admin-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 0;
-      border-bottom: 1px solid #ede8f8;
-      margin-bottom: 24px;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    body.dark .admin-header {
-      border-bottom-color: #322d50;
-    }
-    .admin-header h1 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, #2a1a50, #5a3a9e);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    body.dark .admin-header h1 {
-      background: linear-gradient(135deg, #c8b8f0, #b098e0);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .admin-header .back-link {
-      color: #5a3a9e;
-      text-decoration: none;
-      font-weight: 500;
-    }
-    body.dark .admin-header .back-link {
-      color: #b098e0;
-    }
-    .admin-header .back-link:hover {
-      text-decoration: underline;
-    }
-    .theme-toggle {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 6px 8px;
-      border-radius: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #4a3a6b;
-      transition: 0.2s;
-    }
-    body.dark .theme-toggle {
-      color: #c8b8f0;
-    }
-    .theme-toggle svg {
-      width: 28px;
-      height: 28px;
-      stroke: currentColor;
-      stroke-width: 2;
-      fill: none;
-    }
-    .theme-toggle:hover {
-      background: rgba(120, 80, 200, 0.08);
-    }
-    .admin-panel {
-      background: white;
-      border-radius: 24px;
-      padding: 30px;
-      border: 1px solid #ede8f8;
-    }
-    body.dark .admin-panel {
-      background: #18152e;
-      border-color: #322d50;
-    }
-    .admin-panel h2 {
-      font-size: 1.4rem;
-      margin-bottom: 16px;
-    }
-    .field {
-      margin-bottom: 16px;
-    }
-    .field label {
-      font-weight: 600;
-      display: block;
-      margin-bottom: 4px;
-    }
-    .field input,
-    .field textarea {
-      width: 100%;
-      padding: 12px 16px;
-      border-radius: 16px;
-      border: 1px solid #d0c8e8;
-      font-size: 1rem;
-      background: #f8f7ff;
-      color: inherit;
-    }
-    body.dark .field input,
-    body.dark .field textarea {
-      background: #0d0b1a;
-      border-color: #423b6a;
-      color: #eae6f5;
-    }
-    .field textarea {
-      min-height: 120px;
-      resize: vertical;
-    }
-    .char-counter {
-      font-size: 0.8rem;
-      color: #5a4a7a;
-      text-align: right;
-      margin-top: 2px;
-    }
-    body.dark .char-counter {
-      color: #b0a0d0;
-    }
-    .admin-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 16px;
-    }
-    .btn-primary {
-      background: #2a1a50;
-      color: white;
-      border: none;
-      padding: 10px 28px;
-      border-radius: 60px;
-      font-weight: 600;
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: 0.15s;
-    }
-    body.dark .btn-primary {
-      background: #c8b8f0;
-      color: #1a1030;
-    }
-    .btn-primary:hover {
-      opacity: 0.85;
-    }
-    .btn-danger {
-      background: #b13e3e;
-      color: white;
-      border: none;
-      padding: 10px 28px;
-      border-radius: 60px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .btn-danger:hover {
-      background: #8f2e2e;
-    }
-    .btn-ghost {
-      background: transparent;
-      border: 1px solid #b8a8e0;
-      padding: 10px 28px;
-      border-radius: 60px;
-      font-weight: 500;
-      cursor: pointer;
-    }
-    body.dark .btn-ghost {
-      border-color: #5a4a8a;
-      color: #eae6f5;
-    }
-    .btn-ghost:hover {
-      background: #ede8f8;
-    }
-    body.dark .btn-ghost:hover {
-      background: #2a1a50;
-    }
-    .btn-success {
-      background: #1c6b3b;
-      color: white;
-      border: none;
-      padding: 10px 28px;
-      border-radius: 60px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .btn-success:hover {
-      background: #14522d;
-    }
-    .admin-post-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 16px;
-      border-bottom: 1px solid #ede8f8;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    body.dark .admin-post-item {
-      border-bottom-color: #322d50;
-    }
-    .admin-post-item .title {
-      font-weight: 600;
-      flex: 1;
-    }
-    .admin-post-item .actions {
-      display: flex;
-      gap: 8px;
-    }
-    .admin-post-item .actions button {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 500;
-    }
-    .admin-post-item .actions .edit-btn {
-      color: #5a3a9e;
-    }
-    body.dark .admin-post-item .actions .edit-btn {
-      color: #b098e0;
-    }
-    .admin-post-item .actions .edit-btn:hover {
-      background: #5a3a9e20;
-    }
-    .admin-post-item .actions .delete-btn {
-      color: #b13e3e;
-    }
-    .admin-post-item .actions .delete-btn:hover {
-      background: #b13e3e20;
-    }
-    .empty-state {
-      padding: 40px 0;
-      text-align: center;
-      color: #5a4a7a;
-    }
-    .empty-state h4 {
-      font-size: 1.1rem;
-      margin-bottom: 4px;
-    }
-    .hidden {
-      display: none !important;
-    }
-    .toast {
-      position: fixed;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #2a1a50;
-      color: white;
-      padding: 14px 28px;
-      border-radius: 60px;
-      font-weight: 500;
-      z-index: 300;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-      max-width: 90%;
-      text-align: center;
-    }
-    body.dark .toast {
-      background: #c8b8f0;
-      color: #1a1030;
-    }
-    .login-box {
-      padding: 30px 20px;
-      text-align: center;
-      max-width: 400px;
-      margin: 0 auto;
-    }
-    .login-box h2 {
-      margin-bottom: 20px;
-      font-size: 1.5rem;
-    }
-    .login-box .field {
-      text-align: left;
-    }
-    .login-box .field input {
-      width: 100%;
-    }
-    .login-box .btn-primary {
-      width: 100%;
-      margin-top: 8px;
-    }
-    .login-error {
-      color: #b13e3e;
-      font-size: 0.9rem;
-      margin-top: 8px;
-    }
-    .authorized-badge {
-      color: #1c6b3b;
-      font-weight: 600;
-    }
-    hr {
-      margin: 24px 0;
-      border-color: #ede8f8;
-    }
-    body.dark hr {
-      border-color: #322d50;
-    }
-    .header-actions {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
-    @media (max-width: 720px) {
-      .admin-panel {
-        padding: 18px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZISHU TRON Insight · Admin</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0b0a14">
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<style>
+:root{
+  --bg:#f7f6fb; --bg-elev:#ffffff; --bg-sub:#f1eefb; --border:#e6e2f1; --border-strong:#d6cfeb;
+  --text:#0f0a1f; --text-2:#3d3459; --text-3:#6b6288;
+  --accent:#3b1e88; --accent-2:#6b46c1; --accent-soft:#efeafd;
+  --success:#0f7a4a; --warning:#a86a00; --danger:#b3312b;
+  --radius:10px; --radius-lg:14px;
+  --shadow:0 4px 16px rgba(30,15,80,.06);
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+[data-theme="dark"]{
+  --bg:#0b0a14; --bg-elev:#12101f; --bg-sub:#1a1730; --border:#242040; --border-strong:#332c56;
+  --text:#f2eefb; --text-2:#c9c2e0; --text-3:#8f86b3;
+  --accent:#b39bff; --accent-2:#c7b5ff; --accent-soft:#1c1733;
+  --shadow:0 6px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh;font-size:15px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+button{font-family:inherit;cursor:pointer}
+input,textarea,select{font-family:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+
+/* Header */
+.hdr{border-bottom:1px solid var(--border);background:var(--bg-elev);position:sticky;top:0;z-index:20}
+.hdr-inner{max-width:1280px;margin:0 auto;padding:0 20px;height:56px;display:flex;align-items:center;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--text)}
+.brand-mark{width:26px;height:26px;border-radius:6px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;color:#fff;font-weight:800;font-size:12px}
+.brand-sub{font-size:12px;color:var(--text-3);font-weight:500;letter-spacing:.06em;text-transform:uppercase;margin-left:6px}
+.hdr-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.avatar{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);object-fit:cover;background:var(--bg-sub)}
+.icon-btn{width:36px;height:36px;display:grid;place-items:center;border-radius:8px;border:1px solid transparent;background:transparent;color:var(--text-2)}
+.icon-btn:hover{background:var(--bg-sub);color:var(--text)}
+.icon-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:38px;padding:0 16px;border-radius:9px;border:1px solid transparent;font-weight:600;font-size:14px;background:transparent;color:inherit;transition:.12s;white-space:nowrap}
+.btn:hover{text-decoration:none}
+.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-primary:hover{opacity:.9}
+[data-theme="dark"] .btn-primary{color:#0f0a1f}
+.btn-outline{border-color:var(--border-strong)}
+.btn-outline:hover{background:var(--bg-sub)}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-danger:hover{background:#8f2620}
+.btn-sm{height:32px;padding:0 12px;font-size:13px;border-radius:8px}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+
+/* Main */
+.main{max-width:1280px;margin:0 auto;padding:24px 20px 80px}
+
+/* Login view */
+.login-wrap{min-height:calc(100vh - 57px);display:grid;place-items:center;padding:40px 20px}
+.login-card{width:100%;max-width:420px;background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius-lg);padding:36px 32px;box-shadow:var(--shadow)}
+.login-card h1{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;margin-bottom:6px}
+.login-card p{color:var(--text-3);font-size:14px;margin-bottom:24px}
+.google-btn{width:100%;height:46px;background:var(--bg);border:1px solid var(--border-strong);border-radius:9px;font-weight:600;color:var(--text);display:flex;align-items:center;justify-content:center;gap:10px;font-size:15px}
+.google-btn:hover{background:var(--bg-sub)}
+.google-btn svg{width:20px;height:20px}
+.err{color:var(--danger);background:#b3312b11;border:1px solid #b3312b33;border-radius:8px;padding:12px 14px;font-size:13.5px;margin-top:16px}
+
+/* Dashboard */
+.dash-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.dash-head h1{font-size:1.55rem;font-weight:800;letter-spacing:-.02em}
+.dash-head p{color:var(--text-3);font-size:13.5px;margin-top:3px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.stat{background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px}
+.stat .k{font-size:12px;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.stat .v{font-size:1.6rem;font-weight:800;letter-spacing:-.02em;margin-top:4px}
+.stat .d{font-size:12.5px;color:var(--text-3);margin-top:2px}
+@media (max-width:820px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:20px;overflow-x:auto}
+.tab{padding:10px 16px;border:0;background:transparent;font-weight:600;font-size:14px;color:var(--text-3);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tab.active{color:var(--text);border-bottom-color:var(--accent)}
+.tab:hover:not(.active){color:var(--text-2)}
+
+/* Editor */
+.editor-grid{display:grid;grid-template-columns:1fr 320px;gap:22px}
+@media (max-width:1024px){.editor-grid{grid-template-columns:1fr}}
+.panel{background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px}
+.panel h3{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin-bottom:14px}
+.field{margin-bottom:16px}
+.field label{display:block;font-weight:600;font-size:13.5px;margin-bottom:6px;color:var(--text-2)}
+.field input,.field textarea,.field select{
+  width:100%;padding:10px 12px;border-radius:9px;border:1px solid var(--border-strong);
+  background:var(--bg);color:var(--text);font-size:14.5px;transition:.12s;
+}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--accent-soft)}
+.field textarea{min-height:90px;resize:vertical;line-height:1.55}
+.field .hint{font-size:12px;color:var(--text-3);margin-top:4px}
+.field .counter{font-size:12px;color:var(--text-3);text-align:right;margin-top:4px}
+
+/* Toolbar for editor */
+.tb{display:flex;flex-wrap:wrap;gap:2px;background:var(--bg-sub);border:1px solid var(--border-strong);border-bottom:0;border-radius:9px 9px 0 0;padding:6px}
+.tb button{background:transparent;border:0;width:32px;height:30px;border-radius:6px;color:var(--text-2);display:grid;place-items:center;font-weight:700;font-size:13px}
+.tb button:hover{background:var(--bg)}
+.tb .sep{width:1px;background:var(--border-strong);margin:2px 4px}
+#editorBody{border-radius:0 0 9px 9px;min-height:420px;font-family:var(--font);font-size:15px;line-height:1.7;padding:14px 16px}
+#editorBody:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+#editorBody h1,#editorBody h2,#editorBody h3{margin:.9em 0 .4em;letter-spacing:-.015em;line-height:1.25}
+#editorBody h1{font-size:1.5rem}
+#editorBody h2{font-size:1.25rem}
+#editorBody h3{font-size:1.1rem}
+#editorBody p{margin:.7em 0}
+#editorBody ul,#editorBody ol{margin:.7em 0 .7em 1.4em}
+#editorBody li{margin:.25em 0}
+#editorBody blockquote{margin:.8em 0;padding:.6em 1em;border-left:3px solid var(--accent);background:var(--accent-soft);color:var(--text-2);border-radius:0 8px 8px 0}
+#editorBody pre{background:var(--bg-sub);padding:12px 14px;border-radius:8px;overflow:auto;font-family:var(--mono);font-size:13.5px;margin:.8em 0}
+#editorBody code{font-family:var(--mono);font-size:.92em;background:var(--bg-sub);padding:1px 5px;border-radius:4px}
+#editorBody pre code{background:transparent;padding:0}
+#editorBody a{color:var(--accent);text-decoration:underline}
+#editorBody hr{border:0;border-top:1px solid var(--border-strong);margin:1.2em 0}
+#editorBody img{max-width:100%;border-radius:8px;margin:.6em 0}
+
+/* Slug row */
+.slug-row{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-3);background:var(--bg-sub);border:1px solid var(--border-strong);border-radius:9px;padding:8px 10px;flex-wrap:wrap}
+.slug-row input{flex:1;min-width:120px;border:0;background:transparent;font-family:var(--mono);font-size:13px;color:var(--text)}
+.slug-row input:focus{outline:none}
+
+/* Buttons row */
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;align-items:center}
+.actions .spacer{flex:1}
+.status-pill{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;padding:5px 10px;border-radius:100px;background:var(--accent-soft);color:var(--accent)}
+.status-pill.draft{background:#fef3c7;color:#92400e}
+[data-theme="dark"] .status-pill.draft{background:#3a2a00;color:#fbbf24}
+.status-pill.published{background:#d1fae5;color:#065f46}
+[data-theme="dark"] .status-pill.published{background:#053a26;color:#6ee7b7}
+.status-pill.publishing{background:#dbeafe;color:#1e40af}
+[data-theme="dark"] .status-pill.publishing{background:#1e2a4a;color:#93c5fd}
+.status-pill.error{background:#fee2e2;color:#991b1b}
+[data-theme="dark"] .status-pill.error{background:#3a1515;color:#fca5a5}
+
+/* List table */
+table.list{width:100%;border-collapse:collapse}
+table.list th,table.list td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--border);font-size:14px;vertical-align:middle}
+table.list th{font-size:12px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em}
+table.list tr:hover td{background:var(--bg-sub)}
+table.list .t-title{font-weight:600;color:var(--text)}
+table.list .t-title:hover{color:var(--accent);text-decoration:none}
+table.list .t-actions{display:flex;gap:4px;justify-content:flex-end}
+.row-btn{background:transparent;border:1px solid var(--border-strong);border-radius:7px;padding:5px 10px;font-size:12.5px;font-weight:600;color:var(--text-2)}
+.row-btn:hover{background:var(--bg)}
+.row-btn.danger{color:var(--danger);border-color:#b3312b55}
+.row-btn.danger:hover{background:#b3312b11}
+@media (max-width:720px){
+  table.list thead{display:none}
+  table.list tr{display:block;border:1px solid var(--border);border-radius:9px;margin-bottom:8px;padding:10px}
+  table.list td{display:block;border:0;padding:4px 0}
+  table.list .t-actions{justify-content:flex-start;margin-top:6px}
+}
+
+.toolbar-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.toolbar-row input[type=search]{flex:1;min-width:200px;padding:9px 12px;border-radius:9px;border:1px solid var(--border-strong);background:var(--bg);color:var(--text);font-size:14px}
+.toolbar-row select{padding:9px 12px;border-radius:9px;border:1px solid var(--border-strong);background:var(--bg);color:var(--text);font-size:14px}
+
+/* Modal */
+.modal-bg{position:fixed;inset:0;background:rgba(15,10,31,.5);display:none;z-index:100;padding:20px;overflow:auto}
+.modal-bg.open{display:block}
+.modal{max-width:900px;margin:40px auto;background:var(--bg-elev);border-radius:var(--radius-lg);border:1px solid var(--border);box-shadow:var(--shadow);overflow:hidden}
+.modal-head{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--border)}
+.modal-head h3{font-size:15px;font-weight:700;margin-right:auto}
+.modal-body{padding:28px 32px;max-height:70vh;overflow:auto}
+@media (max-width:640px){.modal-body{padding:20px 18px}}
+
+/* Preview article styling */
+.preview h1{font-size:2rem;line-height:1.2;letter-spacing:-.02em;margin-bottom:8px}
+.preview .meta{color:var(--text-3);font-size:13.5px;margin-bottom:20px}
+.preview .body{font-size:16.5px;line-height:1.75;color:var(--text)}
+.preview .body h2{font-size:1.4rem;margin:1.4em 0 .5em;letter-spacing:-.015em}
+.preview .body h3{font-size:1.15rem;margin:1.2em 0 .4em}
+.preview .body p{margin:.9em 0}
+.preview .body ul,.preview .body ol{margin:.9em 0 .9em 1.5em}
+.preview .body blockquote{margin:1em 0;padding:.7em 1.1em;border-left:3px solid var(--accent);background:var(--accent-soft);border-radius:0 8px 8px 0}
+.preview .body pre{background:var(--bg-sub);padding:14px 16px;border-radius:9px;overflow:auto;font-family:var(--mono);font-size:14px;margin:1em 0}
+.preview .body code{font-family:var(--mono);font-size:.9em;background:var(--bg-sub);padding:2px 6px;border-radius:4px}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:12px 20px;border-radius:100px;font-weight:600;font-size:14px;box-shadow:var(--shadow);z-index:200;max-width:90vw;animation:pop .2s}
+.toast.err{background:var(--danger);color:#fff}
+.toast.ok{background:var(--success);color:#fff}
+@keyframes pop{from{transform:translate(-50%,10px);opacity:0}to{transform:translate(-50%,0);opacity:1}}
+
+.hidden{display:none !important}
+.muted{color:var(--text-3);font-size:13.5px}
+</style>
 </head>
 <body>
-  <div class="container">
-    <div class="admin-header">
-      <h1>⚙️ ZISHU TRON Admin</h1>
-      <div class="header-actions">
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-        </button>
-        <a href="/zishu-insight/" class="back-link">← Back to Insights</a>
-      </div>
-    </div>
-    <div class="admin-panel" id="adminPanel">
-      <!-- Login Area -->
-      <div id="adminLoginArea">
-        <div class="login-box">
-          <h2>Admin Login</h2>
-          <div class="field">
-            <label>Username</label>
-            <input type="text" id="loginUsername" placeholder="Enter username" />
-          </div>
-          <div class="field">
-            <label>Password</label>
-            <input type="password" id="loginPassword" placeholder="Enter password" />
-          </div>
-          <button class="btn-primary" id="loginBtn">Login</button>
-          <div id="loginError" class="login-error hidden"></div>
-        </div>
-      </div>
 
-      <!-- Admin Content -->
-      <div id="adminContent" class="hidden">
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
-          <h2>Manage Articles</h2>
-          <button class="btn-ghost" id="logoutBtn">Logout</button>
-        </div>
-        <div class="field">
-          <label>Title</label>
-          <input id="adminTitle" maxlength="150" placeholder="Enter article title" />
-          <div class="char-counter" id="adminTitleCounter">0 / 150</div>
-        </div>
-        <div class="field">
-          <label>Content</label>
-          <textarea id="adminContentText" maxlength="50000" placeholder="Write your update here..."></textarea>
-          <div class="char-counter" id="adminContentCounter">0 / 50000</div>
-        </div>
-        <div class="admin-actions">
-          <button class="btn-primary" id="adminPublishBtn">Publish Article</button>
-          <button class="btn-ghost" id="adminCancelEditBtn" style="display:none;">Cancel Edit</button>
-        </div>
-        <hr />
-        <h3 style="margin-bottom:12px;">Your Published Articles</h3>
-        <div id="adminPostsList"></div>
-        <div id="adminEmptyPosts" class="empty-state hidden" style="padding:20px 0;"><h4>No articles published yet.</h4></div>
-      </div>
+<header class="hdr">
+  <div class="hdr-inner">
+    <a class="brand" href="./" style="text-decoration:none">
+      <span class="brand-mark">Z</span>
+      <span>ZISHU TRON</span>
+      <span class="brand-sub">Insight Admin</span>
+    </a>
+    <div class="hdr-right">
+      <a class="btn btn-outline btn-sm" href="./" id="viewSite">View site</a>
+      <button class="icon-btn" id="themeBtn" aria-label="Toggle theme">
+        <svg viewBox="0 0 24 24" id="themeIcon"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4" y1="12" x2="2" y2="12"/><line x1="22" y1="12" x2="20" y2="12"/><line x1="5.6" y1="5.6" x2="4.2" y2="4.2"/><line x1="19.8" y1="19.8" x2="18.4" y2="18.4"/><line x1="5.6" y1="18.4" x2="4.2" y2="19.8"/><line x1="19.8" y1="4.2" x2="18.4" y2="5.6"/></svg>
+      </button>
+      <img class="avatar hidden" id="userAvatar" alt="">
+      <button class="btn btn-outline btn-sm hidden" id="logoutBtn">Sign out</button>
     </div>
   </div>
-  <div id="toastContainer" class="toast hidden"></div>
+</header>
 
-  <script>
-    (function() {
-      const firebaseConfig = {
-        apiKey: "AIzaSyAL0FSX7YfhQ-IoqE3a7axcLjgN7cPySM0",
-        authDomain: "stardust-official.firebaseapp.com",
-        databaseURL: "https://stardust-official-default-rtdb.firebaseio.com",
-        projectId: "stardust-official",
-        storageBucket: "stardust-official.firebasestorage.app",
-        messagingSenderId: "1065835601050",
-        appId: "1:1065835601050:web:56d326d89b1efb52f45323",
-        measurementId: "G-X552DVRG7K"
-      };
-      
-      firebase.initializeApp(firebaseConfig);
-      const db = firebase.database();
+<main class="main" id="main">
 
-      const ADMIN_USERNAME = "admin786";
-      const ADMIN_PASSWORD = "zishuadmin";
+  <!-- LOADING -->
+  <div id="loadingView" class="login-wrap">
+    <div class="login-card" style="text-align:center">
+      <div class="muted">Checking authentication…</div>
+    </div>
+  </div>
 
-      let isAdmin = false;
-      let allPosts = [];
-      let editingPostId = null;
+  <!-- LOGIN -->
+  <div id="loginView" class="login-wrap hidden">
+    <div class="login-card">
+      <h1>Admin sign-in</h1>
+      <p>Sign in with the Google account authorized for ZISHU TRON Insight.</p>
+      <button class="google-btn" id="googleSignIn">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.4 29.3 35 24 35c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34 5.3 29.3 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21 21-9.4 21-21c0-1.2-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19 13 24 13c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34 5.3 29.3 3 24 3 16 3 9 7.6 6.3 14.7z"/><path fill="#4CAF50" d="M24 45c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 36.5 26.7 37 24 37c-5.2 0-9.7-3.3-11.3-8l-6.5 5C9 40.3 16 45 24 45z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.1 5.6l6.2 5.2C40.9 36.2 45 30.9 45 24c0-1.2-.1-2.4-.4-3.5z"/></svg>
+        Continue with Google
+      </button>
+      <div class="err hidden" id="loginErr"></div>
+      <p class="muted" style="margin-top:20px;font-size:12.5px">
+        Only Google accounts listed in the <code>admins</code> database node can access this panel.
+        Your session is managed by Firebase Authentication.
+      </p>
+    </div>
+  </div>
 
-      const $ = (s) => document.querySelector(s);
-      const toastContainer = $('#toastContainer');
-      const adminLoginArea = $('#adminLoginArea');
-      const adminContent = $('#adminContent');
-      const adminTitle = $('#adminTitle');
-      const adminContentText = $('#adminContentText');
-      const adminTitleCounter = $('#adminTitleCounter');
-      const adminContentCounter = $('#adminContentCounter');
-      const adminPublishBtn = $('#adminPublishBtn');
-      const adminCancelEditBtn = $('#adminCancelEditBtn');
-      const adminPostsList = $('#adminPostsList');
-      const adminEmptyPosts = $('#adminEmptyPosts');
-      const loginUsername = $('#loginUsername');
-      const loginPassword = $('#loginPassword');
-      const loginBtn = $('#loginBtn');
-      const loginError = $('#loginError');
-      const logoutBtn = $('#logoutBtn');
-      const themeToggle = $('#themeToggle');
+  <!-- UNAUTHORIZED -->
+  <div id="unauthView" class="login-wrap hidden">
+    <div class="login-card" style="text-align:center">
+      <h1>Not authorized</h1>
+      <p style="margin-bottom:0">Your Google account is signed in, but it is not on the ZISHU TRON Insight admin list.</p>
+      <p class="muted" style="margin-top:14px">UID: <code id="unauthUid"></code></p>
+      <button class="btn btn-outline" id="unauthLogout" style="margin-top:20px">Sign out</button>
+    </div>
+  </div>
 
-      // --- Theme ---
-      function setTheme(dark) {
-        document.body.classList.toggle('dark', dark);
-        localStorage.setItem('zishu-theme', dark ? 'dark' : 'light');
-      }
-      const saved = localStorage.getItem('zishu-theme');
-      if (saved === 'dark') setTheme(true);
-      themeToggle.addEventListener('click', () => {
-        const isDark = document.body.classList.contains('dark');
-        setTheme(!isDark);
-      });
+  <!-- DASHBOARD -->
+  <div id="dashView" class="hidden">
+    <div class="dash-head">
+      <div>
+        <h1>Dashboard</h1>
+        <p>Manage every article published on ZISHU TRON Insight.</p>
+      </div>
+      <button class="btn btn-primary" id="newArticleBtn">+ New article</button>
+    </div>
 
-      function showToast(msg) {
-        toastContainer.textContent = msg;
-        toastContainer.classList.remove('hidden');
-        setTimeout(() => toastContainer.classList.add('hidden'), 4000);
-      }
+    <div class="stats">
+      <div class="stat"><div class="k">Published</div><div class="v" id="statPublished">0</div><div class="d">Live on the site</div></div>
+      <div class="stat"><div class="k">Drafts</div><div class="v" id="statDrafts">0</div><div class="d">Not yet visible</div></div>
+      <div class="stat"><div class="k">Total</div><div class="v" id="statTotal">0</div><div class="d">All articles</div></div>
+      <div class="stat"><div class="k">Latest</div><div class="v" id="statLatest" style="font-size:1rem">—</div><div class="d" id="statLatestMeta">No articles</div></div>
+    </div>
 
-      function renderAdminPosts() {
-        if (!isAdmin) return;
-        const userPosts = allPosts.filter(p => p.authorId === 'admin786');
-        if (userPosts.length === 0) {
-          adminPostsList.innerHTML = '';
-          adminEmptyPosts.classList.remove('hidden');
-          return;
-        }
-        adminEmptyPosts.classList.add('hidden');
-        adminPostsList.innerHTML = userPosts.map(p => `
-          <div class="admin-post-item" data-id="${p.id}">
-            <span class="title">${p.title || 'Untitled'}</span>
-            <span style="font-size:0.8rem;color:#5a4a7a;">${p.createdAt ? new Date(p.createdAt).toLocaleDateString() : ''}</span>
-            <div class="actions">
-              <button class="edit-btn" data-id="${p.id}">Edit</button>
-              <button class="delete-btn" data-id="${p.id}">Delete</button>
-            </div>
+    <div class="tabs" role="tablist">
+      <button class="tab active" data-tab="all" role="tab">All articles</button>
+      <button class="tab" data-tab="published" role="tab">Published</button>
+      <button class="tab" data-tab="draft" role="tab">Drafts</button>
+    </div>
+
+    <div class="toolbar-row">
+      <input type="search" id="adminSearch" placeholder="Search title, slug, or tag…">
+      <select id="adminSort">
+        <option value="recent">Sort: Recently updated</option>
+        <option value="published">Sort: Recently published</option>
+        <option value="title">Sort: Title A–Z</option>
+      </select>
+    </div>
+
+    <div id="articlesTableWrap"></div>
+  </div>
+
+  <!-- EDITOR -->
+  <div id="editorView" class="hidden">
+    <div class="dash-head">
+      <div>
+        <h1 id="editorHeading">New article</h1>
+        <p id="editorSub">Draft and publish a new update.</p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-outline" id="backToDash">← Dashboard</button>
+        <button class="btn btn-outline" id="previewBtn">Preview</button>
+      </div>
+    </div>
+
+    <div class="editor-grid">
+      <div>
+        <div class="panel" style="margin-bottom:22px">
+          <div class="field">
+            <label for="fTitle">Title</label>
+            <input id="fTitle" maxlength="180" placeholder="A clear, specific title…">
+            <div class="counter" id="titleCounter">0 / 180</div>
           </div>
-        `).join('');
-      }
-
-      function loadPosts() {
-        const ref = db.ref('posts').orderByChild('createdAt').limitToLast(50);
-        ref.on('value', (snap) => {
-          const data = snap.val();
-          if (!data) { allPosts = []; return; }
-          allPosts = Object.keys(data).map(key => ({ id: key, ...data[key] })).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-          renderAdminPosts();
-        }, (error) => {
-          console.error('Error loading posts:', error);
-          showToast('Error loading posts: ' + error.message);
-        });
-      }
-
-      function resetAdminForm() {
-        adminTitle.value = '';
-        adminContentText.value = '';
-        adminTitleCounter.textContent = '0 / 150';
-        adminContentCounter.textContent = '0 / 50000';
-        editingPostId = null;
-        adminPublishBtn.textContent = 'Publish Article';
-        adminCancelEditBtn.style.display = 'none';
-      }
-
-      function publishPost() {
-        const title = adminTitle.value.trim();
-        const content = adminContentText.value.trim();
-        
-        if (title.length < 3) { showToast('Title must be at least 3 characters.'); return; }
-        if (content.length < 10) { showToast('Content must be at least 10 characters.'); return; }
-        if (!isAdmin) { showToast('Please login as admin.'); return; }
-
-        const data = {
-          title: title,
-          content: content,
-          authorId: 'admin786',
-          authorName: 'ZISHU TRON Admin',
-          updatedAt: Date.now()
-        };
-
-        if (editingPostId) {
-          db.ref('posts/' + editingPostId).update(data)
-            .then(() => {
-              showToast('Article updated successfully!');
-              resetAdminForm();
-              renderAdminPosts();
-            })
-            .catch((error) => {
-              console.error('Error updating post:', error);
-              showToast('Error updating: ' + error.message);
-            });
-        } else {
-          data.createdAt = Date.now();
-          db.ref('posts').push(data)
-            .then(() => {
-              showToast('Article published successfully!');
-              resetAdminForm();
-              renderAdminPosts();
-            })
-            .catch((error) => {
-              console.error('Error publishing post:', error);
-              showToast('Error publishing: ' + error.message);
-            });
-        }
-      }
-
-      function loadPostForEdit(postId) {
-        const post = allPosts.find(p => p.id === postId);
-        if (!post) { showToast('Post not found.'); return; }
-        if (post.authorId !== 'admin786') { showToast('You can only edit your own posts.'); return; }
-        adminTitle.value = post.title || '';
-        adminContentText.value = post.content || '';
-        adminTitleCounter.textContent = `${post.title?.length || 0} / 150`;
-        adminContentCounter.textContent = `${post.content?.length || 0} / 50000`;
-        editingPostId = postId;
-        adminPublishBtn.textContent = 'Save Changes';
-        adminCancelEditBtn.style.display = 'inline-block';
-        adminTitle.scrollIntoView({ behavior: 'smooth' });
-      }
-
-      function deletePost(postId) {
-        if (!confirm('Delete this article permanently?')) return;
-        const post = allPosts.find(p => p.id === postId);
-        if (!post) { showToast('Post not found.'); return; }
-        if (post.authorId !== 'admin786') { showToast('You can only delete your own posts.'); return; }
-        
-        db.ref('posts/' + postId).remove()
-          .then(() => {
-            showToast('Article deleted successfully!');
-            renderAdminPosts();
-            if (editingPostId === postId) resetAdminForm();
-          })
-          .catch((error) => {
-            console.error('Error deleting post:', error);
-            showToast('Error deleting: ' + error.message);
-          });
-      }
-
-      function handleLogin() {
-        const username = loginUsername.value.trim();
-        const password = loginPassword.value.trim();
-
-        if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-          isAdmin = true;
-          loginError.classList.add('hidden');
-          adminLoginArea.innerHTML = `<p style="text-align:center;padding:10px 0;"><span class="authorized-badge">✓ Logged in as Admin</span></p>`;
-          adminContent.classList.remove('hidden');
-          loadPosts();
-          renderAdminPosts();
-          showToast('Welcome Admin!');
-        } else {
-          loginError.textContent = 'Invalid username or password.';
-          loginError.classList.remove('hidden');
-        }
-      }
-
-      function handleLogout() {
-        isAdmin = false;
-        editingPostId = null;
-        adminContent.classList.add('hidden');
-        adminLoginArea.innerHTML = `
-          <div class="login-box">
-            <h2>Admin Login</h2>
-            <div class="field">
-              <label>Username</label>
-              <input type="text" id="loginUsername" placeholder="Enter username" />
-            </div>
-            <div class="field">
-              <label>Password</label>
-              <input type="password" id="loginPassword" placeholder="Enter password" />
-            </div>
-            <button class="btn-primary" id="loginBtn">Login</button>
-            <div id="loginError" class="login-error hidden"></div>
+          <div class="field">
+            <label for="fDesc">Short description <span class="muted">(used for previews and search)</span></label>
+            <textarea id="fDesc" maxlength="320" placeholder="One or two sentences summarizing the article."></textarea>
+            <div class="counter" id="descCounter">0 / 320</div>
           </div>
-        `;
-        document.getElementById('loginBtn')?.addEventListener('click', handleLogin);
-        document.getElementById('loginPassword')?.addEventListener('keypress', (e) => {
-          if (e.key === 'Enter') handleLogin();
-        });
-        document.getElementById('loginUsername')?.addEventListener('keypress', (e) => {
-          if (e.key === 'Enter') document.getElementById('loginPassword')?.focus();
-        });
-        resetAdminForm();
-        showToast('Logged out.');
+          <div class="field">
+            <label for="fSlug">URL slug</label>
+            <div class="slug-row">
+              <span id="slugPrefix">/articles/</span>
+              <input id="fSlug" maxlength="100" placeholder="article-slug">
+              <span>/</span>
+            </div>
+            <div class="hint">Changing the slug changes the article URL. Existing links to the old URL will break.</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>Content</h3>
+          <div class="tb" role="toolbar" aria-label="Formatting">
+            <button type="button" data-cmd="formatBlock" data-val="h2" title="Heading">H2</button>
+            <button type="button" data-cmd="formatBlock" data-val="h3" title="Subheading">H3</button>
+            <button type="button" data-cmd="formatBlock" data-val="p" title="Paragraph">¶</button>
+            <span class="sep"></span>
+            <button type="button" data-cmd="bold" title="Bold"><strong>B</strong></button>
+            <button type="button" data-cmd="italic" title="Italic"><em>I</em></button>
+            <button type="button" data-cmd="code" title="Inline code">&lt;/&gt;</button>
+            <span class="sep"></span>
+            <button type="button" data-cmd="insertUnorderedList" title="Bulleted list">•</button>
+            <button type="button" data-cmd="insertOrderedList" title="Numbered list">1.</button>
+            <button type="button" data-cmd="formatBlock" data-val="blockquote" title="Quote">❝</button>
+            <button type="button" data-cmd="codeblock" title="Code block">▤</button>
+            <span class="sep"></span>
+            <button type="button" data-cmd="createLink" title="Link">🔗</button>
+            <button type="button" data-cmd="unlink" title="Remove link">⛓</button>
+            <span class="sep"></span>
+            <button type="button" data-cmd="insertHorizontalRule" title="Divider">—</button>
+          </div>
+          <div id="editorBody" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="true"></div>
+          <div class="muted" style="margin-top:8px;font-size:12px">
+            Supported: headings, paragraphs, bold/italic, links, lists, quotes, code blocks, dividers. HTML is sanitized on save.
+          </div>
+        </div>
+      </div>
+
+      <aside>
+        <div class="panel" style="margin-bottom:22px">
+          <h3>Status</h3>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <span class="status-pill" id="statusPill">Draft</span>
+            <span class="muted" id="statusMeta"></span>
+          </div>
+          <div class="field">
+            <label for="fStatus">Article status</label>
+            <select id="fStatus">
+              <option value="draft">Draft</option>
+              <option value="published">Published</option>
+            </select>
+          </div>
+          <div class="field">
+            <label style="display:flex;align-items:center;gap:8px;font-weight:500;cursor:pointer">
+              <input type="checkbox" id="fFeatured" style="width:auto"> Feature on homepage
+            </label>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-bottom:22px">
+          <h3>Metadata</h3>
+          <div class="field">
+            <label for="fCategory">Category</label>
+            <input id="fCategory" maxlength="50" placeholder="Engineering, Product, Company…">
+          </div>
+          <div class="field">
+            <label for="fTags">Tags <span class="muted">(comma-separated)</span></label>
+            <input id="fTags" maxlength="200" placeholder="firebase, seo, publishing">
+          </div>
+          <div class="field">
+            <label for="fCover">Cover image URL <span class="muted">(optional)</span></label>
+            <input id="fCover" maxlength="500" placeholder="https://…">
+          </div>
+          <div class="field">
+            <label for="fAuthor">Author name</label>
+            <input id="fAuthor" maxlength="100" placeholder="ZISHU TRON">
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>Publish</h3>
+          <div class="actions" style="margin-top:0">
+            <button class="btn btn-primary" id="saveBtn" style="width:100%">Save</button>
+          </div>
+          <div class="actions" style="margin-top:8px">
+            <button class="btn btn-outline" id="deleteBtn" style="width:100%;color:var(--danger);border-color:#b3312b55">Delete article</button>
+          </div>
+          <div class="muted" style="margin-top:12px;font-size:12px;line-height:1.5">
+            Saving writes to Firebase. The public article page is regenerated by the GitHub Actions publishing workflow within ~1 hour. Use <strong>Trigger publish</strong> below to rebuild immediately (requires the deploy webhook to be configured).
+          </div>
+          <div class="actions" style="margin-top:12px">
+            <button class="btn btn-outline btn-sm" id="viewPublicBtn" style="width:100%" disabled>View article →</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+</main>
+
+<!-- Preview modal -->
+<div class="modal-bg" id="previewModal" role="dialog" aria-modal="true" aria-label="Article preview">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Preview</h3>
+      <button class="icon-btn" id="closePreview" aria-label="Close preview">
+        <svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body preview" id="previewBody"></div>
+  </div>
+</div>
+
+<!-- Toast host -->
+<div id="toastHost"></div>
+
+<script>
+/* ==========================================================================
+   ZISHU TRON INSIGHT — Admin CMS
+   Security model:
+   - Firebase Authentication (Google only)
+   - Authorization verified by reading admins/{auth.uid}/enabled from RTDB
+     (enforced again by Realtime Database Security Rules)
+   - No credentials stored in this file
+   - All content writes are performed against Firebase with auth.uid bound
+   ========================================================================== */
+(function(){
+  "use strict";
+
+  // ---- Config ----
+  const CONFIG = {
+    BASE_URL: "https://zishutron.github.io/zishu-insight",
+    ADMIN_PATH: "admins",
+    POSTS_PATH: "posts",
+    // Optional: deploy webhook that rebuilds static pages (GitHub Actions repo_dispatch).
+    // Leave empty to disable the "Trigger publish" button.
+    PUBLISH_WEBHOOK_URL: "",
+    FB_CONFIG: {
+      apiKey: "AIzaSyAL0FSX7YfhQ-IoqE3a7axcLjgN7cPySM0",
+      authDomain: "stardust-official.firebaseapp.com",
+      databaseURL: "https://stardust-official-default-rtdb.firebaseio.com",
+      projectId: "stardust-official",
+      storageBucket: "stardust-official.firebasestorage.app",
+      messagingSenderId: "1065835601050",
+      appId: "1:1065835601050:web:56d326d89b1efb52f45323"
+    }
+  };
+
+  firebase.initializeApp(CONFIG.FB_CONFIG);
+  const auth = firebase.auth();
+  const db = firebase.database();
+
+  // ---- Theme ----
+  const themeBtn = document.getElementById('themeBtn');
+  const storedTheme = localStorage.getItem('zishu-theme');
+  const prefersDark = matchMedia('(prefers-color-scheme: dark)').matches;
+  function applyTheme(t){
+    document.documentElement.setAttribute('data-theme', t);
+    localStorage.setItem('zishu-theme', t);
+  }
+  applyTheme(storedTheme || (prefersDark ? 'dark' : 'light'));
+  themeBtn.addEventListener('click', () => {
+    const cur = document.documentElement.getAttribute('data-theme');
+    applyTheme(cur === 'dark' ? 'light' : 'dark');
+  });
+
+  // ---- Helpers ----
+  const $ = (s, r=document) => r.querySelector(s);
+  const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+  function toast(msg, kind){
+    const el = document.createElement('div');
+    el.className = 'toast' + (kind ? ' ' + kind : '');
+    el.textContent = msg;
+    document.getElementById('toastHost').appendChild(el);
+    setTimeout(() => el.remove(), 4000);
+  }
+  function slugify(s){
+    return String(s || '')
+      .toLowerCase()
+      .normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9\s-]/g, '')
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '')
+      .slice(0, 90);
+  }
+  function readingTime(html){
+    const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+    const words = text ? text.split(' ').length : 0;
+    return Math.max(1, Math.round(words / 220));
+  }
+  function escapeHtml(s){
+    return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  function formatDate(ts){
+    if(!ts) return '—';
+    return new Date(ts).toLocaleString('en-US',{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+  }
+
+  // ---- HTML Sanitizer (allow-list) ----
+  // Only allows a safe subset of tags & attributes. Prevents XSS.
+  const ALLOWED_TAGS = new Set(['P','BR','H1','H2','H3','H4','STRONG','B','EM','I','U','A','UL','OL','LI','BLOCKQUOTE','PRE','CODE','HR','IMG','SPAN','DIV','FIGURE','FIGCAPTION']);
+  const ALLOWED_ATTRS = {
+    A:['href','title','target','rel'],
+    IMG:['src','alt','title','width','height','loading'],
+    '*':['class']
+  };
+  function sanitizeHtml(html){
+    const doc = new DOMParser().parseFromString('<div>' + html + '</div>', 'text/html');
+    const root = doc.body.firstChild;
+    walk(root);
+    return root.innerHTML;
+    function walk(node){
+      const children = Array.from(node.childNodes);
+      for(const c of children){
+        if(c.nodeType === 1){
+          const tag = c.tagName;
+          if(!ALLOWED_TAGS.has(tag)){
+            // Replace with its text content (or remove entirely for script/style)
+            if(tag === 'SCRIPT' || tag === 'STYLE' || tag === 'IFRAME' || tag === 'OBJECT' || tag === 'EMBED'){
+              c.remove();
+            } else {
+              const frag = doc.createDocumentFragment();
+              while(c.firstChild) frag.appendChild(c.firstChild);
+              c.replaceWith(frag);
+              // Re-walk the newly moved nodes
+            }
+            continue;
+          }
+          // Filter attributes
+          const allowed = new Set([...(ALLOWED_ATTRS[tag]||[]), ...(ALLOWED_ATTRS['*']||[])]);
+          for(const attr of Array.from(c.attributes)){
+            if(!allowed.has(attr.name)){ c.removeAttribute(attr.name); continue; }
+            const v = attr.value || '';
+            if((attr.name === 'href' || attr.name === 'src') && /^\s*javascript:/i.test(v)){
+              c.removeAttribute(attr.name);
+            }
+          }
+          if(tag === 'A'){
+            c.setAttribute('rel', 'noopener noreferrer');
+          }
+          if(tag === 'IMG'){
+            c.setAttribute('loading', 'lazy');
+          }
+          walk(c);
+        } else if(c.nodeType !== 3){
+          c.remove();
+        }
       }
+    }
+  }
 
-      loginBtn?.addEventListener('click', handleLogin);
-      loginPassword?.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') handleLogin();
-      });
-      loginUsername?.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') loginPassword?.focus();
-      });
+  // ---- State ----
+  const state = {
+    user: null,
+    isAdmin: false,
+    posts: [],
+    editingId: null,
+    tab: 'all',
+    search: '',
+    sort: 'recent'
+  };
 
-      logoutBtn?.addEventListener('click', handleLogout);
+  // ---- Views ----
+  const views = {
+    loading: $('#loadingView'),
+    login: $('#loginView'),
+    unauth: $('#unauthView'),
+    dash: $('#dashView'),
+    editor: $('#editorView')
+  };
+  function show(view){
+    Object.values(views).forEach(v => v.classList.add('hidden'));
+    views[view].classList.remove('hidden');
+    $('#logoutBtn').classList.toggle('hidden', !state.user);
+    $('#userAvatar').classList.toggle('hidden', !state.user);
+  }
 
-      adminTitle?.addEventListener('input', () => {
-        adminTitleCounter.textContent = `${adminTitle.value.length} / 150`;
-      });
-      adminContentText?.addEventListener('input', () => {
-        adminContentCounter.textContent = `${adminContentText.value.length} / 50000`;
-      });
+  // ---- Auth flow ----
+  document.getElementById('googleSignIn').addEventListener('click', async () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
+    try{
+      await auth.signInWithPopup(provider);
+    }catch(e){
+      if(e.code === 'auth/popup-blocked' || e.code === 'auth/popup-closed-by-user'){
+        try{ await auth.signInWithRedirect(provider); }catch(e2){ showLoginError(e2.message); }
+      } else {
+        showLoginError(e.message);
+      }
+    }
+  });
+  function showLoginError(msg){
+    const el = $('#loginErr');
+    el.textContent = 'Sign-in failed: ' + (msg || 'unknown error');
+    el.classList.remove('hidden');
+  }
+  document.getElementById('logoutBtn').addEventListener('click', () => auth.signOut());
+  document.getElementById('unauthLogout').addEventListener('click', () => auth.signOut());
 
-      adminPublishBtn?.addEventListener('click', publishPost);
-      adminCancelEditBtn?.addEventListener('click', resetAdminForm);
+  auth.onAuthStateChanged(async (user) => {
+    state.user = user || null;
+    state.isAdmin = false;
+    if(!user){
+      show('login');
+      $('#userAvatar').classList.add('hidden');
+      $('#logoutBtn').classList.add('hidden');
+      return;
+    }
+    $('#userAvatar').src = user.photoURL || '';
+    $('#userAvatar').alt = user.displayName || 'User';
+    show('loading');
+    // Authorization: read admins/{uid}
+    try{
+      const snap = await db.ref(`${CONFIG.ADMIN_PATH}/${user.uid}`).get();
+      const rec = snap.val();
+      if(rec && rec.enabled === true){
+        state.isAdmin = true;
+        show('dash');
+        startDashboard();
+      } else {
+        $('#unauthUid').textContent = user.uid;
+        show('unauth');
+      }
+    }catch(e){
+      console.error('[admin] authorization check failed', e);
+      $('#unauthUid').textContent = user.uid;
+      show('unauth');
+    }
+  });
 
-      document.addEventListener('click', (e) => {
-        const target = e.target.closest('[data-id]');
-        if (!target) return;
-        const id = target.dataset.id;
-        if (target.classList.contains('edit-btn')) {
-          loadPostForEdit(id);
-        }
-        if (target.classList.contains('delete-btn')) {
-          deletePost(id);
-        }
-      });
+  // ---- Dashboard ----
+  let postsRef = null;
+  function startDashboard(){
+    if(postsRef) postsRef.off();
+    postsRef = db.ref(CONFIG.POSTS_PATH).orderByChild('createdAt').limitToLast(500);
+    postsRef.on('value', (snap) => {
+      const val = snap.val() || {};
+      state.posts = Object.entries(val).map(([id, p]) => ({ id, ...p }));
+      renderStats();
+      renderTable();
+    }, (err) => {
+      console.error('[admin] load posts', err);
+      toast('Could not load articles: ' + err.message, 'err');
+    });
+  }
 
-      loadPosts();
-    })();
-  </script>
+  function renderStats(){
+    const total = state.posts.length;
+    const published = state.posts.filter(p => p.status === 'published').length;
+    const drafts = state.posts.filter(p => p.status === 'draft').length;
+    $('#statTotal').textContent = total;
+    $('#statPublished').textContent = published;
+    $('#statDrafts').textContent = drafts;
+    const latest = [...state.posts].sort((a,b) => (b.updatedAt||b.createdAt||0) - (a.updatedAt||a.createdAt||0))[0];
+    if(latest){
+      $('#statLatest').textContent = latest.title || 'Untitled';
+      $('#statLatestMeta').textContent = formatDate(latest.updatedAt || latest.createdAt);
+    } else {
+      $('#statLatest').textContent = '—';
+      $('#statLatestMeta').textContent = 'No articles';
+    }
+  }
+
+  function filteredPosts(){
+    let list = state.posts.slice();
+    if(state.tab === 'published') list = list.filter(p => p.status === 'published');
+    if(state.tab === 'draft') list = list.filter(p => p.status === 'draft');
+    if(state.search){
+      const q = state.search.toLowerCase();
+      list = list.filter(p =>
+        (p.title||'').toLowerCase().includes(q) ||
+        (p.slug||'').toLowerCase().includes(q) ||
+        (p.category||'').toLowerCase().includes(q) ||
+        (Array.isArray(p.tags) && p.tags.join(' ').toLowerCase().includes(q))
+      );
+    }
+    if(state.sort === 'recent')     list.sort((a,b) => (b.updatedAt||b.createdAt||0) - (a.updatedAt||a.createdAt||0));
+    if(state.sort === 'published')  list.sort((a,b) => (b.publishedAt||0) - (a.publishedAt||0));
+    if(state.sort === 'title')      list.sort((a,b) => (a.title||'').localeCompare(b.title||''));
+    return list;
+  }
+
+  function renderTable(){
+    const wrap = $('#articlesTableWrap');
+    const list = filteredPosts();
+    if(list.length === 0){
+      wrap.innerHTML = `<div class="panel" style="text-align:center;color:var(--text-3);padding:40px">
+        <div style="font-weight:600;color:var(--text);margin-bottom:6px">No articles match</div>
+        <div style="font-size:13.5px">Try a different filter, or create a new article.</div>
+      </div>`;
+      return;
+    }
+    wrap.innerHTML = `<div class="panel" style="padding:0;overflow:hidden">
+      <table class="list">
+        <thead><tr>
+          <th>Title</th><th style="width:110px">Status</th><th style="width:110px">Updated</th><th style="width:180px"></th>
+        </tr></thead>
+        <tbody>
+          ${list.map(p => `
+            <tr data-id="${escapeHtml(p.id)}">
+              <td>
+                <a class="t-title" href="#" data-action="edit">${escapeHtml(p.title || 'Untitled')}</a>
+                <div class="muted" style="font-size:12px;font-family:var(--mono)">/articles/${escapeHtml(p.slug||'')}/</div>
+              </td>
+              <td><span class="status-pill ${p.status === 'published' ? 'published' : 'draft'}">${p.status === 'published' ? 'Published' : 'Draft'}</span></td>
+              <td class="muted" style="font-size:12.5px">${formatDate(p.updatedAt || p.createdAt)}</td>
+              <td>
+                <div class="t-actions">
+                  ${p.status === 'published' ? `<a class="row-btn" href="articles/${encodeURIComponent(p.slug)}/" target="_blank" rel="noopener">View</a>` : ''}
+                  <button class="row-btn" data-action="edit">Edit</button>
+                  <button class="row-btn" data-action="toggle">${p.status === 'published' ? 'Unpublish' : 'Publish'}</button>
+                  <button class="row-btn danger" data-action="delete">Delete</button>
+                </div>
+              </td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>`;
+  }
+
+  document.getElementById('articlesTableWrap').addEventListener('click', async (e) => {
+    const btn = e.target.closest('[data-action]');
+    if(!btn) return;
+    e.preventDefault();
+    const row = e.target.closest('tr');
+    const id = row?.dataset.id;
+    if(!id) return;
+    const post = state.posts.find(p => p.id === id);
+    if(!post) return;
+    const action = btn.dataset.action;
+    if(action === 'edit') return openEditor(id);
+    if(action === 'delete') return confirmDelete(post);
+    if(action === 'toggle'){
+      try{
+        const nextStatus = post.status === 'published' ? 'draft' : 'published';
+        const updates = { status: nextStatus, updatedAt: Date.now() };
+        if(nextStatus === 'published' && !post.publishedAt) updates.publishedAt = Date.now();
+        await db.ref(`${CONFIG.POSTS_PATH}/${id}`).update(updates);
+        toast(nextStatus === 'published' ? 'Article published.' : 'Article unpublished.', 'ok');
+      }catch(err){
+        toast('Update failed: ' + err.message, 'err');
+      }
+    }
+  });
+
+  // Tabs / toolbar
+  $$('.tab').forEach(tab => tab.addEventListener('click', () => {
+    $$('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    state.tab = tab.dataset.tab;
+    renderTable();
+  }));
+  $('#adminSearch').addEventListener('input', (e) => {
+    state.search = e.target.value.trim();
+    renderTable();
+  });
+  $('#adminSort').addEventListener('change', (e) => {
+    state.sort = e.target.value;
+    renderTable();
+  });
+
+  // ---- Editor ----
+  const editorBody = $('#editorBody');
+  const fTitle = $('#fTitle');
+  const fDesc = $('#fDesc');
+  const fSlug = $('#fSlug');
+  const fStatus = $('#fStatus');
+  const fFeatured = $('#fFeatured');
+  const fCategory = $('#fCategory');
+  const fTags = $('#fTags');
+  const fCover = $('#fCover');
+  const fAuthor = $('#fAuthor');
+  const statusPill = $('#statusPill');
+  const statusMeta = $('#statusMeta');
+  const viewPublicBtn = $('#viewPublicBtn');
+
+  fTitle.addEventListener('input', () => {
+    document.getElementById('titleCounter').textContent = fTitle.value.length + ' / 180';
+    if(!state.editingId && (fSlug.dataset.dirty !== '1')){
+      fSlug.value = slugify(fTitle.value);
+    }
+  });
+  fDesc.addEventListener('input', () => {
+    document.getElementById('descCounter').textContent = fDesc.value.length + ' / 320';
+  });
+  fSlug.addEventListener('input', () => { fSlug.dataset.dirty = '1'; });
+
+  // Toolbar commands
+  $$('.tb button').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const cmd = btn.dataset.cmd;
+      editorBody.focus();
+      if(cmd === 'code'){
+        document.execCommand('insertHTML', false, '<code>' + escapeHtml(window.getSelection().toString() || 'code') + '</code>');
+      } else if(cmd === 'codeblock'){
+        const sel = window.getSelection().toString();
+        const html = '<pre><code>' + escapeHtml(sel || 'code') + '</code></pre><p><br></p>';
+        document.execCommand('insertHTML', false, html);
+      } else if(cmd === 'createLink'){
+        const url = prompt('Enter URL (https://…):');
+        if(url && /^https?:\/\//i.test(url)) document.execCommand('createLink', false, url);
+        else if(url) toast('Only http(s) links are allowed.', 'err');
+      } else if(cmd === 'formatBlock'){
+        document.execCommand('formatBlock', false, btn.dataset.val);
+      } else {
+        document.execCommand(cmd, false, null);
+      }
+    });
+  });
+
+  function openEditor(id){
+    state.editingId = id || null;
+    const isNew = !id;
+    $('#editorHeading').textContent = isNew ? 'New article' : 'Edit article';
+    $('#editorSub').textContent = isNew ? 'Draft and publish a new update.' : 'Update content and metadata.';
+    $('#deleteBtn').classList.toggle('hidden', isNew);
+
+    if(isNew){
+      fTitle.value = ''; fDesc.value = ''; fSlug.value = ''; fStatus.value = 'draft';
+      fFeatured.checked = false; fCategory.value = ''; fTags.value = ''; fCover.value = '';
+      fAuthor.value = state.user?.displayName || 'ZISHU TRON';
+      editorBody.innerHTML = '';
+      fSlug.dataset.dirty = '0';
+      statusPill.textContent = 'Draft';
+      statusPill.className = 'status-pill draft';
+      statusMeta.textContent = '';
+      viewPublicBtn.disabled = true;
+      viewPublicBtn.removeAttribute('href');
+    } else {
+      const p = state.posts.find(x => x.id === id);
+      if(!p){ toast('Article not found.', 'err'); return; }
+      fTitle.value = p.title || '';
+      fDesc.value = p.description || '';
+      fSlug.value = p.slug || '';
+      fSlug.dataset.dirty = '1';
+      fStatus.value = p.status || 'draft';
+      fFeatured.checked = !!p.featured;
+      fCategory.value = p.category || '';
+      fTags.value = Array.isArray(p.tags) ? p.tags.join(', ') : '';
+      fCover.value = p.coverImage || '';
+      fAuthor.value = p.authorName || 'ZISHU TRON';
+      editorBody.innerHTML = p.content || '';
+      updateStatusPill(p);
+      viewPublicBtn.disabled = p.status !== 'published';
+      if(p.status === 'published'){
+        viewPublicBtn.href = `articles/${encodeURIComponent(p.slug)}/`;
+        viewPublicBtn.setAttribute('target', '_blank');
+      }
+    }
+    document.getElementById('titleCounter').textContent = fTitle.value.length + ' / 180';
+    document.getElementById('descCounter').textContent = fDesc.value.length + ' / 320';
+    show('editor');
+  }
+
+  function updateStatusPill(p){
+    statusPill.textContent = p.status === 'published' ? 'Published' : 'Draft';
+    statusPill.className = 'status-pill ' + (p.status === 'published' ? 'published' : 'draft');
+    statusMeta.textContent = p.publishedAt ? 'Published ' + formatDate(p.publishedAt) : '';
+  }
+
+  $('#newArticleBtn').addEventListener('click', () => openEditor(null));
+  $('#backToDash').addEventListener('click', () => {
+    state.editingId = null;
+    show('dash');
+  });
+
+  // Save
+  $('#saveBtn').addEventListener('click', async () => {
+    if(!state.isAdmin){ toast('Not authorized.', 'err'); return; }
+    const title = fTitle.value.trim();
+    const description = fDesc.value.trim();
+    let slug = (fSlug.value || slugify(title)).trim();
+    const status = fStatus.value;
+    const content = sanitizeHtml(editorBody.innerHTML);
+    const authorName = fAuthor.value.trim() || (state.user?.displayName || 'ZISHU TRON');
+
+    if(title.length < 3){ toast('Title must be at least 3 characters.', 'err'); fTitle.focus(); return; }
+    if(description.length < 10){ toast('Please add a short description (10+ characters).', 'err'); fDesc.focus(); return; }
+    if(content.replace(/<[^>]+>/g,'').trim().length < 20){ toast('Article content is too short.', 'err'); editorBody.focus(); return; }
+    slug = slugify(slug);
+    if(!slug){ toast('Invalid slug.', 'err'); return; }
+
+    // Uniqueness
+    const clash = state.posts.find(p => p.slug === slug && p.id !== state.editingId);
+    if(clash){ slug = slug + '-' + Math.random().toString(36).slice(2,6); }
+
+    const btn = $('#saveBtn');
+    btn.disabled = true; btn.textContent = 'Saving…';
+    statusPill.textContent = 'Saving…';
+    statusPill.className = 'status-pill publishing';
+
+    const tags = fTags.value.split(',').map(t => t.trim()).filter(Boolean).slice(0, 12);
+    const now = Date.now();
+    const data = {
+      title, slug, description, content,
+      status,
+      featured: !!fFeatured.checked,
+      category: fCategory.value.trim(),
+      tags: tags.length ? tags : null,
+      coverImage: fCover.value.trim(),
+      authorId: state.user.uid,
+      authorName,
+      readingTime: readingTime(content),
+      updatedAt: now,
+      canonicalUrl: `${CONFIG.BASE_URL}/articles/${slug}/`
+    };
+    if(status === 'published' && (!state.editingId || !state.posts.find(p=>p.id===state.editingId)?.publishedAt)){
+      data.publishedAt = now;
+    }
+
+    try{
+      if(state.editingId){
+        await db.ref(`${CONFIG.POSTS_PATH}/${state.editingId}`).update(data);
+      } else {
+        data.createdAt = now;
+        const ref = await db.ref(CONFIG.POSTS_PATH).push(data);
+        state.editingId = ref.key;
+      }
+      statusPill.textContent = 'Saved';
+      statusPill.className = 'status-pill ' + (status === 'published' ? 'published' : 'draft');
+      toast(status === 'published' ? 'Article saved and marked published.' : 'Draft saved.', 'ok');
+      viewPublicBtn.disabled = status !== 'published';
+      if(status === 'published'){
+        viewPublicBtn.href = `articles/${encodeURIComponent(slug)}/`;
+        viewPublicBtn.setAttribute('target', '_blank');
+      } else {
+        viewPublicBtn.removeAttribute('href');
+      }
+      // Optionally trigger the static rebuild webhook
+      if(status === 'published' && CONFIG.PUBLISH_WEBHOOK_URL){
+        fetch(CONFIG.PUBLISH_WEBHOOK_URL, { method: 'POST', mode:'no-cors' })
+          .then(() => toast('Triggered site rebuild.', 'ok'))
+          .catch(() => toast('Saved. Site rebuild trigger failed — the scheduled job will still pick it up.', 'err'));
+      }
+    }catch(e){
+      statusPill.textContent = 'Save failed';
+      statusPill.className = 'status-pill error';
+      toast('Save failed: ' + e.message, 'err');
+    }finally{
+      btn.disabled = false; btn.textContent = 'Save';
+    }
+  });
+
+  // Delete
+  $('#deleteBtn').addEventListener('click', async () => {
+    if(!state.editingId) return;
+    const p = state.posts.find(x => x.id === state.editingId);
+    if(!p) return;
+    if(!confirm(`Delete "${p.title}" permanently? This removes the article and its public page will be removed on the next build.`)) return;
+    try{
+      await db.ref(`${CONFIG.POSTS_PATH}/${state.editingId}`).remove();
+      toast('Article deleted.', 'ok');
+      state.editingId = null;
+      show('dash');
+    }catch(e){
+      toast('Delete failed: ' + e.message, 'err');
+    }
+  });
+
+  function confirmDelete(p){
+    if(!confirm(`Delete "${p.title}" permanently?`)) return;
+    db.ref(`${CONFIG.POSTS_PATH}/${p.id}`).remove()
+      .then(() => toast('Article deleted.', 'ok'))
+      .catch(e => toast('Delete failed: ' + e.message, 'err'));
+  }
+
+  // Preview
+  $('#previewBtn').addEventListener('click', () => {
+    const content = sanitizeHtml(editorBody.innerHTML);
+    const author = fAuthor.value.trim() || 'ZISHU TRON';
+    const cat = fCategory.value.trim();
+    const body = `
+      ${cat ? `<div class="muted" style="font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:8px">${escapeHtml(cat)}</div>` : ''}
+      <h1>${escapeHtml(fTitle.value || 'Untitled article')}</h1>
+      <div class="meta">By ${escapeHtml(author)} · ${readingTime(content)} min read</div>
+      ${fCover.value ? `<img src="${escapeHtml(fCover.value)}" alt="" style="border-radius:12px;margin-bottom:20px">` : ''}
+      <div class="body">${content}</div>
+    `;
+    $('#previewBody').innerHTML = body;
+    $('#previewModal').classList.add('open');
+  });
+  $('#closePreview').addEventListener('click', () => $('#previewModal').classList.remove('open'));
+  $('#previewModal').addEventListener('click', (e) => {
+    if(e.target.id === 'previewModal') $('#previewModal').classList.remove('open');
+  });
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape') $('#previewModal').classList.remove('open');
+  });
+
+  // Enter insert link into contenteditable when pressing Ctrl+K
+  editorBody.addEventListener('keydown', (e) => {
+    if((e.metaKey || e.ctrlKey) && e.key === 'k'){
+      e.preventDefault();
+      const url = prompt('Enter URL (https://…):');
+      if(url && /^https?:\/\//i.test(url)) document.execCommand('createLink', false, url);
+    }
+  });
+})();
+</script>
 </body>
 </html>
