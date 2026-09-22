@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-22T07:06:45.930Z",
+  "generatedAt": "2026-09-22T07:10:17.857Z",
   "count": 1,
   "articles": [
     {
@@ -15,7 +15,7 @@
       "authorName": "ZISHU TRON",
       "publishedAt": 1790056631461,
       "readingTime": 4,
-      "featured": false
+      "pinned": false
     }
   ]
 }
