@@ -5,8 +5,16 @@
     <link>https://zishutron.github.io/zishu-insight/</link>
     <description>The official publishing platform of ZISHU TRON. Product announcements, engineering deep dives, and company updates.</description>
     <language>en</language>
-    <lastBuildDate>Tue, 22 Sep 2026 08:26:24 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 22 Sep 2026 12:31:05 GMT</lastBuildDate>
     <atom:link href="https://zishutron.github.io/zishu-insight/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Zishu AI</title>
+      <link>https://zishutron.github.io/zishu-insight/articles/zishu-ai-n7db/</link>
+      <guid isPermaLink="true">https://zishutron.github.io/zishu-insight/articles/zishu-ai-n7db/</guid>
+      <pubDate>Tue, 22 Sep 2026 11:00:07 GMT</pubDate>
+      <description>Zishu AI — Your personal AI voice assistant for natural conversations, smart answers, web search, app actions, maps, and more. Fast, simple, and built to talk with you.</description>
+      <category>Product</category>
+    </item>
     <item>
       <title>Update</title>
       <link>https://zishutron.github.io/zishu-insight/articles/update/</link>
