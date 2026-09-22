@@ -1,0 +1,42 @@
+{
+  "rules": {
+    "posts": {
+      ".read": "auth != null && root.child('admins').child(auth.uid).child('enabled').val() === true || (query.orderByChild === 'status' && query.equalTo === 'published')",
+      ".indexOn": ["createdAt", "publishedAt", "status", "slug"],
+      "$postId": {
+        ".read": "auth != null && root.child('admins').child(auth.uid).child('enabled').val() === true || data.child('status').val() === 'published'",
+        ".write": "auth != null && root.child('admins').child(auth.uid).child('enabled').val() === true",
+        ".validate": "newData.hasChildren(['title', 'slug', 'content', 'status'])",
+        "title":       { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 200" },
+        "slug":        { ".validate": "newData.isString() && newData.val().matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/) && newData.val().length <= 120" },
+        "description": { ".validate": "!newData.exists() || (newData.isString() && newData.val().length <= 400)" },
+        "content":     { ".validate": "newData.isString() && newData.val().length <= 100000" },
+        "status":      { ".validate": "newData.val() === 'draft' || newData.val() === 'published'" },
+        "authorId":    { ".validate": "newData.isString()" },
+        "authorName":  { ".validate": "newData.isString() && newData.val().length <= 100" },
+        "createdAt":   { ".validate": "newData.isNumber()" },
+        "updatedAt":   { ".validate": "newData.isNumber()" },
+        "publishedAt": { ".validate": "!newData.exists() || newData.isNumber()" },
+        "readingTime": { ".validate": "!newData.exists() || newData.isNumber()" },
+        "featured":    { ".validate": "!newData.exists() || newData.isBoolean()" },
+        "category":    { ".validate": "!newData.exists() || (newData.isString() && newData.val().length <= 50)" },
+        "tags":        { ".validate": "!newData.exists() || newData.hasChildren()" },
+        "$tag":        { ".validate": "newData.isString() && newData.val().length <= 40" },
+        "coverImage":  { ".validate": "!newData.exists() || (newData.isString() && newData.val().length <= 500)" },
+        "canonicalUrl":{ ".validate": "!newData.exists() || newData.isString()" },
+        "$other":      { ".validate": false }
+      }
+    },
+    "admins": {
+      ".read": "auth != null && root.child('admins').child(auth.uid).child('enabled').val() === true",
+      "$uid": {
+        ".read":  "auth != null && auth.uid === $uid",
+        ".write": false
+      }
+    },
+    "meta": {
+      ".read": true,
+      ".write": "auth != null && root.child('admins').child(auth.uid).child('enabled').val() === true"
+    }
+  }
+}
