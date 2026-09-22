@@ -297,15 +297,17 @@ button{font-family:inherit;cursor:pointer}
       <div class="footer-col">
         <h4>Company</h4>
         <ul>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Contact</a></li>
+          <li><a href="https://zishutron.zishuai.cloud/developer.html" target="_blank" rel="noopener">About</a></li>
+          <li><a href="mailto:support.stardustofficial@gmail.com">Contact</a></li>
+          <li><a href="https://www.linkedin.com/in/zishutron" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://github.com/zishutron" target="_blank" rel="noopener">GitHub</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Legal</h4>
         <ul>
-          <li><a href="#">Privacy</a></li>
-          <li><a href="#">Terms</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
         </ul>
       </div>
     </div>
@@ -388,29 +390,21 @@ button{font-family:inherit;cursor:pointer}
   }
 
   // ===== SSR Hydration =====
-  // Check if the build script already injected articles into HTML.
-  // If yes, we don't need to render them again — just attach interactivity.
   function detectSSR(){
     const feed = $('#feed');
     if(!feed) return false;
-    // If feed contains any `.card` elements, SSR is present
     return feed.querySelectorAll('.card').length > 0;
   }
 
   function hydrateSSR(){
-    // SSR HTML is already in the DOM. We only need to:
-    // 1. Show the feed (remove hidden state if any)
-    // 2. Hide the skeleton loaders (they were replaced by build script)
-    // 3. Enable search — which needs the index JSON
     $('#emptyState').classList.add('hidden');
     $('#errorState').classList.add('hidden');
     $('#feed').classList.remove('hidden');
     $('#feed').setAttribute('aria-busy', 'false');
-    // Load index JSON for search only (not for rendering)
     loadIndexForSearch();
   }
 
-  // ===== Rendering (fallback when SSR not present) =====
+  // ===== Fallback Rendering =====
   function renderPinned(a){
     if(!a) return '';
     const url = articleUrl(a.slug);
@@ -486,7 +480,6 @@ button{font-family:inherit;cursor:pointer}
     $('#errorState').classList.remove('hidden');
   }
 
-  // ===== Data loading =====
   async function loadIndex(){
     try{
       const res = await fetch(CONFIG.INDEX_URL + '?v=' + Date.now(), {cache:'no-store'});
@@ -500,19 +493,16 @@ button{font-family:inherit;cursor:pointer}
     }
   }
 
-  // Load index just for search (used when SSR already rendered)
   async function loadIndexForSearch(){
     await loadIndex();
   }
 
   async function init(){
-    // If SSR already rendered articles, just hydrate search
     if(detectSSR()){
       hydrateSSR();
       return;
     }
 
-    // Otherwise, load from index and render
     const ok = await loadIndex();
     if(!ok){
       if(CONFIG.FIREBASE_FALLBACK){
@@ -553,7 +543,7 @@ button{font-family:inherit;cursor:pointer}
     renderHome();
   }
 
-  // ===== Search =====
+  // Search
   const overlay = $('#searchOverlay');
   const input = $('#searchInput');
   const results = $('#searchResults');
