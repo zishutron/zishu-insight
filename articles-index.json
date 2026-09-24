@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-24T07:20:42.593Z",
+  "generatedAt": "2026-09-24T07:31:10.324Z",
   "count": 7,
   "articles": [
     {
@@ -27,20 +27,20 @@
         "Ai"
       ],
       "coverImage": "https://i.ibb.co/LdC2kY7z/09788375c8e9.png",
-      "authorName": "Zishu Tron",
+      "authorName": "Zishan",
       "publishedAt": 1790074807460,
       "readingTime": 2,
       "pinned": false
     },
     {
       "id": "-P-swwLn5tc0pi30347a",
-      "slug": "update",
+      "slug": "updatess",
       "title": "Update",
-      "description": "From now on all users will be able to see our company updates here.",
+      "description": "From now on all users will be able to see our Zishu Tron updates here.",
       "category": "",
       "tags": [],
       "coverImage": "",
-      "authorName": "ZISHU TRON Admin",
+      "authorName": "Zishan",
       "publishedAt": 1790061356402,
       "readingTime": 1,
       "pinned": false
@@ -55,7 +55,7 @@
         "publishing"
       ],
       "coverImage": "",
-      "authorName": "ZISHU TRON",
+      "authorName": "Zishan",
       "publishedAt": 1790061355658,
       "readingTime": 3,
       "pinned": false
@@ -96,7 +96,7 @@
         "publishing"
       ],
       "coverImage": "",
-      "authorName": "ZISHU TRON",
+      "authorName": "Zishan",
       "publishedAt": 1790056631461,
       "readingTime": 4,
       "pinned": false
