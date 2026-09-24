@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Zishu Terminal (Beta) — Official Launch Article — ZISHU TRON INSIGHT</title>
+<meta name="description" content="Zishu Terminal — Beta (v5.0.0-beta.1)
+An advanced Android terminal and lightweight developer environment.">
+<link rel="canonical" href="https://zishu-insight.zishuai.cloud/articles/zishu-terminal-beta/">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<meta name="author" content="Zishan">
+<meta property="article:published_time" content="2026-09-24T07:00:44.652Z">
+<meta property="article:modified_time" content="2026-09-24T07:00:44.652Z">
+<meta property="article:section" content="Product">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="ZISHU TRON INSIGHT">
+<meta property="og:title" content="Zishu Terminal (Beta) — Official Launch Article">
+<meta property="og:description" content="Zishu Terminal — Beta (v5.0.0-beta.1)
+An advanced Android terminal and lightweight developer environment.">
+<meta property="og:url" content="https://zishu-insight.zishuai.cloud/articles/zishu-terminal-beta/">
+<meta property="og:image" content="https://i.ibb.co/k6kgFGRw/e242a3306da4.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Zishu Terminal (Beta) — Official Launch Article">
+<meta name="twitter:description" content="Zishu Terminal — Beta (v5.0.0-beta.1)
+An advanced Android terminal and lightweight developer environment.">
+<meta name="twitter:image" content="https://i.ibb.co/k6kgFGRw/e242a3306da4.png">
+
+<meta name="theme-color" content="#0c0a09" media="(prefers-color-scheme:dark)">
+<meta name="theme-color" content="#fafaf9" media="(prefers-color-scheme:light)">
+
+<link rel="alternate" type="application/rss+xml" title="ZISHU TRON INSIGHT RSS" href="../../rss.xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"BlogPosting","headline":"Zishu Terminal (Beta) — Official Launch Article","description":"Zishu Terminal — Beta (v5.0.0-beta.1)\nAn advanced Android terminal and lightweight developer environment.","author":{"@type":"Person","name":"Zishan"},"publisher":{"@type":"Organization","name":"ZISHU TRON","url":"https://zishu-insight.zishuai.cloud/"},"datePublished":"2026-09-24T07:00:44.652Z","dateModified":"2026-09-24T07:00:44.652Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://zishu-insight.zishuai.cloud/articles/zishu-terminal-beta/"},"url":"https://zishu-insight.zishuai.cloud/articles/zishu-terminal-beta/","wordCount":2591,"image":["https://i.ibb.co/k6kgFGRw/e242a3306da4.png"],"articleSection":"Product","keywords":"Tools"},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://zishu-insight.zishuai.cloud/"},{"@type":"ListItem","position":2,"name":"Product","item":"https://zishu-insight.zishuai.cloud/#product"},{"@type":"ListItem","position":3,"name":"Zishu Terminal (Beta) — Official Launch Article","item":"https://zishu-insight.zishuai.cloud/articles/zishu-terminal-beta/"}]}]</script>
+
+<style>
+:root{
+  --bg:#fafaf9;
+  --bg-elev:#ffffff;
+  --bg-sub:#f5f5f4;
+  --bg-code:#1c1917;
+  --border:#e7e5e4;
+  --border-strong:#d6d3d1;
+  --text:#0c0a09;
+  --text-2:#44403c;
+  --text-3:#78716c;
+  --accent:#d97706;
+  --accent-2:#b45309;
+  --accent-soft:#fef3c7;
+  --accent-text:#92400e;
+  --link-card-bg:#fffbeb;
+  --link-card-border:#fcd34d;
+  --mark-bg:#fef08a;
+  --mark-text:#0c0a09;
+  --serif:'Fraunces',Georgia,'Times New Roman',serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+[data-theme="dark"]{
+  --bg:#0c0a09;
+  --bg-elev:#1c1917;
+  --bg-sub:#292524;
+  --bg-code:#0c0a09;
+  --border:#292524;
+  --border-strong:#44403c;
+  --text:#fafaf9;
+  --text-2:#d6d3d1;
+  --text-3:#a8a29e;
+  --accent:#fbbf24;
+  --accent-2:#f59e0b;
+  --accent-soft:#3f2a08;
+  --accent-text:#fcd34d;
+  --link-card-bg:#2a1f08;
+  --link-card-border:#78350f;
+  --mark-bg:#fbbf24;
+  --mark-text:#0c0a09;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;overflow-wrap:break-word;word-wrap:break-word}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  font-family:var(--sans);
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  font-size:17px;
+  overflow-x:hidden;
+  transition:background .2s, color .2s;
+}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline;text-underline-offset:3px}
+img{max-width:100%;height:auto;display:block}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+
+/* ========= Header ========= */
+.hdr{
+  border-bottom:1px solid var(--border);
+  background:color-mix(in srgb,var(--bg) 92%,transparent);
+  position:sticky;top:0;z-index:20;
+  backdrop-filter:saturate(180%) blur(12px);
+  -webkit-backdrop-filter:saturate(180%) blur(12px);
+}
+.hdr-inner{max-width:1200px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--text);text-decoration:none;flex-shrink:0}
+.brand-mark{
+  width:30px;height:30px;border-radius:8px;flex-shrink:0;
+  background:var(--text);color:var(--bg);
+  display:grid;place-items:center;font-family:var(--serif);font-weight:700;font-size:15px;
+}
+.brand-text{display:flex;flex-direction:column;line-height:1.1;min-width:0}
+.brand-text .b1{font-family:var(--serif);font-size:16px;font-weight:700;letter-spacing:-.01em;white-space:nowrap}
+.brand-text .b2{font-size:10.5px;font-weight:500;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.hdr-right{margin-left:auto;display:flex;gap:8px;align-items:center}
+.icon-btn{
+  width:40px;height:40px;display:grid;place-items:center;border-radius:10px;
+  border:1px solid transparent;background:transparent;color:var(--text-2);flex-shrink:0;
+}
+.icon-btn:hover{background:var(--bg-sub);color:var(--text)}
+.icon-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:720px){
+  .hdr-inner{height:56px;padding:0 18px}
+  .brand-text .b1{font-size:15px}
+  .brand-mark{width:28px;height:28px;font-size:14px}
+}
+
+/* ========= Breadcrumbs ========= */
+.breadcrumbs{
+  max-width:760px;margin:28px auto 14px;
+  font-size:13.5px;color:var(--text-3);
+  padding:0 24px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.breadcrumbs a{color:var(--text-3)}
+.breadcrumbs a:hover{color:var(--accent);text-decoration:none}
+.breadcrumbs .sep{margin:0 8px;opacity:.4}
+@media (max-width:720px){.breadcrumbs{padding:0 18px;margin:20px auto 10px}}
+
+/* ========= Article ========= */
+.article{padding:20px 0 40px}
+
+.article-header{max-width:760px;margin:0 auto;padding:0 24px}
+
+.article-cat{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--accent-text);background:var(--accent-soft);
+  padding:6px 12px;border-radius:100px;margin-bottom:20px;
+}
+[data-theme="dark"] .article-cat{color:var(--accent)}
+
+.article h1{
+  font-family:var(--serif);
+  font-size:clamp(1.9rem,4.2vw,2.8rem);
+  font-weight:700;
+  letter-spacing:-.025em;
+  line-height:1.15;
+  margin-bottom:16px;
+  word-break:break-word;
+}
+
+.article-desc{
+  font-size:1.15rem;
+  color:var(--text-2);
+  line-height:1.55;
+  margin-bottom:24px;
+  font-weight:400;
+}
+
+.article-meta{
+  display:flex;flex-wrap:wrap;gap:8px 16px;
+  font-size:13.5px;color:var(--text-3);
+  padding-bottom:26px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:32px;
+  align-items:center;
+}
+.article-meta strong{color:var(--text);font-weight:600}
+.article-meta .dot{opacity:.5}
+
+.article-cover{
+  margin:0 auto 40px;
+  border-radius:16px;
+  overflow:hidden;
+  max-width:1000px;
+  padding:0 24px;
+}
+.article-cover img{width:100%;border-radius:16px}
+
+/* ========= Article body ========= */
+.article-body{
+  max-width:760px;
+  margin:0 auto;
+  padding:0 24px;
+  font-size:17.5px;
+  line-height:1.75;
+  color:var(--text);
+}
+
+.article-body h1,
+.article-body h2,
+.article-body h3,
+.article-body h4{
+  font-family:var(--serif);
+  font-weight:700;
+  letter-spacing:-.02em;
+  line-height:1.25;
+  margin:2em 0 .6em;
+  word-break:break-word;
+  color:var(--text);
+}
+.article-body h1{font-size:1.8rem}
+.article-body h2{font-size:1.6rem}
+.article-body h3{font-size:1.3rem}
+.article-body h4{font-size:1.1rem;font-family:var(--sans);font-weight:600}
+
+.article-body p{margin:1em 0;word-break:break-word}
+
+.article-body ul,
+.article-body ol{
+  margin:1em 0 1em 1.5em;
+  padding-left:.4em;
+}
+.article-body li{margin:.4em 0;word-break:break-word}
+.article-body li::marker{color:var(--accent)}
+
+.article-body blockquote{
+  margin:1.5em 0;
+  padding:.9em 1.3em;
+  border-left:3px solid var(--accent);
+  background:var(--accent-soft);
+  border-radius:0 12px 12px 0;
+  color:var(--text-2);
+  font-style:italic;
+  font-family:var(--serif);
+  font-size:1.05rem;
+}
+.article-body blockquote p{margin:.4em 0}
+
+.article-body hr{
+  border:0;
+  border-top:1px solid var(--border);
+  margin:2.5em 0;
+}
+
+.article-body code{
+  font-family:var(--mono);
+  font-size:.9em;
+  background:var(--bg-sub);
+  padding:2px 6px;
+  border-radius:5px;
+  color:var(--accent-text);
+  border:1px solid var(--border);
+  word-break:break-word;
+}
+[data-theme="dark"] .article-body code{color:var(--accent)}
+
+.article-body pre{
+  background:var(--bg-code);
+  color:#f5f5f4;
+  padding:18px 20px;
+  border-radius:12px;
+  overflow-x:auto;
+  font-family:var(--mono);
+  font-size:14.5px;
+  line-height:1.65;
+  margin:1.5em 0;
+  border:1px solid var(--border);
+  max-width:100%;
+  -webkit-overflow-scrolling:touch;
+}
+.article-body pre code{
+  background:transparent;
+  padding:0;
+  font-size:1em;
+  color:inherit;
+  font-family:inherit;
+  white-space:pre;
+  word-break:normal;
+  border:0;
+}
+
+.article-body mark{
+  background:var(--mark-bg);
+  color:var(--mark-text);
+  padding:2px 6px;
+  border-radius:4px;
+  font-weight:600;
+}
+
+.article-body strong,
+.article-body b{font-weight:700;color:var(--text)}
+.article-body em,
+.article-body i{font-style:italic}
+.article-body del,
+.article-body s{
+  text-decoration:line-through;
+  opacity:.7;
+}
+
+.article-body img{
+  margin:1.5em 0;
+  border-radius:12px;
+  max-width:100%;
+}
+.article-body figure{margin:1.5em 0}
+.article-body figcaption{
+  font-size:13.5px;
+  color:var(--text-3);
+  text-align:center;
+  margin-top:10px;
+}
+
+/* ========= Link cards ========= */
+.article-body a.link-card,
+.article-body .link-card{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin:1.4em 0;
+  padding:16px 18px;
+  background:var(--link-card-bg);
+  border:1px solid var(--link-card-border);
+  border-radius:12px;
+  text-decoration:none !important;
+  color:var(--text) !important;
+  transition:.15s;
+  position:relative;
+  max-width:100%;
+}
+.article-body .link-card:hover{
+  transform:translateY(-1px);
+  box-shadow:0 6px 20px rgba(217,119,6,.15);
+  border-color:var(--accent);
+  text-decoration:none !important;
+}
+[data-theme="dark"] .article-body .link-card:hover{
+  box-shadow:0 6px 20px rgba(251,191,36,.15);
+}
+.article-body .link-card .lc-icon{
+  width:44px;height:44px;
+  border-radius:10px;
+  background:var(--accent);
+  color:#fff;
+  display:grid;place-items:center;
+  flex-shrink:0;
+  font-size:20px;
+}
+[data-theme="dark"] .article-body .link-card .lc-icon{color:#0c0a09}
+.article-body .link-card .lc-body{flex:1;min-width:0}
+.article-body .link-card .lc-label{
+  font-size:11.5px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--accent-text);
+  margin-bottom:3px;
+}
+[data-theme="dark"] .article-body .link-card .lc-label{color:var(--accent)}
+.article-body .link-card .lc-title{
+  font-family:var(--serif);
+  font-size:1.05rem;
+  font-weight:700;
+  color:var(--text);
+  margin-bottom:2px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.article-body .link-card .lc-url{
+  font-size:12.5px;
+  color:var(--text-3);
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.article-body .link-card .lc-arrow{
+  width:20px;height:20px;
+  flex-shrink:0;
+  color:var(--accent);
+  transition:transform .15s;
+}
+.article-body .link-card:hover .lc-arrow{transform:translateX(3px)}
+
+/* ========= Inline links ========= */
+.article-body p a:not(.link-card),
+.article-body li a:not(.link-card),
+.article-body h2 a:not(.link-card),
+.article-body h3 a:not(.link-card){
+  color:var(--accent);
+  font-weight:500;
+  text-decoration:underline;
+  text-decoration-color:color-mix(in srgb,var(--accent) 40%,transparent);
+  text-decoration-thickness:2px;
+  text-underline-offset:3px;
+  padding:1px 3px;
+  border-radius:4px;
+  transition:.12s;
+}
+.article-body p a:not(.link-card):hover,
+.article-body li a:not(.link-card):hover{
+  background:var(--accent-soft);
+  text-decoration-color:var(--accent);
+}
+
+/* ========= Mobile ========= */
+@media (max-width:720px){
+  body{font-size:16px}
+  .container,
+  .article-header,
+  .article-body,
+  .breadcrumbs{padding-left:18px;padding-right:18px}
+  .article-body{font-size:16.5px;line-height:1.72}
+  .article h1{font-size:1.75rem;line-height:1.2}
+  .article-desc{font-size:1.02rem}
+  .article-body h1{font-size:1.5rem}
+  .article-body h2{font-size:1.35rem}
+  .article-body h3{font-size:1.15rem}
+  .article-body pre{font-size:13px;padding:14px;border-radius:10px}
+  .article-body blockquote{padding:.7em 1em;font-size:1rem}
+  .article-body .link-card{padding:14px;gap:12px}
+  .article-body .link-card .lc-icon{width:38px;height:38px;font-size:17px}
+  .article-body .link-card .lc-title{font-size:.98rem}
+}
+@media (max-width:380px){
+  .article h1{font-size:1.5rem}
+  .article-body{font-size:16px}
+  .article-body .link-card .lc-icon{width:34px;height:34px;font-size:15px}
+}
+
+/* ========= Tags ========= */
+.tags{
+  max-width:760px;
+  margin:40px auto 0;
+  padding:0 24px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.tag{
+  display:inline-block;
+  padding:6px 12px;
+  border-radius:100px;
+  background:var(--bg-sub);
+  color:var(--text-2);
+  font-size:12.5px;
+  font-weight:500;
+  border:1px solid var(--border);
+}
+@media (max-width:720px){.tags{padding:0 18px}}
+
+/* ========= Share ========= */
+.share{
+  max-width:760px;
+  margin:36px auto 0;
+  padding:22px 24px 0;
+  border-top:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.share-label{
+  font-size:13px;
+  font-weight:600;
+  color:var(--text-3);
+  margin-right:6px;
+  letter-spacing:.02em;
+}
+.share a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:40px;height:40px;
+  border-radius:50%;
+  border:1px solid var(--border-strong);
+  color:var(--text-2);
+  flex-shrink:0;
+  transition:.12s;
+}
+.share a:hover{
+  background:var(--bg-sub);
+  color:var(--accent);
+  text-decoration:none;
+  border-color:var(--accent);
+}
+.share svg{width:16px;height:16px;fill:currentColor}
+.copy-btn{
+  background:transparent;
+  border:1px solid var(--border-strong);
+  border-radius:100px;
+  padding:9px 16px;
+  font-size:13px;
+  font-weight:600;
+  color:var(--text-2);
+  transition:.12s;
+}
+.copy-btn:hover{
+  background:var(--bg-sub);
+  border-color:var(--accent);
+  color:var(--accent);
+}
+@media (max-width:720px){.share{padding:22px 18px 0}}
+
+/* ========= Related ========= */
+.related{
+  max-width:1000px;
+  margin:64px auto 0;
+  padding:40px 24px 0;
+  border-top:1px solid var(--border);
+}
+.related h2{
+  font-family:var(--serif);
+  font-size:1.4rem;
+  font-weight:700;
+  letter-spacing:-.02em;
+  margin-bottom:24px;
+  color:var(--text);
+}
+.related-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:20px;
+}
+.rel-card{
+  display:block;
+  color:inherit;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:18px;
+  background:var(--bg-elev);
+  transition:.15s;
+}
+.rel-card:hover{
+  border-color:var(--border-strong);
+  transform:translateY(-2px);
+  text-decoration:none;
+  box-shadow:0 6px 20px rgba(0,0,0,.05);
+}
+[data-theme="dark"] .rel-card:hover{
+  box-shadow:0 6px 20px rgba(0,0,0,.35);
+}
+.rel-card h3{
+  font-family:var(--serif);
+  font-size:1.05rem;
+  font-weight:700;
+  line-height:1.35;
+  letter-spacing:-.015em;
+  margin-bottom:8px;
+  color:var(--text);
+}
+.rel-card p{
+  font-size:13.5px;
+  color:var(--text-3);
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  line-height:1.5;
+}
+.rel-card .m{
+  font-size:12px;
+  color:var(--text-3);
+  margin-top:12px;
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+@media (max-width:720px){.related{padding:40px 18px 0}}
+
+/* ========= Footer (updated with full columns) ========= */
+.footer{
+  border-top:1px solid var(--border);
+  margin-top:72px;
+  padding:40px 0 32px;
+  color:var(--text-3);
+  font-size:13px;
+  background:var(--bg-elev);
+}
+.footer-grid{
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 24px;
+  display:grid;
+  grid-template-columns:1.6fr 1fr 1fr 1fr;
+  gap:36px;
+}
+.footer-brand p{color:var(--text-3);font-size:13.5px;margin-top:10px;max-width:300px;line-height:1.55}
+.footer-col h4{
+  font-size:11.5px;
+  font-weight:700;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--text-3);
+  margin-bottom:14px;
+}
+.footer-col ul{list-style:none;display:grid;gap:9px}
+.footer-col a{color:var(--text-2);font-size:14px}
+.footer-col a:hover{color:var(--accent);text-decoration:none}
+.footer-bottom{
+  max-width:1200px;
+  margin:32px auto 0;
+  padding:22px 24px 0;
+  border-top:1px solid var(--border);
+  color:var(--text-3);
+  font-size:12.5px;
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:8px;
+}
+@media (max-width:820px){
+  .footer-grid{grid-template-columns:1fr 1fr;gap:28px}
+  .footer-brand{grid-column:1/-1}
+}
+@media (max-width:720px){
+  .footer-grid{padding:0 18px}
+  .footer-bottom{padding:22px 18px 0}
+}
+
+/* ========= Back to top ========= */
+.to-top{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  background:var(--text);
+  color:var(--bg);
+  display:none;
+  place-items:center;
+  box-shadow:0 6px 20px rgba(0,0,0,.15);
+  border:0;
+  z-index:30;
+  transition:.15s;
+}
+.to-top.show{display:grid}
+.to-top:hover{transform:translateY(-2px)}
+.to-top svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* ========= Reading progress bar ========= */
+.progress-bar{
+  position:fixed;
+  top:0;left:0;
+  height:3px;
+  background:var(--accent);
+  width:0;
+  z-index:100;
+  transition:width .1s;
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar" aria-hidden="true"></div>
+
+<header class="hdr">
+  <div class="hdr-inner">
+    <a class="brand" href="../../" aria-label="ZISHU TRON Insight home">
+      <span class="brand-mark" aria-hidden="true">Z</span>
+      <span class="brand-text">
+        <span class="b1">ZISHU TRON</span>
+        <span class="b2">Insight</span>
+      </span>
+    </a>
+    <div class="hdr-right">
+      <a class="icon-btn" href="../../" aria-label="Back to home">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </a>
+      <button class="icon-btn" id="themeBtn" aria-label="Toggle dark mode">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4" y1="12" x2="2" y2="12"/><line x1="22" y1="12" x2="20" y2="12"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <a href="../../">Home</a>
+  <span class="sep">/</span>
+  <span>Product</span><span class="sep">/</span>
+  <span>Zishu Terminal (Beta) — Official Launch Article</span>
+</nav>
+
+<article class="article">
+  <header class="article-header">
+    <span class="article-cat">Product</span>
+    <h1>Zishu Terminal (Beta) — Official Launch Article</h1>
+    <p class="article-desc">Zishu Terminal — Beta (v5.0.0-beta.1)
+An advanced Android terminal and lightweight developer environment.</p>
+    <div class="article-meta">
+      <span>By <strong>Zishan</strong></span>
+      <span class="dot">·</span>
+      <span>Published <time datetime="2026-09-24T07:00:44.652Z">September 24, 2026</time></span>
+      
+      <span class="dot">·</span>
+      <span>12 min read</span>
+    </div>
+  </header>
+
+  <div class="article-cover"><img src="https://i.ibb.co/k6kgFGRw/e242a3306da4.png" alt="" loading="eager"></div>
+
+  <div class="article-body" id="articleBody">
+    <a class="link-card" href="https://github.com/zishutron/Stardust-store/releases/download/v5.0.1/Zishu.Terminal.Beta._v5.0.0-beta.1.501.apk" target="_blank" rel="noopener noreferrer"><div class="lc-icon">⬇</div><div class="lc-body"><div class="lc-label">Download</div><div class="lc-title">Zishu Terminal (Beta)</div><div class="lc-url">https://github.com/zishutron/Stardust-store/releases/download/v5.0.1/Zishu.Terminal.Beta._v5.0.0-beta.1.501.apk</div></div><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></a><p><br></p><div>Zishu Terminal (Beta) — Official Launch Article</div><div><span><br></span></div><div>A Android Terminal &amp; Lightweight Developer Environment</div><div><span><br></span></div><div>---</div><div><span><br></span></div><div>Introduction</div><div><span><br></span></div><div>Today, ZISHU TRON is proud to announce the first public beta of Zishu Terminal — a mobile-first terminal emulator and lightweight developer environment built exclusively for Android.</div><div><span><br></span></div><div>Zishu Terminal is not a Termux clone. It is not a Linux distribution. It does not attempt to bypass Android's security model, and it does not claim capabilities that the platform cannot deliver. Instead, it is a focused, honest, and functional terminal application that brings real command-line workflows to Android devices within the boundaries of the Android sandbox.</div><div><span><br></span></div><div>This is an early-access release. Every feature described below works. Every limitation described below is real. Nothing is faked, and nothing is over-promised.</div><div><span><br></span></div><div>---</div><div><span><br></span></div><div>What is Zishu Terminal?</div><div><span><br></span></div><div>Zishu Terminal is a native Android application that provides:</div><div><span><br></span></div><div>· A real shell using Android's /system/bin/sh</div><div>· Multiple independent terminal sessions running in parallel</div><div>· ANSI color support (16-color and 256-color palettes)</div><div>· A command history system with keyboard navigation</div><div>· Autocomplete for commands and file paths</div><div>· A built-in file manager with full CRUD operations</div><div>· A lightweight text editor with search and line numbers</div><div>· A local development server bound to 127.0.0.1</div><div>· A package manager (zpkg) supporting local packages</div><div>· A structured userspace with $HOME, $PREFIX, $PATH, and $TMPDIR</div><div>· Environment diagnostics via zdoctor</div><div>· Backup and restore of settings, history, and package metadata</div><div>· Terminal profiles and three built-in themes</div><div><span><br></span></div><div>Everything listed above is implemented with real Android APIs. Nothing is a mockup, a placeholder, or a demo screen.</div><div><span><br></span></div><div>---</div><div><span><br></span></div><div>Design Philosophy</div><div><span><br></span></div><div>Zishu Terminal is built around three non-negotiable principles:</div><div><span><br></span></div><div>1. Honesty</div><div><span><br></span></div><div>If a feature is not implemented, it is not shown as available. If a command is not installed, the terminal reports command: not found — the real shell error. There are no fabricated outputs, no fake package lists, and no simulated tool results. Every status indicator in the application is derived from a real runtime check.</div><div><span><br></span></div><div>2. Respect for Android Security</div><div><span><br></span></div><div>Zishu Terminal never requests root. It never attempts to bypass the Android sandbox. It never modifies system partitions, never installs APKs silently, and never hides processes. It works entirely within the permissions Android grants it, and it operates within the private data directory that Android assigns to every application.</div><div><span><br></span></div><div>3. Mobile-First Design</div><div><span><br></span></div><div>The terminal interface is not a desktop layout squeezed onto a phone screen. It is designed for touch, for one-handed use, and for the realities of the Android keyboard. Every interaction — command entry, history navigation, session switching, file browsing — has been reconsidered for a mobile context.</div><div><span><br></span></div><div>---</div><div><span><br></span></div><div>Feature Overview</div><div><span><br></span></div><div>Terminal Engine</div><div><span><br></span></div><div>· Real /system/bin/sh process</div><div>· Persistent shell sessions</div><div>· Separate stdout and stderr handling</div><div>· Background I/O threads — the UI thread is never blocked</div><div>· Bounded output buffer to prevent memory exhaustion</div><div>· Graceful handling of process termination</div><div>· Shell restart without losing the session</div><div>· Support for interrupt signals (CTRL+C) where the platform allows</div><div><span><br></span></div><div>Terminal Emulation</div><div><span><br></span></div><div>· ANSI escape sequence parsing</div><div>· 16-color and 256-color foreground support</div><div>· Bold, underline, and reverse video attributes</div><div>· Carriage return and backspace handling</div><div>· Escape sequence stripping for unsupported sequences (no visible garbage)</div><div>· Interactive command support where technically practical</div><div><span><br></span></div><div>User Interface</div><div><span><br></span></div><div>· Full-screen terminal layout</div><div>· Monospace typography throughout</div><div>· Adjustable font size (8–30 sp)</div><div>· Adjustable terminal padding</div><div>· Themed blinking cursor (dark, light, and green variants)</div><div>· Three themes: Dark Terminal, Light Terminal, Soft Green</div><div>· Quick-access keyboard bar with ESC, TAB, CTRL, ALT, arrows, and common symbols</div><div>· Landscape orientation support</div><div>· Keyboard-aware layout (adjustResize)</div><div>· Smart back button (hides keyboard before navigating away)</div><div><span><br></span></div><div>Sessions</div><div><span><br></span></div><div>· Create, rename, duplicate, switch, and close sessions</div><div>· Restart a shell within an existing session</div><div>· Session state is preserved across activity lifecycle</div><div>· Independent working directory per session</div><div>· Independent command history context per session (where practical)</div><div>· Status indicators (running, stopped, error)</div><div><span><br></span></div><div>Command History</div><div><span><br></span></div><div>· Persistent across app restarts</div><div>· Up/down arrow navigation</div><div>· Searchable history screen</div><div>· Configurable maximum size</div><div>· Duplicate suppression</div><div>· Clear history with confirmation</div><div><span><br></span></div><div>File Manager</div><div><span><br></span></div><div>· Browse any accessible directory</div><div>· Create files and folders</div><div>· Rename, delete, copy, and move</div><div>· Display file size and modification date</div><div>· Open files directly in the editor</div><div>· Support for hidden files</div><div>· Sort by name, type, or date</div><div><span><br></span></div><div>Text Editor</div><div><span><br></span></div><div>· Open and edit any plain-text file</div><div>· Save and Save As</div><div>· Search within file</div><div>· Line numbers</div><div>· Revert to last saved version</div><div>· Handles common extensions: .txt, .sh, .json, .xml, .html, .css, .js, .java, .md</div><div>· Safe handling of large files (truncation warning, no crash)</div><div><span><br></span></div><div>Project Management</div><div><span><br></span></div><div>· Create project scaffolds</div><div>· Build system detection:</div><div>&nbsp; · Makefile → make</div><div>&nbsp; · package.json → npm run build</div><div>&nbsp; · setup.py → python setup.py build</div><div>&nbsp; · build.sh → sh build.sh</div><div>· Run commands based on project type</div><div>· Project info and cleanup</div><div><span><br></span></div><div>Local Development Server</div><div><span><br></span></div><div>· Serve any directory over HTTP</div><div>· Binds exclusively to 127.0.0.1 by default</div><div>· Configurable port (default 8080)</div><div>· Start, stop, restart, and status commands</div><div>· Dedicated control UI</div><div>· Access logging</div><div><span><br></span></div><div>Package Manager (zpkg)</div><div><span><br></span></div><div>· Install local .zpkg packages</div><div>· Remove installed packages</div><div>· List and search installed packages</div><div>· Display package metadata</div><div>· Repository configuration (HTTPS-only enforced)</div><div>· Dependency resolution with cycle detection</div><div>· Database health check (zpkg doctor)</div><div>· Package cache management (zpkg clean)</div><div><span><br></span></div><div>Userspace</div><div><span><br></span></div><div>· $PREFIX — Zishu-managed userspace root</div><div>· $HOME — user home directory</div><div>· $TMPDIR — temporary files</div><div>· $PATH — executable search path</div><div>· Directory structure: bin/, lib/, libexec/, share/, etc/, include/, opt/, var/, tmp/, home/</div><div>· Environment variable management (zenv)</div><div>· Path resolution (zpath, zwhich)</div><div><span><br></span></div><div>Diagnostics</div><div><span><br></span></div><div>· zdoctor — real environment checks</div><div>· ztools — honest tool detection</div><div>· Reports OK, WARN, or FAIL based on actual system state</div><div>· Never fabricates a "success" result</div><div><span><br></span></div><div>Backup &amp; Restore</div><div><span><br></span></div><div>· Backup settings, command history, and package metadata</div><div>· Restore from most recent backup</div><div>· Reset preferences only (never deletes user files)</div><div>· Non-destructive by default</div><div><span><br></span></div><div>---</div><div><span><br></span></div><div>Command Reference</div><div><span><br></span></div><div>System Commands</div><div><span><br></span></div><div>All standard Android shell commands work, including:</div><div><span><br></span></div><div>```</div><div>pwd&nbsp; &nbsp; &nbsp; ls&nbsp; &nbsp; &nbsp; &nbsp;cd&nbsp; &nbsp; &nbsp; &nbsp;echo&nbsp; &nbsp; &nbsp;cat&nbsp; &nbsp; &nbsp; mkdir</div><div>rmdir&nbsp; &nbsp; rm&nbsp; &nbsp; &nbsp; &nbsp;cp&nbsp; &nbsp; &nbsp; &nbsp;mv&nbsp; &nbsp; &nbsp; &nbsp;touch&nbsp; &nbsp; head</div><div>tail&nbsp; &nbsp; &nbsp;grep&nbsp; &nbsp; &nbsp;find&nbsp; &nbsp; &nbsp;which&nbsp; &nbsp; whoami&nbsp; &nbsp;id</div><div>date&nbsp; &nbsp; &nbsp;uname&nbsp; &nbsp; getprop&nbsp; env&nbsp; &nbsp; &nbsp; printenv clear</div><div>exit&nbsp; &nbsp; &nbsp;sh</div><div>```</div><div><span><br></span></div><div>If a command is not present on the device, the terminal reports the real error:</div><div><span><br></span></div><div>```</div><div>$ python</div><div>/system/bin/sh: python: not found</div><div>```</div><div><span><br></span></div><div>Zishu Commands</div><div><span><br></span></div><div>```</div><div>zhelp [topic]&nbsp; &nbsp; &nbsp; Show help, optionally for a specific topic</div><div>zinfo&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; System and environment information</div><div>zclear&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Clear terminal output</div><div>zversion&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Show version</div><div>ztheme&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Theme management</div><div>zhistory&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Command history screen</div><div>zsession&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Session information</div><div>zstorage&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Storage information</div><div>zpath&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Print Zishu paths</div><div>zenv&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Environment variable management</div><div>zwhich &lt;cmd&gt;&nbsp; &nbsp; &nbsp; &nbsp;Locate an executable</div><div>zdoctor&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Environment diagnostics</div><div>ztools&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Detected tools</div><div>zjobs&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Tracked background jobs</div><div>zfind &lt;term&gt;&nbsp; &nbsp; &nbsp; &nbsp;Search files</div><div>zbuild&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Detect and build current project</div><div>zprofile&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Manage terminal profiles</div><div>zpkg ...&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Package manager</div><div>zproject ...&nbsp; &nbsp; &nbsp; &nbsp;Project management</div><div>zedit &lt;file&gt;&nbsp; &nbsp; &nbsp; &nbsp;Open editor</div><div>zrun &lt;script&gt;&nbsp; &nbsp; &nbsp; Run a shell script</div><div>zserver ...&nbsp; &nbsp; &nbsp; &nbsp; Local development server</div><div>zbackup&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Backup configuration</div><div>zrestore&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Restore from backup</div><div>```</div><div><span><br></span></div><div>Package Manager</div><div><span><br></span></div><div>```</div><div>zpkg help&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Show help</div><div>zpkg list&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; List installed packages</div><div>zpkg installed&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Alias for list</div><div>zpkg info &lt;name&gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Show package details</div><div>zpkg search &lt;term&gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Search local database</div><div>zpkg install &lt;dir&gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Install a local .zpkg</div><div>zpkg remove &lt;name&gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Remove installed package</div><div>zpkg update&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Refresh local index</div><div>zpkg upgrade&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Check for upgrades</div><div>zpkg clean&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Clean package cache</div><div>zpkg doctor&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Check package database</div><div>zpkg repo list&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;List repositories</div><div>zpkg repo add &lt;n&gt; &lt;url&gt;&nbsp; &nbsp; Add HTTPS repository</div><div>zpkg repo remove &lt;name&gt;&nbsp; &nbsp; Remove repository</div><div>zpkg repo enable &lt;name&gt;&nbsp; &nbsp; Enable repository</div><div>zpkg repo disable &lt;name&gt;&nbsp; &nbsp;Disable repository</div><div>```</div><div><span><br></span></div><div>Projects</div><div><span><br></span></div><div>```</div><div>zproject create &lt;name&gt;&nbsp; &nbsp; &nbsp;Create a new project</div><div>zproject list&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; List all projects</div><div>zproject info &lt;name&gt;&nbsp; &nbsp; &nbsp; &nbsp;Show project info</div><div>zproject open &lt;name&gt;&nbsp; &nbsp; &nbsp; &nbsp;Enter project directory</div><div>zproject run &lt;name&gt;&nbsp; &nbsp; &nbsp; &nbsp; Run project</div><div>zproject build &lt;name&gt;&nbsp; &nbsp; &nbsp; Build project</div><div>zproject clean &lt;name&gt;&nbsp; &nbsp; &nbsp; Clean build artifacts</div><div>zproject delete &lt;name&gt;&nbsp; &nbsp; &nbsp;Delete project</div><div>```</div><div><span><br></span></div><div>---</div><div><span><br></span></div><div>Security &amp; Privacy</div><div><span><br></span></div><div>Zishu Terminal is built on a foundation of transparency. There is no hidden behavior, no analytics, and no telemetry of any kind.</div><div><span><br></span></div><div>What Zishu Terminal does not do</div><div><span><br></span></div><div>· It does not request root access</div><div>· It does not attempt to bypass Android's sandbox</div><div>· It does not modify system partitions</div><div>· It does not install APKs silently</div><div>· It does not execute arbitrary code from remote sources</div><div>· It does not collect telemetry or analytics</div><div>· It does not include advertising SDKs</div><div>· It does not require an account</div><div>· It does not sync data to the cloud</div><div>· It does not make hidden network requests</div><div><span><br></span></div><div>What Zishu Terminal does</div><div><span><br></span></div><div>· It binds its local development server exclusively to 127.0.0.1 by default</div><div>· It accepts only HTTPS repository URLs</div><div>· It verifies package integrity using SHA-256</div><div>· It performs all operations within the Android application sandbox</div><div>· It works fully offline for all core features</div><div><span><br></span></div><div>Permissions</div><div><span><br></span></div><div>Zishu Terminal requests only the permissions necessary for its documented features:</div><div><span><br></span></div><div>Permission Purpose</div><div>READ_EXTERNAL_STORAGE File manager access to user files</div><div>WRITE_EXTERNAL_STORAGE File writes (limited to API 28 and below)</div><div>WAKE_LOCK Optional "keep screen awake" feature</div><div>INTERNET Local development server on 127.0.0.1</div><div><span><br></span></div><div>No location, camera, microphone, contacts, SMS, or call log permissions are requested.</div><div><span><br></span></div><div>---</div><div><span><br></span></div><div>Current Limitations (Beta v5.0.0-beta.1)</div><div><span><br></span></div><div>Zishu Terminal is an early-access beta. The following are honest limitations of this build and are not hidden behind fake features:</div><div><span><br></span></div><div>Developer Toolchains</div><div><span><br></span></div><div>The following tools are not bundled with this release:</div><div><span><br></span></div><div>· Python interpreter</div><div>· Git</div><div>· OpenSSH client</div><div>· Node.js and npm</div><div>· C and C++ compilers (clang, gcc)</div><div>· Java compiler (javac)</div><div><span><br></span></div><div>These are large native binaries that cannot be reliably packaged into a small Android APK without dedicated cross-compilation infrastructure. Bundling them improperly would result in a broken, unstable application — which contradicts the project's commitment to real functionality.</div><div><span><br></span></div><div>Future versions of Zishu Terminal will make these toolchains available through the package management system (zpkg), where users can install them explicitly as separate, verified packages.</div><div><span><br></span></div><div>Remote Package Downloads</div><div><span><br></span></div><div>The package manager supports the full architecture for remote repositories — including repository configuration, HTTPS enforcement, checksum verification, and dependency resolution — but remote package downloads are not enabled in this build. This is an honest gap, and it is documented as such in the application itself.</div><div><span><br></span></div><div>The remote package ecosystem is planned for v5.5.</div><div><span><br></span></div><div>Root Access</div><div><span><br></span></div><div>Zishu Terminal will never request root access. It will never attempt to bypass the Android security model. Users who require root-level functionality should use tools designed for rooted devices.</div><div><span><br></span></div><div>---</div><div><span><br></span></div><div>Technical Details</div><div><span><br></span></div><div>Property Value</div><div>Package name com.zishu.terminal</div><div>Version 5.0.0-beta.1</div><div>Version code 501</div><div>Minimum SDK 21 (Android 5.0 Lollipop)</div><div>Target SDK 29 (Android 10)</div><div>Language Java</div><div>Framework Classic Android APIs (no AndroidX, no Kotlin)</div><div>Build system Compatible with Android Code Studio</div><div>APK size ~1 MB</div><div>External dependencies None</div><div><span><br></span></div><div>Zishu Terminal is built with classic Android framework APIs only. It does not use AndroidX, Jetpack, Material Components, Kotlin, or any third-party library. This makes the application lightweight, fast, and easy to audit.</div><div><span><br></span></div><div>---</div><div><span><br></span></div><div>Roadmap</div><div><span><br></span></div><div>Zishu Terminal will evolve through a series of planned releases, each focused on real, verified functionality.</div><div><span><br></span></div><div>v5.1 — Stability &amp; Feedback</div><div><span><br></span></div><div>· Bug fixes based on user reports</div><div>· Performance improvements</div><div>· Documentation updates</div><div>· Community feedback integration</div><div><span><br></span></div><div>v5.5 — Remote Package Ecosystem</div><div><span><br></span></div><div>· HTTPS repository support (fully implemented)</div><div>· Package index download and parsing</div><div>· Package download with progress</div><div>· SHA-256 integrity verification</div><div>· Dependency resolution across repositories</div><div>· Transactional installation with rollback</div><div>· zpkg upgrade fully functional</div><div>· Package cache management</div><div><span><br></span></div><div>v6.0 — Developer Toolchains</div><div><span><br></span></div><div>· Community-contributed .zpkg packages</div><div>· Python, Git, OpenSSH, Node.js, and C/C++ compilers made available as installable packages</div><div>· Toolchain status UI reflecting actual installation state</div><div>· Package verification and signature architecture</div><div><span><br></span></div><div>Each of these milestones represents a genuine technical commitment. Features are announced only when they are implemented and verified, not before.</div><div><span><br></span></div><div>---</div><div><span><br></span></div><div>Download</div><div><span><br></span></div><div>Zishu Terminal — Beta v5.0.0-beta.1</div><div><span><br></span></div><div>🔗 Download APK:</div><div>https://github.com/zishutron/Stardust-store/releases/download/v5.0.1/Zishu.Terminal.Beta._v5.0.0-beta.1.501.apk</div><div><span><br></span></div><div>System Requirements:</div><div><span><br></span></div><div>· Android 5.0 (API 21) or newer</div><div>· Approximately 5 MB free storage</div><div>· No root required</div><div>· Works offline</div><div><span><br></span></div><div>Installation Note: Since this is a beta distributed outside of Google Play, Android may display a warning about installing applications from unknown sources. This is normal and expected for beta distributions.</div><div><span><br></span></div><div>---</div><div><span><br></span></div><div>Feedback and Contributions</div><div><span><br></span></div><div>Zishu Terminal is an independent project developed by ZISHU TRON. Community feedback is essential to the project's continued development.</div><div><span><br></span></div><div>If you encounter a bug, please report it with the following information:</div><div><span><br></span></div><div>· Android version</div><div>· Device manufacturer and model</div><div>· The exact command or action performed</div><div>· Expected behavior versus actual behavior</div><div>· Screenshots or logs if available</div><div><span><br></span></div><div>Feature requests and suggestions are equally welcome. When making a suggestion, please specify whether you are describing a new feature or proposing an improvement to an existing one.</div><div><span><br></span></div><div>---</div><div><span><br></span></div><div>A Note on Honest Software</div><div><span><br></span></div><div>In an ecosystem where applications frequently overstate their capabilities, Zishu Terminal takes a different approach. It describes what it does, and it delivers exactly that. It does not claim to be a full Linux environment because it is not one. It does not claim to include developer toolchains because they are not bundled. It does not claim to support remote package installation because that feature is not yet enabled.</div><div><span><br></span></div><div>This is a deliberate choice. The project's credibility depends on users trusting that when a feature is listed, it works, and that when a feature is absent, the absence is acknowledged.</div><div><span><br></span></div><div>Zishu Terminal is a mobile terminal that respects Android, respects its users, and respects the truth. It is offered in beta form so that its community can help shape its development honestly and transparently.</div><div><span><br></span></div><div>---</div><div><span><br></span></div><div>Conclusion</div><div><span><br></span></div><div>Zishu Terminal represents a sincere effort to bring a real terminal to Android — one that works within the platform's security model, one that behaves predictably, and one that does not over-promise.</div><div><span><br></span></div><div>It is not a replacement for Termux. It is not a replacement for a Linux workstation. It is a focused, honest, and functional terminal that fills a specific need: giving Android users a reliable command-line environment that behaves the way a terminal should.</div><div><span><br></span></div><div>Try it. Test it. Report what works, and report what doesn't. Together, we can build something that genuinely serves developers and power users on Android.</div><div><span><br></span></div><div>---</div><div><span><br></span></div><div>ZISHU TRON</div><div><span><br></span></div><div>Building honest software for Android.</div><div><span><br></span></div><div>🔗 Download: https://github.com/zishutron/Stardust-store/releases/download/v5.0.1/Zishu.Terminal.Beta._v5.0.0-beta.1.501.apk</div><div><span><br></span></div><div><br></div>
+  </div>
+
+  <div class="tags"><span class="tag">Tools</span></div>
+</article>
+
+<div class="share">
+  <span class="share-label">Share:</span>
+  <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fzishu-insight.zishuai.cloud%2Farticles%2Fzishu-terminal-beta%2F&text=Zishu%20Terminal%20(Beta)%20%E2%80%94%20Official%20Launch%20Article" target="_blank" rel="noopener" aria-label="Share on X">
+    <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+  </a>
+  <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fzishu-insight.zishuai.cloud%2Farticles%2Fzishu-terminal-beta%2F" target="_blank" rel="noopener" aria-label="Share on LinkedIn">
+    <svg viewBox="0 0 24 24"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg>
+  </a>
+  <a href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fzishu-insight.zishuai.cloud%2Farticles%2Fzishu-terminal-beta%2F&t=Zishu%20Terminal%20(Beta)%20%E2%80%94%20Official%20Launch%20Article" target="_blank" rel="noopener" aria-label="Submit to Hacker News">
+    <svg viewBox="0 0 24 24"><path d="M2 2v20h20V2H2zm9.4 11.4V17h1.2v-3.6l3.4-6.4h-1.4l-1.6 3.2c-.4.8-.8 1.6-1.1 2.3h-.1c-.3-.7-.7-1.5-1.1-2.3L8.8 7H7.3l4.1 6.4z"/></svg>
+  </a>
+  <a href="https://www.reddit.com/submit?url=https%3A%2F%2Fzishu-insight.zishuai.cloud%2Farticles%2Fzishu-terminal-beta%2F&title=Zishu%20Terminal%20(Beta)%20%E2%80%94%20Official%20Launch%20Article" target="_blank" rel="noopener" aria-label="Share on Reddit">
+    <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.9 11.6c.2.2.3.4.3.7 0 .9-.6 1.6-1.5 1.9 0 .1.1.3.1.5 0 2.1-2.4 3.8-5.3 3.8s-5.3-1.7-5.3-3.8c0-.2 0-.3.1-.5-.9-.3-1.5-1-1.5-1.9 0-.3.1-.5.3-.7-.2-.2-.3-.4-.3-.7 0-.6.5-1.1 1.1-1.1.3 0 .6.1.8.3.9-.6 2.1-1 3.4-1l.7-3.4c0-.1.1-.2.2-.2l2.7.6c.1-.2.4-.4.7-.4.5 0 .9.4.9.9s-.4.9-.9.9c-.4 0-.8-.3-.9-.7l-2.4-.5-.6 3.1c1.3.1 2.4.5 3.3 1 .2-.2.5-.3.8-.3.6 0 1.1.5 1.1 1.1 0 .3-.1.5-.3.7z"/></svg>
+  </a>
+  <button class="copy-btn" id="copyLink" aria-label="Copy link">Copy link</button>
+</div>
+
+
+<section class="related">
+  <h2>Related articles</h2>
+  <div class="related-grid">
+    <a class="rel-card" href="../../articles/zishu-ai-n7db/">
+      <h3>Zishu AI</h3>
+      <p>Zishu AI — Your personal AI voice assistant for natural conversations, smart answers, web search, app actions, maps, and more. Fast, simple,</p>
+      <div class="m">Sep 22, 2026 · 2 min read</div>
+    </a>
+    <a class="rel-card" href="../../articles/zishu-ai/">
+      <h3>Zishu ai your voice your assistant</h3>
+      <p>Zishu AI Your Voice Your Assistant</p>
+      <div class="m">Sep 22, 2026 · 3 min read</div>
+    </a>
+    <a class="rel-card" href="../../articles/ring-for-me/">
+      <h3>RING FOR ME</h3>
+      <p>Ring for me find someone who like you:</p>
+      <div class="m">Sep 22, 2026 · 4 min read</div>
+    </a></div>
+</section>
+
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a class="brand" href="../../" style="text-decoration:none">
+        <span class="brand-mark" aria-hidden="true">Z</span>
+        <span class="brand-text"><span class="b1">ZISHU TRON</span><span class="b2">Insight</span></span>
+      </a>
+      <p>The official publication of ZISHU TRON — engineering, product and company updates.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Publication</h4>
+      <ul>
+        <li><a href="../../">Home</a></li>
+        <li><a href="../../#latest">Latest</a></li>
+        <li><a href="../../rss.xml">RSS feed</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="https://zishutron.zishuai.cloud/developer.html" target="_blank" rel="noopener">About</a></li>
+        <li><a href="https://www.linkedin.com/in/zishutron" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="https://github.com/zishutron" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="mailto:support.stardustofficial@gmail.com">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="../../privacy.html">Privacy</a></li>
+        <li><a href="../../terms.html">Terms</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© <span id="year"></span> ZISHU TRON. All rights reserved.</span>
+    <span>Insight — official update platform</span>
+  </div>
+</footer>
+
+<button class="to-top" id="toTop" aria-label="Back to top">
+  <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // Theme
+  const themeBtn = document.getElementById('themeBtn');
+  const storedTheme = localStorage.getItem('zishu-theme');
+  const prefersDark = matchMedia('(prefers-color-scheme: dark)').matches;
+  function applyTheme(t){
+    document.documentElement.setAttribute('data-theme', t);
+    localStorage.setItem('zishu-theme', t);
+  }
+  applyTheme(storedTheme || (prefersDark ? 'dark' : 'light'));
+  themeBtn?.addEventListener('click', () => {
+    const cur = document.documentElement.getAttribute('data-theme');
+    applyTheme(cur === 'dark' ? 'light' : 'dark');
+  });
+
+  // Year
+  const y = document.getElementById('year');
+  if(y) y.textContent = new Date().getFullYear();
+
+  // Copy link
+  document.getElementById('copyLink')?.addEventListener('click', async (e) => {
+    const btn = e.currentTarget;
+    const original = btn.textContent;
+    try{
+      await navigator.clipboard.writeText(location.href);
+      btn.textContent = '✓ Copied!';
+      btn.style.color = 'var(--accent)';
+      btn.style.borderColor = 'var(--accent)';
+      setTimeout(() => {
+        btn.textContent = original;
+        btn.style.color = '';
+        btn.style.borderColor = '';
+      }, 1800);
+    }catch{
+      const ta = document.createElement('textarea');
+      ta.value = location.href;
+      document.body.appendChild(ta);
+      ta.select();
+      try{ document.execCommand('copy'); btn.textContent = '✓ Copied!'; }catch{}
+      document.body.removeChild(ta);
+      setTimeout(() => { btn.textContent = original; }, 1800);
+    }
+  });
+
+  // Reading progress bar
+  const progressBar = document.getElementById('progressBar');
+  const articleBody = document.getElementById('articleBody');
+  function updateProgress(){
+    if(!articleBody || !progressBar) return;
+    const rect = articleBody.getBoundingClientRect();
+    const articleTop = rect.top + window.scrollY;
+    const articleHeight = rect.height;
+    const viewportBottom = window.scrollY + window.innerHeight;
+    const scrolled = viewportBottom - articleTop;
+    const pct = Math.max(0, Math.min(100, (scrolled / (articleHeight + window.innerHeight * 0.6)) * 100));
+    progressBar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', updateProgress, {passive:true});
+  window.addEventListener('resize', updateProgress);
+  updateProgress();
+
+  // Back to top
+  const toTop = document.getElementById('toTop');
+  window.addEventListener('scroll', () => {
+    toTop.classList.toggle('show', window.scrollY > 700);
+  }, {passive:true});
+  toTop?.addEventListener('click', () => scrollTo({top:0, behavior:'smooth'}));
+
+  // Keyboard shortcut: Ctrl/Cmd + Shift + C = copy link
+  document.addEventListener('keydown', (e) => {
+    if((e.metaKey || e.ctrlKey) && e.shiftKey && (e.key === 'C' || e.key === 'c')){
+      e.preventDefault();
+      document.getElementById('copyLink')?.click();
+    }
+  });
+
+  // External links open safely
+  document.querySelectorAll('.article-body a[href^="http"]').forEach(a => {
+    if(!a.hostname || a.hostname !== location.hostname){
+      a.setAttribute('target', '_blank');
+      a.setAttribute('rel', 'noopener noreferrer');
+    }
+  });
+})();
+</script>
+</body>
+</html>

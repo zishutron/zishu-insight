@@ -1,7 +1,22 @@
 {
-  "generatedAt": "2026-09-24T06:51:21.235Z",
-  "count": 6,
+  "generatedAt": "2026-09-24T07:01:13.283Z",
+  "count": 7,
   "articles": [
+    {
+      "id": "-P2HCrMDtXk1nPt64H0S",
+      "slug": "zishu-terminal-beta",
+      "title": "Zishu Terminal (Beta) — Official Launch Article",
+      "description": "Zishu Terminal — Beta (v5.0.0-beta.1)\nAn advanced Android terminal and lightweight developer environment.",
+      "category": "Product",
+      "tags": [
+        "Tools"
+      ],
+      "coverImage": "https://i.ibb.co/k6kgFGRw/e242a3306da4.png",
+      "authorName": "Zishan",
+      "publishedAt": 1790233244652,
+      "readingTime": 12,
+      "pinned": true
+    },
     {
       "id": "-P27lTLnWIFRSXyeRydO",
       "slug": "zishu-ai-n7db",
@@ -15,7 +30,7 @@
       "authorName": "Zishu Tron",
       "publishedAt": 1790074807460,
       "readingTime": 2,
-      "pinned": true
+      "pinned": false
     },
     {
       "id": "-P-swwLn5tc0pi30347a",
