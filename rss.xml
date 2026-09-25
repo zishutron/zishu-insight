@@ -5,8 +5,16 @@
     <link>https://zishu-insight.zishuai.cloud/</link>
     <description>The official publishing platform of ZISHU TRON. Product announcements, engineering deep dives, and company updates.</description>
     <language>en</language>
-    <lastBuildDate>Fri, 25 Sep 2026 13:01:16 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 25 Sep 2026 13:10:44 GMT</lastBuildDate>
     <atom:link href="https://zishu-insight.zishuai.cloud/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Zishu Terminal (Beta) v5.5.0</title>
+      <link>https://zishu-insight.zishuai.cloud/articles/zishu-terminal-beta-v550/</link>
+      <guid isPermaLink="true">https://zishu-insight.zishuai.cloud/articles/zishu-terminal-beta-v550/</guid>
+      <pubDate>Fri, 25 Sep 2026 13:01:56 GMT</pubDate>
+      <description>Zishu Terminal v5.5.0-beta.1 — Built-in curl with real HTTPS, AES-256 file encryption (zprotect), and improved server. Beta.</description>
+      <category>Product</category>
+    </item>
     <item>
       <title>Zishu Terminal (Beta) — Official Launch Article</title>
       <link>https://zishu-insight.zishuai.cloud/articles/zishu-terminal-beta/</link>
