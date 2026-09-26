@@ -2,9 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://zishu-insight.zishuai.cloud/</loc>
-    <lastmod>2026-09-26T07:10:37.439Z</lastmod>
+    <lastmod>2026-09-26T07:20:38.811Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://zishu-insight.zishuai.cloud/articles/zishu-terminal-beta-v565/</loc>
+    <lastmod>2026-09-26T07:11:35.447Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://zishu-insight.zishuai.cloud/articles/zishu-terminal-beta-v550/</loc>
@@ -44,7 +50,7 @@
   </url>
   <url>
     <loc>https://zishu-insight.zishuai.cloud/articles/stardust-x-messenger/</loc>
-    <lastmod>2026-09-22T07:15:53.668Z</lastmod>
+    <lastmod>2026-09-26T07:16:27.559Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

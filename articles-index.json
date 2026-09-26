@@ -1,7 +1,22 @@
 {
-  "generatedAt": "2026-09-26T07:10:37.439Z",
-  "count": 8,
+  "generatedAt": "2026-09-26T07:20:38.810Z",
+  "count": 9,
   "articles": [
+    {
+      "id": "-P2RYWqzftE2iBmsDOK-",
+      "slug": "zishu-terminal-beta-v565",
+      "title": "Zishu Terminal (Beta) v5.6.5",
+      "description": "What's new in v5.6.5-beta.1:\n\n• Added zgit clone — download public GitHub repos as snapshots\n• Fixed binary output rendering (cat on encrypted files now shows instantly)\n• zrun now detects shebang and uses the correct interpreter\n• zrun path resolution fixed (absolute, relative, ~, $HOME)\n• Added verbose mode to zrun",
+      "category": "Product",
+      "tags": [
+        "Tools"
+      ],
+      "coverImage": "https://i.ibb.co/Z69jjTLr/file-000000009ae081fdabca3a9c2a668bb4.png",
+      "authorName": "Zishan",
+      "publishedAt": 1790406695447,
+      "readingTime": 5,
+      "pinned": true
+    },
     {
       "id": "-P2Ne71y1Q43yFyKreeU",
       "slug": "zishu-terminal-beta-v550",
@@ -15,7 +30,7 @@
       "authorName": "Zishan",
       "publishedAt": 1790341316169,
       "readingTime": 6,
-      "pinned": true
+      "pinned": false
     },
     {
       "id": "-P2HCrMDtXk1nPt64H0S",
@@ -92,11 +107,13 @@
       "id": "-P0okqge685LmxPGDqyR",
       "slug": "stardust-x-messenger",
       "title": "Stardust X Messenger",
-      "description": "Stardust X — A New Way to Connect | Modern Messaging App\n\n\nMeet Stardust X — a modern messaging experience designed to keep conversations simple, clean and beautiful.\n\nChat with your friends, manage y",
-      "category": "",
-      "tags": [],
+      "description": "Make conversation simple and secure 🔐",
+      "category": "Product",
+      "tags": [
+        "Social"
+      ],
       "coverImage": "",
-      "authorName": "ZISHU TRON Admin",
+      "authorName": "Zishan",
       "publishedAt": 1790061353668,
       "readingTime": 1,
       "pinned": false

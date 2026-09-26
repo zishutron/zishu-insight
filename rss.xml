@@ -5,8 +5,22 @@
     <link>https://zishu-insight.zishuai.cloud/</link>
     <description>The official publishing platform of ZISHU TRON. Product announcements, engineering deep dives, and company updates.</description>
     <language>en</language>
-    <lastBuildDate>Sat, 26 Sep 2026 07:10:37 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 26 Sep 2026 07:20:38 GMT</lastBuildDate>
     <atom:link href="https://zishu-insight.zishuai.cloud/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Zishu Terminal (Beta) v5.6.5</title>
+      <link>https://zishu-insight.zishuai.cloud/articles/zishu-terminal-beta-v565/</link>
+      <guid isPermaLink="true">https://zishu-insight.zishuai.cloud/articles/zishu-terminal-beta-v565/</guid>
+      <pubDate>Sat, 26 Sep 2026 07:11:35 GMT</pubDate>
+      <description>What&apos;s new in v5.6.5-beta.1:
+
+• Added zgit clone — download public GitHub repos as snapshots
+• Fixed binary output rendering (cat on encrypted files now shows instantly)
+• zrun now detects shebang and uses the correct interpreter
+• zrun path resolution fixed (absolute, relative, ~, $HOME)
+• Added verbose mode to zrun</description>
+      <category>Product</category>
+    </item>
     <item>
       <title>Zishu Terminal (Beta) v5.5.0</title>
       <link>https://zishu-insight.zishuai.cloud/articles/zishu-terminal-beta-v550/</link>
@@ -63,13 +77,8 @@ Magar fir lagta hai ki agar kaam chorunga to fi</description>
       <link>https://zishu-insight.zishuai.cloud/articles/stardust-x-messenger/</link>
       <guid isPermaLink="true">https://zishu-insight.zishuai.cloud/articles/stardust-x-messenger/</guid>
       <pubDate>Tue, 22 Sep 2026 07:15:53 GMT</pubDate>
-      <description>Stardust X — A New Way to Connect | Modern Messaging App
-
-
-Meet Stardust X — a modern messaging experience designed to keep conversations simple, clean and beautiful.
-
-Chat with your friends, manage y</description>
-      
+      <description>Make conversation simple and secure 🔐</description>
+      <category>Product</category>
     </item>
     <item>
       <title>RING FOR ME</title>
