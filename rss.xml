@@ -5,8 +5,17 @@
     <link>https://zishu-insight.zishuai.cloud/</link>
     <description>The official publishing platform of ZISHU TRON. Product announcements, engineering deep dives, and company updates.</description>
     <language>en</language>
-    <lastBuildDate>Sun, 27 Sep 2026 08:50:39 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 27 Sep 2026 09:01:10 GMT</lastBuildDate>
     <atom:link href="https://zishu-insight.zishuai.cloud/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Zishu Terminal (Beta) New Update</title>
+      <link>https://zishu-insight.zishuai.cloud/articles/zishu-terminal-beta-new-update/</link>
+      <guid isPermaLink="true">https://zishu-insight.zishuai.cloud/articles/zishu-terminal-beta-new-update/</guid>
+      <pubDate>Sun, 27 Sep 2026 08:53:52 GMT</pubDate>
+      <description>Zishu Terminal v5.6.5-beta.1 — a lightweight, developer-focused Android terminal built entirely from scratch. Real shell, real encryption, real GitHub cloning, real clipboard management. No root. No fake features. No compromises.
+Built on classic Android (android.app.Activity, no AndroidX, no Kotlin)</description>
+      <category>Product</category>
+    </item>
     <item>
       <title>Zishu Terminal (Beta) v5.6.5</title>
       <link>https://zishu-insight.zishuai.cloud/articles/zishu-terminal-beta-v565/</link>

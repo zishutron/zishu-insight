@@ -1,7 +1,22 @@
 {
-  "generatedAt": "2026-09-27T08:50:39.015Z",
-  "count": 9,
+  "generatedAt": "2026-09-27T09:01:10.321Z",
+  "count": 10,
   "articles": [
+    {
+      "id": "-P2X3Wrv3qp6s6uHykv2",
+      "slug": "zishu-terminal-beta-new-update",
+      "title": "Zishu Terminal (Beta) New Update",
+      "description": "Zishu Terminal v5.6.5-beta.1 — a lightweight, developer-focused Android terminal built entirely from scratch. Real shell, real encryption, real GitHub cloning, real clipboard management. No root. No fake features. No compromises.\nBuilt on classic Android (android.app.Activity, no AndroidX, no Kotlin)",
+      "category": "Product",
+      "tags": [
+        "Tools"
+      ],
+      "coverImage": "https://i.ibb.co/v6CQ0PVr/file-000000009ae081fdabca3a9c2a668bb4.png",
+      "authorName": "Zishan",
+      "publishedAt": 1790499232515,
+      "readingTime": 9,
+      "pinned": true
+    },
     {
       "id": "-P2RYWqzftE2iBmsDOK-",
       "slug": "zishu-terminal-beta-v565",
@@ -15,7 +30,7 @@
       "authorName": "Zishan",
       "publishedAt": 1790406695447,
       "readingTime": 5,
-      "pinned": true
+      "pinned": false
     },
     {
       "id": "-P2Ne71y1Q43yFyKreeU",
