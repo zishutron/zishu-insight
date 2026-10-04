@@ -1,7 +1,22 @@
 {
-  "generatedAt": "2026-10-04T07:10:40.520Z",
-  "count": 10,
+  "generatedAt": "2026-10-04T07:20:37.558Z",
+  "count": 11,
   "articles": [
+    {
+      "id": "-P34l_lPh5sA2IKMOx4i",
+      "slug": "stardust-discord-bot",
+      "title": "Stardust Discord Bot",
+      "description": "Stardust is a fully-featured Discord infrastructure platform that brings moderation, automation, tickets, economy, leveling, giveaways, and community tools together under one unified dashboard. Built for server owners who want professional-grade control without the complexity.",
+      "category": "Product",
+      "tags": [
+        "Bot"
+      ],
+      "coverImage": "https://i.ibb.co/MDysJ0C9/file-000000001b8c821084aee1d6e829f824.png",
+      "authorName": "Zishan",
+      "publishedAt": 1791098252836,
+      "readingTime": 7,
+      "pinned": false
+    },
     {
       "id": "-P2X3Wrv3qp6s6uHykv2",
       "slug": "zishu-terminal-beta-new-update",
