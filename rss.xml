@@ -5,8 +5,16 @@
     <link>https://zishu-insight.zishuai.cloud/</link>
     <description>The official publishing platform of ZISHU TRON. Product announcements, engineering deep dives, and company updates.</description>
     <language>en</language>
-    <lastBuildDate>Sun, 04 Oct 2026 07:40:37 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 04 Oct 2026 07:50:40 GMT</lastBuildDate>
     <atom:link href="https://zishu-insight.zishuai.cloud/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Zishu Deep AI</title>
+      <link>https://zishu-insight.zishuai.cloud/articles/zishu-deep-ai/</link>
+      <guid isPermaLink="true">https://zishu-insight.zishuai.cloud/articles/zishu-deep-ai/</guid>
+      <pubDate>Sun, 04 Oct 2026 07:42:50 GMT</pubDate>
+      <description>ZISHU DEEP AI v4.0 is a next-generation AI workspace built by ZISHU TRON. Chat naturally, write and debug code, research the web with real sources, analyze documents, generate images, and listen to replies — all in one clean, fast interface.</description>
+      <category>Product</category>
+    </item>
     <item>
       <title>Stardust Discord Bot</title>
       <link>https://zishu-insight.zishuai.cloud/articles/stardust-discord-bot/</link>
