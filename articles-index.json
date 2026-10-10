@@ -1,7 +1,22 @@
 {
-  "generatedAt": "2026-10-10T09:50:37.891Z",
-  "count": 12,
+  "generatedAt": "2026-10-10T10:01:11.178Z",
+  "count": 13,
   "articles": [
+    {
+      "id": "-P3_E7kc-gLJ07RhCwsG",
+      "slug": "zshoot",
+      "title": "ZShoot",
+      "description": "Fast-paced 2D shooter with 10 guns, 10 backgrounds & endless action!",
+      "category": "Product",
+      "tags": [
+        "Game"
+      ],
+      "coverImage": "https://i.ibb.co/LTRbT5d/file-0000000090c4820a921dda9289a533cd.png",
+      "authorName": "Zishan",
+      "publishedAt": 1791626087511,
+      "readingTime": 4,
+      "pinned": true
+    },
     {
       "id": "-P34rOipLiebGVNWzzh1",
       "slug": "zishu-deep-ai",
