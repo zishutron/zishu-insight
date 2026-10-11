@@ -1,7 +1,22 @@
 {
-  "generatedAt": "2026-10-11T13:20:41.146Z",
-  "count": 13,
+  "generatedAt": "2026-10-11T13:31:00.679Z",
+  "count": 14,
   "articles": [
+    {
+      "id": "-P3f7iXxpsjSSngiuqeV",
+      "slug": "zshoot-v300",
+      "title": "ZShoot v3.0.0",
+      "description": "What's New in ZShoot v3.0\n\n- Added 8 new guns — now featuring 18 guns in total!\n- Added 8 new backgrounds, bringing the total to 18.\n- Introduced 6 different box types: Normal, Danger, Fast, Freeze, Power, and Tank.\n- Added new Danger and Strike sound effects.\n- Introduced a Danger Shockwave effect for more intense",
+      "category": "Product",
+      "tags": [
+        "Game"
+      ],
+      "coverImage": "https://i.ibb.co/vvsSSf8c/Screenshot-2026-10-11-18-24-30-85.png",
+      "authorName": "Zishan",
+      "publishedAt": 1791725068931,
+      "readingTime": 3,
+      "pinned": true
+    },
     {
       "id": "-P3_E7kc-gLJ07RhCwsG",
       "slug": "zshoot",
@@ -15,7 +30,7 @@
       "authorName": "Zishan",
       "publishedAt": 1791626087511,
       "readingTime": 4,
-      "pinned": true
+      "pinned": false
     },
     {
       "id": "-P34rOipLiebGVNWzzh1",

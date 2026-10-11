@@ -5,8 +5,22 @@
     <link>https://zishu-insight.zishuai.cloud/</link>
     <description>The official publishing platform of ZISHU TRON. Product announcements, engineering deep dives, and company updates.</description>
     <language>en</language>
-    <lastBuildDate>Sun, 11 Oct 2026 13:20:41 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 11 Oct 2026 13:31:00 GMT</lastBuildDate>
     <atom:link href="https://zishu-insight.zishuai.cloud/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>ZShoot v3.0.0</title>
+      <link>https://zishu-insight.zishuai.cloud/articles/zshoot-v300/</link>
+      <guid isPermaLink="true">https://zishu-insight.zishuai.cloud/articles/zshoot-v300/</guid>
+      <pubDate>Sun, 11 Oct 2026 13:24:28 GMT</pubDate>
+      <description>What&apos;s New in ZShoot v3.0
+
+- Added 8 new guns — now featuring 18 guns in total!
+- Added 8 new backgrounds, bringing the total to 18.
+- Introduced 6 different box types: Normal, Danger, Fast, Freeze, Power, and Tank.
+- Added new Danger and Strike sound effects.
+- Introduced a Danger Shockwave effect for more intense</description>
+      <category>Product</category>
+    </item>
     <item>
       <title>ZShoot</title>
       <link>https://zishu-insight.zishuai.cloud/articles/zshoot/</link>
