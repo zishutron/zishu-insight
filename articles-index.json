@@ -1,7 +1,22 @@
 {
-  "generatedAt": "2026-10-12T09:50:40.468Z",
-  "count": 14,
+  "generatedAt": "2026-10-12T10:01:21.176Z",
+  "count": 15,
   "articles": [
+    {
+      "id": "-P3jXNVonQParesfybRX",
+      "slug": "zshoot-official-website",
+      "title": "ZShoot Official Website",
+      "description": "ZShoot 3 is here, and it comes with its own official website. Explore the new shop, 18 guns, 18 worlds and a 30 day reward calendar, play the free web demo, download the APK, and tell the developer what to build next. https://zshoot.zishuai.cloud/",
+      "category": "Product",
+      "tags": [
+        "Official Website of ZShoot"
+      ],
+      "coverImage": "https://i.ibb.co/hFdMzzmr/file-0000000090c4820a921dda9289a533cd.png",
+      "authorName": "Zishan",
+      "publishedAt": 1791798905154,
+      "readingTime": 3,
+      "pinned": false
+    },
     {
       "id": "-P3f7iXxpsjSSngiuqeV",
       "slug": "zshoot-v300",
