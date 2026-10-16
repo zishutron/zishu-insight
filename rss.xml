@@ -5,8 +5,16 @@
     <link>https://zishu-insight.zishuai.cloud/</link>
     <description>The official publishing platform of ZISHU TRON. Product announcements, engineering deep dives, and company updates.</description>
     <language>en</language>
-    <lastBuildDate>Fri, 16 Oct 2026 05:01:14 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 16 Oct 2026 05:10:44 GMT</lastBuildDate>
     <atom:link href="https://zishu-insight.zishuai.cloud/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Zishu AI v2.0.0.2: A Major Evolution Toward a More Integrated Android AI Assistant</title>
+      <link>https://zishu-insight.zishuai.cloud/articles/zishu-ai-v2/</link>
+      <guid isPermaLink="true">https://zishu-insight.zishuai.cloud/articles/zishu-ai-v2/</guid>
+      <pubDate>Fri, 16 Oct 2026 05:06:54 GMT</pubDate>
+      <description>Zishu AI Version 2 introduces a major step forward in the evolution of ZISHU TRON&apos;s AI assistant. Building on the foundation of Version 1, the new release brings Android Default AI Assistant integration, an improved assistant interface, and a more convenient way to interact with AI directly from your smartphone.</description>
+      <category>Product</category>
+    </item>
     <item>
       <title>ZShoot Official Website</title>
       <link>https://zishu-insight.zishuai.cloud/articles/zshoot-official-website/</link>

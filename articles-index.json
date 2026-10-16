@@ -1,7 +1,22 @@
 {
-  "generatedAt": "2026-10-16T05:01:14.043Z",
-  "count": 15,
+  "generatedAt": "2026-10-16T05:10:44.599Z",
+  "count": 16,
   "articles": [
+    {
+      "id": "-P425m__yffUKRNU_C_t",
+      "slug": "zishu-ai-v2",
+      "title": "Zishu AI v2.0.0.2: A Major Evolution Toward a More Integrated Android AI Assistant",
+      "description": "Zishu AI Version 2 introduces a major step forward in the evolution of ZISHU TRON's AI assistant. Building on the foundation of Version 1, the new release brings Android Default AI Assistant integration, an improved assistant interface, and a more convenient way to interact with AI directly from your smartphone.",
+      "category": "Product",
+      "tags": [
+        "AI Update"
+      ],
+      "coverImage": "https://i.ibb.co/F493p8b2/file-00000000672081f8b21d29d30298e881.jpg",
+      "authorName": "Zishan",
+      "publishedAt": 1792127214451,
+      "readingTime": 5,
+      "pinned": true
+    },
     {
       "id": "-P3jXNVonQParesfybRX",
       "slug": "zshoot-official-website",
@@ -30,7 +45,7 @@
       "authorName": "Zishan",
       "publishedAt": 1791725068931,
       "readingTime": 3,
-      "pinned": true
+      "pinned": false
     },
     {
       "id": "-P3_E7kc-gLJ07RhCwsG",
