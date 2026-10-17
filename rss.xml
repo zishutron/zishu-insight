@@ -5,8 +5,16 @@
     <link>https://zishu-insight.zishuai.cloud/</link>
     <description>The official publishing platform of ZISHU TRON. Product announcements, engineering deep dives, and company updates.</description>
     <language>en</language>
-    <lastBuildDate>Sat, 17 Oct 2026 12:50:40 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 17 Oct 2026 13:01:16 GMT</lastBuildDate>
     <atom:link href="https://zishu-insight.zishuai.cloud/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>🚀 Zishu Deep AI v5.0.0: The Era of Native Power Begins</title>
+      <link>https://zishu-insight.zishuai.cloud/articles/zishu-deep-ai-v500/</link>
+      <guid isPermaLink="true">https://zishu-insight.zishuai.cloud/articles/zishu-deep-ai-v500/</guid>
+      <pubDate>Sat, 17 Oct 2026 12:54:49 GMT</pubDate>
+      <description>Zishu Deep AI v5.0.0 — The Ultimate Native AI Workspace Experience lightning-fast performance with our fully rebuilt Native Android app! Bring your own API keys (BYOK), generate AI images, write and run HTML/CSS/JS code with live preview, and enjoy seamless voice-to-text. No WebView, no lag—just pure, private, &amp; power.</description>
+      <category>Product</category>
+    </item>
     <item>
       <title>Zishu AI v2.0.0.2: A Major Evolution Toward a More Integrated Android AI Assistant</title>
       <link>https://zishu-insight.zishuai.cloud/articles/zishu-ai-v2/</link>
