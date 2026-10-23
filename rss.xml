@@ -5,8 +5,16 @@
     <link>https://zishu-insight.zishuai.cloud/</link>
     <description>The official publishing platform of ZISHU TRON. Product announcements, engineering deep dives, and company updates.</description>
     <language>en</language>
-    <lastBuildDate>Fri, 23 Oct 2026 05:10:40 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 23 Oct 2026 05:20:41 GMT</lastBuildDate>
     <atom:link href="https://zishu-insight.zishuai.cloud/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Zishu Terminal: A Real Linux Environment on Android</title>
+      <link>https://zishu-insight.zishuai.cloud/articles/zishu-terminal-a-real-linux-environment-on-android/</link>
+      <guid isPermaLink="true">https://zishu-insight.zishuai.cloud/articles/zishu-terminal-a-real-linux-environment-on-android/</guid>
+      <pubDate>Fri, 23 Oct 2026 05:12:58 GMT</pubDate>
+      <description>Zishu Terminal 6.0.0 turns an ordinary Android phone into a working Linux command-line workstation, with no root access and no emulator. It installs real bash, Python, Git, Node.js and a C/C++ compiler, and it adds a signed package manager so you can install more.</description>
+      <category>Product</category>
+    </item>
     <item>
       <title>ZShoot V4 Is Here: The Biggest Update Yet</title>
       <link>https://zishu-insight.zishuai.cloud/articles/zshoot-v4/</link>
