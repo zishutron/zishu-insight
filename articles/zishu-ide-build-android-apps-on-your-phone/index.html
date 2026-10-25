@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Zishu IDE: Build Android Apps on Your Phone — ZISHU TRON INSIGHT</title>
+<meta name="description" content="Zishu IDE is a code editor and build tool for Android. Write Java or Kotlin, build an APK on your phone, sign it and install it, with no computer.">
+<link rel="canonical" href="https://zishu-insight.zishuai.cloud/articles/zishu-ide-build-android-apps-on-your-phone/">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<meta name="author" content="Zishan">
+<meta property="article:published_time" content="2026-10-25T03:36:38.285Z">
+<meta property="article:modified_time" content="2026-10-25T03:36:38.285Z">
+<meta property="article:section" content="Product">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="ZISHU TRON INSIGHT">
+<meta property="og:title" content="Zishu IDE: Build Android Apps on Your Phone">
+<meta property="og:description" content="Zishu IDE is a code editor and build tool for Android. Write Java or Kotlin, build an APK on your phone, sign it and install it, with no computer.">
+<meta property="og:url" content="https://zishu-insight.zishuai.cloud/articles/zishu-ide-build-android-apps-on-your-phone/">
+<meta property="og:image" content="https://i.ibb.co/ZzW61wPn/dbc01ce8583e.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Zishu IDE: Build Android Apps on Your Phone">
+<meta name="twitter:description" content="Zishu IDE is a code editor and build tool for Android. Write Java or Kotlin, build an APK on your phone, sign it and install it, with no computer.">
+<meta name="twitter:image" content="https://i.ibb.co/ZzW61wPn/dbc01ce8583e.png">
+
+<meta name="theme-color" content="#0c0a09" media="(prefers-color-scheme:dark)">
+<meta name="theme-color" content="#fafaf9" media="(prefers-color-scheme:light)">
+
+<link rel="alternate" type="application/rss+xml" title="ZISHU TRON INSIGHT RSS" href="../../rss.xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"BlogPosting","headline":"Zishu IDE: Build Android Apps on Your Phone","description":"Zishu IDE is a code editor and build tool for Android. Write Java or Kotlin, build an APK on your phone, sign it and install it, with no computer.","author":{"@type":"Person","name":"Zishan"},"publisher":{"@type":"Organization","name":"ZISHU TRON","url":"https://zishu-insight.zishuai.cloud/"},"datePublished":"2026-10-25T03:36:38.285Z","dateModified":"2026-10-25T03:36:38.285Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://zishu-insight.zishuai.cloud/articles/zishu-ide-build-android-apps-on-your-phone/"},"url":"https://zishu-insight.zishuai.cloud/articles/zishu-ide-build-android-apps-on-your-phone/","wordCount":1969,"image":["https://i.ibb.co/ZzW61wPn/dbc01ce8583e.png"],"articleSection":"Product","keywords":"Tools"},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://zishu-insight.zishuai.cloud/"},{"@type":"ListItem","position":2,"name":"Product","item":"https://zishu-insight.zishuai.cloud/#product"},{"@type":"ListItem","position":3,"name":"Zishu IDE: Build Android Apps on Your Phone","item":"https://zishu-insight.zishuai.cloud/articles/zishu-ide-build-android-apps-on-your-phone/"}]}]</script>
+
+<style>
+:root{
+  --bg:#fafaf9;
+  --bg-elev:#ffffff;
+  --bg-sub:#f5f5f4;
+  --bg-code:#1c1917;
+  --border:#e7e5e4;
+  --border-strong:#d6d3d1;
+  --text:#0c0a09;
+  --text-2:#44403c;
+  --text-3:#78716c;
+  --accent:#d97706;
+  --accent-2:#b45309;
+  --accent-soft:#fef3c7;
+  --accent-text:#92400e;
+  --link-card-bg:#fffbeb;
+  --link-card-border:#fcd34d;
+  --mark-bg:#fef08a;
+  --mark-text:#0c0a09;
+  --serif:'Fraunces',Georgia,'Times New Roman',serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+[data-theme="dark"]{
+  --bg:#0c0a09;
+  --bg-elev:#1c1917;
+  --bg-sub:#292524;
+  --bg-code:#0c0a09;
+  --border:#292524;
+  --border-strong:#44403c;
+  --text:#fafaf9;
+  --text-2:#d6d3d1;
+  --text-3:#a8a29e;
+  --accent:#fbbf24;
+  --accent-2:#f59e0b;
+  --accent-soft:#3f2a08;
+  --accent-text:#fcd34d;
+  --link-card-bg:#2a1f08;
+  --link-card-border:#78350f;
+  --mark-bg:#fbbf24;
+  --mark-text:#0c0a09;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;overflow-wrap:break-word;word-wrap:break-word}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  font-family:var(--sans);
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  font-size:17px;
+  overflow-x:hidden;
+  transition:background .2s, color .2s;
+}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline;text-underline-offset:3px}
+img{max-width:100%;height:auto;display:block}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+
+/* ========= Header ========= */
+.hdr{
+  border-bottom:1px solid var(--border);
+  background:color-mix(in srgb,var(--bg) 92%,transparent);
+  position:sticky;top:0;z-index:20;
+  backdrop-filter:saturate(180%) blur(12px);
+  -webkit-backdrop-filter:saturate(180%) blur(12px);
+}
+.hdr-inner{max-width:1200px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--text);text-decoration:none;flex-shrink:0}
+.brand-mark{
+  width:30px;height:30px;border-radius:8px;flex-shrink:0;
+  background:var(--text);color:var(--bg);
+  display:grid;place-items:center;font-family:var(--serif);font-weight:700;font-size:15px;
+}
+.brand-text{display:flex;flex-direction:column;line-height:1.1;min-width:0}
+.brand-text .b1{font-family:var(--serif);font-size:16px;font-weight:700;letter-spacing:-.01em;white-space:nowrap}
+.brand-text .b2{font-size:10.5px;font-weight:500;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.hdr-right{margin-left:auto;display:flex;gap:8px;align-items:center}
+.icon-btn{
+  width:40px;height:40px;display:grid;place-items:center;border-radius:10px;
+  border:1px solid transparent;background:transparent;color:var(--text-2);flex-shrink:0;
+}
+.icon-btn:hover{background:var(--bg-sub);color:var(--text)}
+.icon-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:720px){
+  .hdr-inner{height:56px;padding:0 18px}
+  .brand-text .b1{font-size:15px}
+  .brand-mark{width:28px;height:28px;font-size:14px}
+}
+
+/* ========= Breadcrumbs ========= */
+.breadcrumbs{
+  max-width:760px;margin:28px auto 14px;
+  font-size:13.5px;color:var(--text-3);
+  padding:0 24px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.breadcrumbs a{color:var(--text-3)}
+.breadcrumbs a:hover{color:var(--accent);text-decoration:none}
+.breadcrumbs .sep{margin:0 8px;opacity:.4}
+@media (max-width:720px){.breadcrumbs{padding:0 18px;margin:20px auto 10px}}
+
+/* ========= Article ========= */
+.article{padding:20px 0 40px}
+
+.article-header{max-width:760px;margin:0 auto;padding:0 24px}
+
+.article-cat{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--accent-text);background:var(--accent-soft);
+  padding:6px 12px;border-radius:100px;margin-bottom:20px;
+}
+[data-theme="dark"] .article-cat{color:var(--accent)}
+
+.article h1{
+  font-family:var(--serif);
+  font-size:clamp(1.9rem,4.2vw,2.8rem);
+  font-weight:700;
+  letter-spacing:-.025em;
+  line-height:1.15;
+  margin-bottom:16px;
+  word-break:break-word;
+}
+
+.article-desc{
+  font-size:1.15rem;
+  color:var(--text-2);
+  line-height:1.55;
+  margin-bottom:24px;
+  font-weight:400;
+}
+
+.article-meta{
+  display:flex;flex-wrap:wrap;gap:8px 16px;
+  font-size:13.5px;color:var(--text-3);
+  padding-bottom:26px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:32px;
+  align-items:center;
+}
+.article-meta strong{color:var(--text);font-weight:600}
+.article-meta .dot{opacity:.5}
+
+.article-cover{
+  margin:0 auto 40px;
+  border-radius:16px;
+  overflow:hidden;
+  max-width:1000px;
+  padding:0 24px;
+}
+.article-cover img{width:100%;border-radius:16px}
+
+/* ========= Article body ========= */
+.article-body{
+  max-width:760px;
+  margin:0 auto;
+  padding:0 24px;
+  font-size:17.5px;
+  line-height:1.75;
+  color:var(--text);
+}
+
+.article-body h1,
+.article-body h2,
+.article-body h3,
+.article-body h4{
+  font-family:var(--serif);
+  font-weight:700;
+  letter-spacing:-.02em;
+  line-height:1.25;
+  margin:2em 0 .6em;
+  word-break:break-word;
+  color:var(--text);
+}
+.article-body h1{font-size:1.8rem}
+.article-body h2{font-size:1.6rem}
+.article-body h3{font-size:1.3rem}
+.article-body h4{font-size:1.1rem;font-family:var(--sans);font-weight:600}
+
+.article-body p{margin:1em 0;word-break:break-word}
+
+.article-body ul,
+.article-body ol{
+  margin:1em 0 1em 1.5em;
+  padding-left:.4em;
+}
+.article-body li{margin:.4em 0;word-break:break-word}
+.article-body li::marker{color:var(--accent)}
+
+.article-body blockquote{
+  margin:1.5em 0;
+  padding:.9em 1.3em;
+  border-left:3px solid var(--accent);
+  background:var(--accent-soft);
+  border-radius:0 12px 12px 0;
+  color:var(--text-2);
+  font-style:italic;
+  font-family:var(--serif);
+  font-size:1.05rem;
+}
+.article-body blockquote p{margin:.4em 0}
+
+.article-body hr{
+  border:0;
+  border-top:1px solid var(--border);
+  margin:2.5em 0;
+}
+
+.article-body code{
+  font-family:var(--mono);
+  font-size:.9em;
+  background:var(--bg-sub);
+  padding:2px 6px;
+  border-radius:5px;
+  color:var(--accent-text);
+  border:1px solid var(--border);
+  word-break:break-word;
+}
+[data-theme="dark"] .article-body code{color:var(--accent)}
+
+.article-body pre{
+  background:var(--bg-code);
+  color:#f5f5f4;
+  padding:18px 20px;
+  border-radius:12px;
+  overflow-x:auto;
+  font-family:var(--mono);
+  font-size:14.5px;
+  line-height:1.65;
+  margin:1.5em 0;
+  border:1px solid var(--border);
+  max-width:100%;
+  -webkit-overflow-scrolling:touch;
+}
+.article-body pre code{
+  background:transparent;
+  padding:0;
+  font-size:1em;
+  color:inherit;
+  font-family:inherit;
+  white-space:pre;
+  word-break:normal;
+  border:0;
+}
+
+.article-body mark{
+  background:var(--mark-bg);
+  color:var(--mark-text);
+  padding:2px 6px;
+  border-radius:4px;
+  font-weight:600;
+}
+
+.article-body strong,
+.article-body b{font-weight:700;color:var(--text)}
+.article-body em,
+.article-body i{font-style:italic}
+.article-body del,
+.article-body s{
+  text-decoration:line-through;
+  opacity:.7;
+}
+
+.article-body img{
+  margin:1.5em 0;
+  border-radius:12px;
+  max-width:100%;
+}
+.article-body figure{margin:1.5em 0}
+.article-body figcaption{
+  font-size:13.5px;
+  color:var(--text-3);
+  text-align:center;
+  margin-top:10px;
+}
+
+/* ========= Link cards ========= */
+.article-body a.link-card,
+.article-body .link-card{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin:1.4em 0;
+  padding:16px 18px;
+  background:var(--link-card-bg);
+  border:1px solid var(--link-card-border);
+  border-radius:12px;
+  text-decoration:none !important;
+  color:var(--text) !important;
+  transition:.15s;
+  position:relative;
+  max-width:100%;
+}
+.article-body .link-card:hover{
+  transform:translateY(-1px);
+  box-shadow:0 6px 20px rgba(217,119,6,.15);
+  border-color:var(--accent);
+  text-decoration:none !important;
+}
+[data-theme="dark"] .article-body .link-card:hover{
+  box-shadow:0 6px 20px rgba(251,191,36,.15);
+}
+.article-body .link-card .lc-icon{
+  width:44px;height:44px;
+  border-radius:10px;
+  background:var(--accent);
+  color:#fff;
+  display:grid;place-items:center;
+  flex-shrink:0;
+  font-size:20px;
+}
+[data-theme="dark"] .article-body .link-card .lc-icon{color:#0c0a09}
+.article-body .link-card .lc-body{flex:1;min-width:0}
+.article-body .link-card .lc-label{
+  font-size:11.5px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--accent-text);
+  margin-bottom:3px;
+}
+[data-theme="dark"] .article-body .link-card .lc-label{color:var(--accent)}
+.article-body .link-card .lc-title{
+  font-family:var(--serif);
+  font-size:1.05rem;
+  font-weight:700;
+  color:var(--text);
+  margin-bottom:2px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.article-body .link-card .lc-url{
+  font-size:12.5px;
+  color:var(--text-3);
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.article-body .link-card .lc-arrow{
+  width:20px;height:20px;
+  flex-shrink:0;
+  color:var(--accent);
+  transition:transform .15s;
+}
+.article-body .link-card:hover .lc-arrow{transform:translateX(3px)}
+
+/* ========= Inline links ========= */
+.article-body p a:not(.link-card),
+.article-body li a:not(.link-card),
+.article-body h2 a:not(.link-card),
+.article-body h3 a:not(.link-card){
+  color:var(--accent);
+  font-weight:500;
+  text-decoration:underline;
+  text-decoration-color:color-mix(in srgb,var(--accent) 40%,transparent);
+  text-decoration-thickness:2px;
+  text-underline-offset:3px;
+  padding:1px 3px;
+  border-radius:4px;
+  transition:.12s;
+}
+.article-body p a:not(.link-card):hover,
+.article-body li a:not(.link-card):hover{
+  background:var(--accent-soft);
+  text-decoration-color:var(--accent);
+}
+
+/* ========= Mobile ========= */
+@media (max-width:720px){
+  body{font-size:16px}
+  .container,
+  .article-header,
+  .article-body,
+  .breadcrumbs{padding-left:18px;padding-right:18px}
+  .article-body{font-size:16.5px;line-height:1.72}
+  .article h1{font-size:1.75rem;line-height:1.2}
+  .article-desc{font-size:1.02rem}
+  .article-body h1{font-size:1.5rem}
+  .article-body h2{font-size:1.35rem}
+  .article-body h3{font-size:1.15rem}
+  .article-body pre{font-size:13px;padding:14px;border-radius:10px}
+  .article-body blockquote{padding:.7em 1em;font-size:1rem}
+  .article-body .link-card{padding:14px;gap:12px}
+  .article-body .link-card .lc-icon{width:38px;height:38px;font-size:17px}
+  .article-body .link-card .lc-title{font-size:.98rem}
+}
+@media (max-width:380px){
+  .article h1{font-size:1.5rem}
+  .article-body{font-size:16px}
+  .article-body .link-card .lc-icon{width:34px;height:34px;font-size:15px}
+}
+
+/* ========= Tags ========= */
+.tags{
+  max-width:760px;
+  margin:40px auto 0;
+  padding:0 24px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.tag{
+  display:inline-block;
+  padding:6px 12px;
+  border-radius:100px;
+  background:var(--bg-sub);
+  color:var(--text-2);
+  font-size:12.5px;
+  font-weight:500;
+  border:1px solid var(--border);
+}
+@media (max-width:720px){.tags{padding:0 18px}}
+
+/* ========= Share ========= */
+.share{
+  max-width:760px;
+  margin:36px auto 0;
+  padding:22px 24px 0;
+  border-top:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.share-label{
+  font-size:13px;
+  font-weight:600;
+  color:var(--text-3);
+  margin-right:6px;
+  letter-spacing:.02em;
+}
+.share a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:40px;height:40px;
+  border-radius:50%;
+  border:1px solid var(--border-strong);
+  color:var(--text-2);
+  flex-shrink:0;
+  transition:.12s;
+}
+.share a:hover{
+  background:var(--bg-sub);
+  color:var(--accent);
+  text-decoration:none;
+  border-color:var(--accent);
+}
+.share svg{width:16px;height:16px;fill:currentColor}
+.copy-btn{
+  background:transparent;
+  border:1px solid var(--border-strong);
+  border-radius:100px;
+  padding:9px 16px;
+  font-size:13px;
+  font-weight:600;
+  color:var(--text-2);
+  transition:.12s;
+}
+.copy-btn:hover{
+  background:var(--bg-sub);
+  border-color:var(--accent);
+  color:var(--accent);
+}
+@media (max-width:720px){.share{padding:22px 18px 0}}
+
+/* ========= Related ========= */
+.related{
+  max-width:1000px;
+  margin:64px auto 0;
+  padding:40px 24px 0;
+  border-top:1px solid var(--border);
+}
+.related h2{
+  font-family:var(--serif);
+  font-size:1.4rem;
+  font-weight:700;
+  letter-spacing:-.02em;
+  margin-bottom:24px;
+  color:var(--text);
+}
+.related-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:20px;
+}
+.rel-card{
+  display:block;
+  color:inherit;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:18px;
+  background:var(--bg-elev);
+  transition:.15s;
+}
+.rel-card:hover{
+  border-color:var(--border-strong);
+  transform:translateY(-2px);
+  text-decoration:none;
+  box-shadow:0 6px 20px rgba(0,0,0,.05);
+}
+[data-theme="dark"] .rel-card:hover{
+  box-shadow:0 6px 20px rgba(0,0,0,.35);
+}
+.rel-card h3{
+  font-family:var(--serif);
+  font-size:1.05rem;
+  font-weight:700;
+  line-height:1.35;
+  letter-spacing:-.015em;
+  margin-bottom:8px;
+  color:var(--text);
+}
+.rel-card p{
+  font-size:13.5px;
+  color:var(--text-3);
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  line-height:1.5;
+}
+.rel-card .m{
+  font-size:12px;
+  color:var(--text-3);
+  margin-top:12px;
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+@media (max-width:720px){.related{padding:40px 18px 0}}
+
+/* ========= Footer (updated with full columns) ========= */
+.footer{
+  border-top:1px solid var(--border);
+  margin-top:72px;
+  padding:40px 0 32px;
+  color:var(--text-3);
+  font-size:13px;
+  background:var(--bg-elev);
+}
+.footer-grid{
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 24px;
+  display:grid;
+  grid-template-columns:1.6fr 1fr 1fr 1fr;
+  gap:36px;
+}
+.footer-brand p{color:var(--text-3);font-size:13.5px;margin-top:10px;max-width:300px;line-height:1.55}
+.footer-col h4{
+  font-size:11.5px;
+  font-weight:700;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--text-3);
+  margin-bottom:14px;
+}
+.footer-col ul{list-style:none;display:grid;gap:9px}
+.footer-col a{color:var(--text-2);font-size:14px}
+.footer-col a:hover{color:var(--accent);text-decoration:none}
+.footer-bottom{
+  max-width:1200px;
+  margin:32px auto 0;
+  padding:22px 24px 0;
+  border-top:1px solid var(--border);
+  color:var(--text-3);
+  font-size:12.5px;
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:8px;
+}
+@media (max-width:820px){
+  .footer-grid{grid-template-columns:1fr 1fr;gap:28px}
+  .footer-brand{grid-column:1/-1}
+}
+@media (max-width:720px){
+  .footer-grid{padding:0 18px}
+  .footer-bottom{padding:22px 18px 0}
+}
+
+/* ========= Back to top ========= */
+.to-top{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  background:var(--text);
+  color:var(--bg);
+  display:none;
+  place-items:center;
+  box-shadow:0 6px 20px rgba(0,0,0,.15);
+  border:0;
+  z-index:30;
+  transition:.15s;
+}
+.to-top.show{display:grid}
+.to-top:hover{transform:translateY(-2px)}
+.to-top svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* ========= Reading progress bar ========= */
+.progress-bar{
+  position:fixed;
+  top:0;left:0;
+  height:3px;
+  background:var(--accent);
+  width:0;
+  z-index:100;
+  transition:width .1s;
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar" aria-hidden="true"></div>
+
+<header class="hdr">
+  <div class="hdr-inner">
+    <a class="brand" href="../../" aria-label="ZISHU TRON Insight home">
+      <span class="brand-mark" aria-hidden="true">Z</span>
+      <span class="brand-text">
+        <span class="b1">ZISHU TRON</span>
+        <span class="b2">Insight</span>
+      </span>
+    </a>
+    <div class="hdr-right">
+      <a class="icon-btn" href="../../" aria-label="Back to home">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </a>
+      <button class="icon-btn" id="themeBtn" aria-label="Toggle dark mode">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4" y1="12" x2="2" y2="12"/><line x1="22" y1="12" x2="20" y2="12"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <a href="../../">Home</a>
+  <span class="sep">/</span>
+  <span>Product</span><span class="sep">/</span>
+  <span>Zishu IDE: Build Android Apps on Your Phone</span>
+</nav>
+
+<article class="article">
+  <header class="article-header">
+    <span class="article-cat">Product</span>
+    <h1>Zishu IDE: Build Android Apps on Your Phone</h1>
+    <p class="article-desc">Zishu IDE is a code editor and build tool for Android. Write Java or Kotlin, build an APK on your phone, sign it and install it, with no computer.</p>
+    <div class="article-meta">
+      <span>By <strong>Zishan</strong></span>
+      <span class="dot">·</span>
+      <span>Published <time datetime="2026-10-25T03:36:38.285Z">October 25, 2026</time></span>
+      
+      <span class="dot">·</span>
+      <span>9 min read</span>
+    </div>
+  </header>
+
+  <div class="article-cover"><img src="https://i.ibb.co/ZzW61wPn/dbc01ce8583e.png" alt="" loading="eager"></div>
+
+  <div class="article-body" id="articleBody">
+    <h1>Zishu IDE: Build Android Apps on Your Phone</h1>
+<p>Zishu IDE lets you write, build, sign and install a real Android app on an Android phone, with no computer and no Android Studio. It is a single app of about 38.6 MB, and you can <a href="https://github.com/zishutron/Zishu-ide/releases/download/v0.1.0/zishu.ide_v0.1.0.apk" rel="noopener noreferrer">download it today</a>.</p>
+<h2>Why we built Zishu IDE</h2>
+<p>Android development usually assumes a laptop, a large installation of tools and a fast connection. For many students, hobbyists and first-time developers, that is not available, and a phone is the only computer they own.</p>
+<p>We built Zishu IDE for that situation. The goal was a tool that stays light, runs on modest phones and does the real work itself: it compiles your code, packages the APK, signs it and installs it, all on the device. Every step either produces its output or shows you the tool's own error message. Nothing in the build is simulated.</p>
+<h2>What Zishu IDE is, and who it is for</h2>
+<p>Zishu IDE is a mobile development environment for Android projects. It combines a code editor, a file explorer, a build system, a terminal and a signing tool in one app. Projects are stored in a visible <code>ZishuIDE</code> folder, so you can also reach them from any file manager.</p>
+<p>It is made for:</p>
+<ul>
+<li><strong>Learners</strong> who want to write and run their first Android apps without setting up a computer.</li>
+<li><strong>Hobbyists and makers</strong> who want to turn an idea into an installable app wherever they are.</li>
+<li><strong>Developers on the move</strong> who need to change a project, rebuild it and test it on the same phone.</li>
+<li><strong>Web creators</strong> who want to wrap a website in a WebView app.</li>
+<li><strong>Anyone with limited access to a computer</strong>, including phones that are the only device in the household.</li>
+</ul>
+<h2>Features at a glance</h2>
+
+<thead>
+<tr>
+<th>Feature</th>
+<th>What it gives you</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Project templates</td>
+<td>Start from Java, Kotlin, XML layout, programmatic UI or WebView templates</td>
+</tr>
+<tr>
+<td>Code editor</td>
+<td>Syntax highlighting, tabs, undo and redo, find and replace, file explorer, problems list</td>
+</tr>
+<tr>
+<td>On-phone build</td>
+<td>Builds a real APK on the device and installs it with one tap</td>
+</tr>
+<tr>
+<td>Java</td>
+<td>Language levels 5 to 15, with 15 as the default</td>
+</tr>
+<tr>
+<td>Kotlin</td>
+<td>Kotlin 1.9.24, compiled on the phone together with your Java files</td>
+</tr>
+<tr>
+<td>Libraries</td>
+<td>AndroidX and other libraries from Google Maven and Maven Central</td>
+</tr>
+<tr>
+<td>Zishu Terminal</td>
+<td>IDE commands plus an Android shell inside the app</td>
+</tr>
+<tr>
+<td>Import and clone</td>
+<td>Import a ZIP file or clone a GitHub repository, laid out for you automatically</td>
+</tr>
+<tr>
+<td>Signing</td>
+<td>Sign APKs with your own keystore</td>
+</tr>
+<tr>
+<td>Cloud build</td>
+<td>Optional build through your own private GitHub repository</td>
+</tr>
+</tbody>
+
+<h2>How a build works on your phone</h2>
+<p>When you tap Build, Zishu IDE runs the same kind of steps a desktop toolchain would, using tools that run on the phone itself:</p>
+<ol>
+<li><strong>Resources.</strong> aapt2 compiles your layouts, images and strings, and the resources inside AAR libraries.</li>
+<li><strong>Kotlin.</strong> If the project has <code>.kt</code> files, the Kotlin compiler runs first.</li>
+<li><strong>Java.</strong> The Eclipse Java compiler (ECJ) compiles your Java code against the Android platform.</li>
+<li><strong>Dex.</strong> D8 converts the classes into Android's dex format, with multi-dex when the app is large.</li>
+<li><strong>Package.</strong> The pieces are assembled and aligned into an APK.</li>
+<li><strong>Sign.</strong> The APK is signed and verified, then ready to install or save.</li>
+</ol>
+<p>The build log shows each step and the tool's own messages. If something fails, you see the real error, for example a Kotlin compile error with its file, line and message, rather than a generic failure.</p>
+<h2>Java and Kotlin</h2>
+<p><strong>Java.</strong> Zishu IDE compiles Java language levels 5 to 15. New projects use Java 15 by default, and projects whose <code>build.gradle</code> sets no level also build with 15. If a project asks for a level above 15, the build lowers it to 15 and says so in the log.</p>
+<p><strong>Kotlin.</strong> Zishu IDE includes support for Kotlin 1.9.24. Kotlin files are compiled on the phone together with your Java files, and projects with several Kotlin files and AndroidX or KTX libraries build, install and run. The Kotlin compiler is downloaded once and prepared for your phone once, which takes several minutes the first time. After that, Kotlin builds start from the stored files.</p>
+<p>The Kotlin version is fixed. Features that need Kotlin 2.x, the kapt and ksp annotation processing tools, and the Jetpack Compose compiler plugin are not supported on the phone.</p>
+<h2>Libraries and first-launch setup</h2>
+<p>Zishu IDE reads dependencies from your <code>build.gradle</code>: <code>implementation</code>, <code>api</code>, <code>compileOnly</code>, <code>runtimeOnly</code> and <code>debugImplementation</code> with Maven coordinates, version catalogs (<code>libs.versions.toml</code>), BOMs through <code>platform(...)</code>, exclusions, and local files through <code>files()</code> and <code>fileTree</code>. It resolves the full dependency tree, picks the highest version of each library, merges library manifests and compiles library resources.</p>
+<p>Libraries come from Google Maven and Maven Central over HTTPS, and each download is checked against its published checksum. They are saved on the phone, so a library is downloaded once and reused by later builds.</p>
+<p><strong>First-launch setup.</strong> The first time you open the app, it checks what is already on the phone. If the AndroidX starter libraries (AppCompat, Core KTX, ConstraintLayout and Material) or the prepared Kotlin compiler are missing, it shows a popup with two choices:</p>
+<ul>
+<li><strong>Download</strong> opens the built-in terminal and downloads the missing resources, showing percentage, speed and time left.</li>
+<li><strong>Later</strong> closes the popup, and the app asks again next time.</li>
+</ul>
+<p>The popup appears only for what is actually missing. Once everything is on the phone, it does not come back. Uninstalling the app removes these downloads, so they have to be fetched again after a reinstall.</p>
+<h2>Terminal, import and clone</h2>
+<p><strong>Zishu Terminal.</strong> The built-in terminal understands IDE commands and passes everything else to the Android shell (<code>ls</code>, <code>cat</code>, <code>cp</code> and so on). Type <code>zishu help</code> to see the list. Useful commands include:</p>
+<ul>
+<li><code>zishu projects</code>, <code>open</code> and <code>status</code> to manage projects</li>
+<li><code>zishu build</code> and <code>log</code> to build and read the build log</li>
+<li><code>zishu apk</code>, <code>apks</code>, <code>install</code> and <code>download</code> to work with built APKs</li>
+<li><code>zishu keystore</code>, <code>sign</code> and <code>verify</code> for signing</li>
+<li><code>zishu clone owner/repo</code> to clone a GitHub repository</li>
+<li><code>zishu setup</code> to download the AndroidX and Kotlin resources ahead of time</li>
+</ul>
+<p><strong>Import a ZIP.</strong> A flat layout, a module without Gradle files or a project inside a wrapper folder is turned into the standard <code>app/src/main/...</code> layout. Missing <code>settings.gradle</code>, <code>build.gradle</code> and <code>app/build.gradle</code> files are generated from the manifest.</p>
+<p><strong>Clone from GitHub.</strong> <code>zishu clone owner/repo</code> downloads a ZIP of the branch you choose and imports it the same way. There is no git history and no push. Private repositories need the <code>--auth</code> option and a token that can read them. If a repository contains several apps, Zishu IDE imports the one with a launcher activity and lists the others.</p>
+<h2>Signing, privacy and security</h2>
+<p><strong>Signing.</strong> Builds made on the phone are signed with a debug key that is generated on first use. The key is unique to your installation and stored encrypted by the Android Keystore. An app signed with it can be updated only by builds signed with the same key, so an APK signed with a different key will not install over it.</p>
+<p>For your own releases, you can sign an APK with your own keystore using <code>zishu sign</code>. The password is asked in a masked dialog and is never saved, logged or uploaded. No signing key and no password is stored in the Zishu IDE repository or shipped inside the app.</p>
+<p><strong>Privacy.</strong> Your projects stay on your phone. The only network traffic is what you start: downloading libraries from Google Maven and Maven Central, cloning a GitHub repository, or running the optional cloud build. A GitHub token, if you use one, is stored encrypted on the device and sent only to GitHub's API. Zishu IDE has no accounts, advertising or analytics. Read the full <a href="https://github.com/zishutron/Zishu-ide/blob/main/PRIVACY.md" rel="noopener noreferrer">Privacy Policy</a>.</p>
+<h2>Optional cloud build</h2>
+<p>Some projects need more than the phone can build, such as Compose or annotation processors. For those, Zishu IDE can send the project to a private GitHub repository that you own, run a GitHub Actions workflow that builds it with Gradle, and download the APK back to the phone.</p>
+<p>To set it up, create a private repository, create a fine-grained token limited to that repository with Contents, Actions and Workflows set to read and write, and enter both in Settings, then Cloud build. Keystores and the <code>apk/</code> folder are never uploaded. The cloud build is optional: everything described above works without a GitHub account.</p>
+<h2>Requirements and limits</h2>
+<p>Zishu IDE needs Android 8.0 or newer and a 64-bit ARM phone. Internet is needed once to download libraries and the Kotlin compiler.</p>
+<p>Building on the phone does not support the following. Use the optional cloud build for these:</p>
+<ul>
+<li>Jetpack Compose</li>
+<li>Annotation processors such as kapt, ksp and <code>annotationProcessor</code> (so no Room, Dagger or Hilt compilers)</li>
+<li>Multi-module Gradle projects (<code>project(':x')</code>)</li>
+<li>Native code with the NDK</li>
+<li>Dynamic dependency versions such as <code>1.+</code></li>
+</ul>
+<p>When a project uses something unsupported, the build refuses it with a clear message instead of guessing.</p>
+<p>Other things to know:</p>
+<ul>
+<li>The Java compiler handles language levels up to 15.</li>
+<li>Zishu IDE produces APK files. It does not produce AAB bundles and does not shrink code with R8 or ProGuard.</li>
+<li>The editor highlights syntax and checks structure such as brackets and quotes. Compile errors appear after a build.</li>
+<li>Builds with many libraries take longer the first time, because the libraries are downloaded and converted once.</li>
+</ul>
+<h2>Quick start: your first app</h2>
+<ol>
+<li>Download the APK from the link at the end of this article and open it on your phone.</li>
+<li>Allow installation from your browser or file manager if Android asks, then install.</li>
+<li>Open Zishu IDE. When the setup popup appears, tap <strong>Download</strong> and wait for the terminal to finish.</li>
+<li>Create a new project, choose a template and keep Java 15 or pick another level.</li>
+<li>Tap <strong>Build</strong>. The log shows each step. When it finishes, tap <strong>Install</strong>.</li>
+<li>Edit your code, tap <strong>Build again</strong>, and install the update.</li>
+</ol>
+<p>To update the IDE itself later, install the new APK over the old one. Releases are signed with the same key, so the update installs in place and keeps your projects and downloaded libraries.</p>
+<h2>Frequently asked questions</h2>
+<p><strong>Do I need a computer?</strong> No. Writing, building, signing and installing all happen on the phone.</p>
+<p><strong>Does it work offline?</strong> After the first setup, Java projects and projects that use libraries already downloaded build without internet. A library you have not used before needs internet once.</p>
+<p><strong>Is my code uploaded anywhere?</strong> No. Your code stays on the phone unless you choose to clone from or build in your own GitHub repository.</p>
+<p><strong>Why does it ask to download resources?</strong> The AndroidX libraries and the Kotlin compiler are not bundled in the app. This keeps the download small, and you fetch only what you use.</p>
+<p><strong>Can I use Jetpack Compose?</strong> Not for on-phone builds. Compose needs a compiler plugin the phone build does not include. The optional cloud build is the route for it.</p>
+<p><strong>Can I publish my apps to an app store?</strong> Zishu IDE produces APK files and can sign them with your own keystore. Check the requirements of the store you are targeting, because some stores ask for AAB bundles.</p>
+<p><strong>Why will an app not update over an older install?</strong> An update must be signed with the same key as the installed version. Builds made with the debug key of one install cannot update an app signed with a different key.</p>
+<p><strong>Does it replace Android Studio?</strong> No. It covers a defined set of Java and Kotlin projects on the phone, and uses the cloud build for the rest.</p>
+<h2>Download Zishu IDE</h2>
+<p><strong><a href="https://github.com/zishutron/Zishu-ide/releases/download/v0.1.0/zishu.ide_v0.1.0.apk" rel="noopener noreferrer">Download Zishu IDE v0.1.0 (APK, about 38.6 MB)</a></strong></p>
+<p>All versions are on the <a href="https://github.com/zishutron/Zishu-ide/releases" rel="noopener noreferrer">Releases page</a>.</p>
+
+<thead>
+<tr>
+<th>Detail</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Version</td>
+<td>0.1.0</td>
+</tr>
+<tr>
+<td>Size</td>
+<td>about 38.6 MB</td>
+</tr>
+<tr>
+<td>Requires</td>
+<td>Android 8.0 or newer, 64-bit ARM phone</td>
+</tr>
+<tr>
+<td>Package</td>
+<td><code>com.zishu.ide</code></td>
+</tr>
+<tr>
+<td>Privacy</td>
+<td><a href="https://github.com/zishutron/Zishu-ide/blob/main/PRIVACY.md">Privacy Policy</a></td>
+</tr>
+</tbody>
+  </div>
+
+  <div class="tags"><span class="tag">Tools</span></div>
+</article>
+
+<div class="share">
+  <span class="share-label">Share:</span>
+  <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fzishu-insight.zishuai.cloud%2Farticles%2Fzishu-ide-build-android-apps-on-your-phone%2F&text=Zishu%20IDE%3A%20Build%20Android%20Apps%20on%20Your%20Phone" target="_blank" rel="noopener" aria-label="Share on X">
+    <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+  </a>
+  <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fzishu-insight.zishuai.cloud%2Farticles%2Fzishu-ide-build-android-apps-on-your-phone%2F" target="_blank" rel="noopener" aria-label="Share on LinkedIn">
+    <svg viewBox="0 0 24 24"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg>
+  </a>
+  <a href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fzishu-insight.zishuai.cloud%2Farticles%2Fzishu-ide-build-android-apps-on-your-phone%2F&t=Zishu%20IDE%3A%20Build%20Android%20Apps%20on%20Your%20Phone" target="_blank" rel="noopener" aria-label="Submit to Hacker News">
+    <svg viewBox="0 0 24 24"><path d="M2 2v20h20V2H2zm9.4 11.4V17h1.2v-3.6l3.4-6.4h-1.4l-1.6 3.2c-.4.8-.8 1.6-1.1 2.3h-.1c-.3-.7-.7-1.5-1.1-2.3L8.8 7H7.3l4.1 6.4z"/></svg>
+  </a>
+  <a href="https://www.reddit.com/submit?url=https%3A%2F%2Fzishu-insight.zishuai.cloud%2Farticles%2Fzishu-ide-build-android-apps-on-your-phone%2F&title=Zishu%20IDE%3A%20Build%20Android%20Apps%20on%20Your%20Phone" target="_blank" rel="noopener" aria-label="Share on Reddit">
+    <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.9 11.6c.2.2.3.4.3.7 0 .9-.6 1.6-1.5 1.9 0 .1.1.3.1.5 0 2.1-2.4 3.8-5.3 3.8s-5.3-1.7-5.3-3.8c0-.2 0-.3.1-.5-.9-.3-1.5-1-1.5-1.9 0-.3.1-.5.3-.7-.2-.2-.3-.4-.3-.7 0-.6.5-1.1 1.1-1.1.3 0 .6.1.8.3.9-.6 2.1-1 3.4-1l.7-3.4c0-.1.1-.2.2-.2l2.7.6c.1-.2.4-.4.7-.4.5 0 .9.4.9.9s-.4.9-.9.9c-.4 0-.8-.3-.9-.7l-2.4-.5-.6 3.1c1.3.1 2.4.5 3.3 1 .2-.2.5-.3.8-.3.6 0 1.1.5 1.1 1.1 0 .3-.1.5-.3.7z"/></svg>
+  </a>
+  <button class="copy-btn" id="copyLink" aria-label="Copy link">Copy link</button>
+</div>
+
+
+<section class="related">
+  <h2>Related articles</h2>
+  <div class="related-grid">
+    <a class="rel-card" href="../../articles/zishu-terminal-a-real-linux-environment-on-android/">
+      <h3>Zishu Terminal: A Real Linux Environment on Android</h3>
+      <p>Zishu Terminal 6.0.0 turns an ordinary Android phone into a working Linux command-line workstation, with no root access and no emulator. It </p>
+      <div class="m">Oct 23, 2026 · 6 min read</div>
+    </a>
+    <a class="rel-card" href="../../articles/zshoot-v4/">
+      <h3>ZShoot V4 Is Here: The Biggest Update Yet</h3>
+      <p>Aim, shoot and survive. Climb 9 ranks, 100 levels and rule the leaderboard.</p>
+      <div class="m">Oct 19, 2026 · 5 min read</div>
+    </a>
+    <a class="rel-card" href="../../articles/zishu-deep-ai-v500/">
+      <h3>🚀 Zishu Deep AI v5.0.0: The Era of Native Power Begins</h3>
+      <p>Zishu Deep AI v5.0.0 — The Ultimate Native AI Workspace Experience lightning-fast performance with our fully rebuilt Native Android app! Bri</p>
+      <div class="m">Oct 17, 2026 · 4 min read</div>
+    </a></div>
+</section>
+
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a class="brand" href="../../" style="text-decoration:none">
+        <span class="brand-mark" aria-hidden="true">Z</span>
+        <span class="brand-text"><span class="b1">ZISHU TRON</span><span class="b2">Insight</span></span>
+      </a>
+      <p>The official publication of ZISHU TRON — engineering, product and company updates.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Publication</h4>
+      <ul>
+        <li><a href="../../">Home</a></li>
+        <li><a href="../../#latest">Latest</a></li>
+        <li><a href="../../rss.xml">RSS feed</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="https://zishutron.zishuai.cloud/developer.html" target="_blank" rel="noopener">About</a></li>
+        <li><a href="https://www.linkedin.com/in/zishutron" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="https://github.com/zishutron" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="mailto:support.stardustofficial@gmail.com">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="../../privacy.html">Privacy</a></li>
+        <li><a href="../../terms.html">Terms</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© <span id="year"></span> ZISHU TRON. All rights reserved.</span>
+    <span>Insight — official update platform</span>
+  </div>
+</footer>
+
+<button class="to-top" id="toTop" aria-label="Back to top">
+  <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // Theme
+  const themeBtn = document.getElementById('themeBtn');
+  const storedTheme = localStorage.getItem('zishu-theme');
+  const prefersDark = matchMedia('(prefers-color-scheme: dark)').matches;
+  function applyTheme(t){
+    document.documentElement.setAttribute('data-theme', t);
+    localStorage.setItem('zishu-theme', t);
+  }
+  applyTheme(storedTheme || (prefersDark ? 'dark' : 'light'));
+  themeBtn?.addEventListener('click', () => {
+    const cur = document.documentElement.getAttribute('data-theme');
+    applyTheme(cur === 'dark' ? 'light' : 'dark');
+  });
+
+  // Year
+  const y = document.getElementById('year');
+  if(y) y.textContent = new Date().getFullYear();
+
+  // Copy link
+  document.getElementById('copyLink')?.addEventListener('click', async (e) => {
+    const btn = e.currentTarget;
+    const original = btn.textContent;
+    try{
+      await navigator.clipboard.writeText(location.href);
+      btn.textContent = '✓ Copied!';
+      btn.style.color = 'var(--accent)';
+      btn.style.borderColor = 'var(--accent)';
+      setTimeout(() => {
+        btn.textContent = original;
+        btn.style.color = '';
+        btn.style.borderColor = '';
+      }, 1800);
+    }catch{
+      const ta = document.createElement('textarea');
+      ta.value = location.href;
+      document.body.appendChild(ta);
+      ta.select();
+      try{ document.execCommand('copy'); btn.textContent = '✓ Copied!'; }catch{}
+      document.body.removeChild(ta);
+      setTimeout(() => { btn.textContent = original; }, 1800);
+    }
+  });
+
+  // Reading progress bar
+  const progressBar = document.getElementById('progressBar');
+  const articleBody = document.getElementById('articleBody');
+  function updateProgress(){
+    if(!articleBody || !progressBar) return;
+    const rect = articleBody.getBoundingClientRect();
+    const articleTop = rect.top + window.scrollY;
+    const articleHeight = rect.height;
+    const viewportBottom = window.scrollY + window.innerHeight;
+    const scrolled = viewportBottom - articleTop;
+    const pct = Math.max(0, Math.min(100, (scrolled / (articleHeight + window.innerHeight * 0.6)) * 100));
+    progressBar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', updateProgress, {passive:true});
+  window.addEventListener('resize', updateProgress);
+  updateProgress();
+
+  // Back to top
+  const toTop = document.getElementById('toTop');
+  window.addEventListener('scroll', () => {
+    toTop.classList.toggle('show', window.scrollY > 700);
+  }, {passive:true});
+  toTop?.addEventListener('click', () => scrollTo({top:0, behavior:'smooth'}));
+
+  // Keyboard shortcut: Ctrl/Cmd + Shift + C = copy link
+  document.addEventListener('keydown', (e) => {
+    if((e.metaKey || e.ctrlKey) && e.shiftKey && (e.key === 'C' || e.key === 'c')){
+      e.preventDefault();
+      document.getElementById('copyLink')?.click();
+    }
+  });
+
+  // External links open safely
+  document.querySelectorAll('.article-body a[href^="http"]').forEach(a => {
+    if(!a.hostname || a.hostname !== location.hostname){
+      a.setAttribute('target', '_blank');
+      a.setAttribute('rel', 'noopener noreferrer');
+    }
+  });
+})();
+</script>
+</body>
+</html>
