@@ -1,7 +1,25 @@
 {
-  "generatedAt": "2026-10-31T06:30:59.122Z",
-  "count": 20,
+  "generatedAt": "2026-10-31T06:40:41.617Z",
+  "count": 21,
   "articles": [
+    {
+      "id": "-P5FeUsdCuba3T5QNuAq",
+      "slug": "zishutron-developer",
+      "title": "Zishan: Founder and Developer of ZISHU TRON — From Curiosity to Building Real Products",
+      "description": "Meet Zishan, a student, developer and the founder of ZISHU TRON. His journey, his products and the principles behind his work",
+      "category": "Update",
+      "tags": [
+        "Ai",
+        "webdev",
+        "programing",
+        "introduction"
+      ],
+      "coverImage": "https://i.ibb.co/20Yv31fP/file-0000000012e08211a3a70074d5a88505.png",
+      "authorName": "Zishan",
+      "publishedAt": 1793428421774,
+      "readingTime": 3,
+      "pinned": true
+    },
     {
       "id": "-P4l7QzhMGo_PLBruieg",
       "slug": "zishu-ide-build-android-apps-on-your-phone",
@@ -15,7 +33,7 @@
       "authorName": "Zishan",
       "publishedAt": 1792899398285,
       "readingTime": 9,
-      "pinned": true
+      "pinned": false
     },
     {
       "id": "-P4bAILs5FhJzcJx-k5g",
