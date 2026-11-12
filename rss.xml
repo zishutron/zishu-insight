@@ -5,8 +5,16 @@
     <link>https://zishu-insight.zishuai.cloud/</link>
     <description>The official publishing platform of ZISHU TRON. Product announcements, engineering deep dives, and company updates.</description>
     <language>en</language>
-    <lastBuildDate>Thu, 12 Nov 2026 03:30:58 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 12 Nov 2026 03:40:40 GMT</lastBuildDate>
     <atom:link href="https://zishu-insight.zishuai.cloud/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Introducing Zishu OS v1.0.0</title>
+      <link>https://zishu-insight.zishuai.cloud/articles/introducing-zishu-os-v100/</link>
+      <guid isPermaLink="true">https://zishu-insight.zishuai.cloud/articles/introducing-zishu-os-v100/</guid>
+      <pubDate>Thu, 12 Nov 2026 03:39:57 GMT</pubDate>
+      <description>Zishu OS v1.0.0 is out: a complete, private home experience for Android, with its own Phone, Photos, Messages and Browser apps. It works on Android 5.0 and newer, has no account, no ads and no tracking, and you can try it today.</description>
+      <category>Product</category>
+    </item>
     <item>
       <title>Zishan: Founder and Developer of ZISHU TRON — From Curiosity to Building Real Products</title>
       <link>https://zishu-insight.zishuai.cloud/articles/zishutron-developer/</link>
