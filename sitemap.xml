@@ -2,9 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://zishu-insight.zishuai.cloud/</loc>
-    <lastmod>2026-11-23T05:50:45.555Z</lastmod>
+    <lastmod>2026-11-23T06:01:14.044Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://zishu-insight.zishuai.cloud/articles/uptozishu-the-android-app-store-for-indie-developers-website-and-native-app/</loc>
+    <lastmod>2026-11-23T05:53:22.534Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://zishu-insight.zishuai.cloud/articles/introducing-zishu-os-v100/</loc>

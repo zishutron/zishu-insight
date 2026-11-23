@@ -1,7 +1,26 @@
 {
-  "generatedAt": "2026-11-23T05:50:45.555Z",
-  "count": 22,
+  "generatedAt": "2026-11-23T06:01:14.043Z",
+  "count": 23,
   "articles": [
+    {
+      "id": "-P75xpcQzHSFfa0GW7Y7",
+      "slug": "uptozishu-the-android-app-store-for-indie-developers-website-and-native-app",
+      "title": "UptoZishu: the Android app store for indie developers (website and native app)",
+      "description": "UptoZishu is a free Android app store built for independent developers and for people who like to discover apps beyond the big stores. It has two parts that work together: a website where anyone can browse and read about apps, and a native Android app that downloads them, keeps them up to date and tells you",
+      "category": "Product",
+      "tags": [
+        "Product",
+        "productivity",
+        "apps",
+        "android",
+        "dev tools"
+      ],
+      "coverImage": "https://i.ibb.co/7xgV4bXw/9ab4b3a5-52d9-44cc-996a-ce4745987967-1.jpg",
+      "authorName": "Zishan",
+      "publishedAt": 1795413202534,
+      "readingTime": 15,
+      "pinned": true
+    },
     {
       "id": "-P6Cpo4mrY1R0trXazXP",
       "slug": "introducing-zishu-os-v100",
@@ -15,7 +34,7 @@
       "authorName": "Zishan",
       "publishedAt": 1794454797657,
       "readingTime": 6,
-      "pinned": true
+      "pinned": false
     },
     {
       "id": "-P5FeUsdCuba3T5QNuAq",

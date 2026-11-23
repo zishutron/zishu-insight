@@ -5,8 +5,16 @@
     <link>https://zishu-insight.zishuai.cloud/</link>
     <description>The official publishing platform of ZISHU TRON. Product announcements, engineering deep dives, and company updates.</description>
     <language>en</language>
-    <lastBuildDate>Mon, 23 Nov 2026 05:50:45 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 23 Nov 2026 06:01:14 GMT</lastBuildDate>
     <atom:link href="https://zishu-insight.zishuai.cloud/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>UptoZishu: the Android app store for indie developers (website and native app)</title>
+      <link>https://zishu-insight.zishuai.cloud/articles/uptozishu-the-android-app-store-for-indie-developers-website-and-native-app/</link>
+      <guid isPermaLink="true">https://zishu-insight.zishuai.cloud/articles/uptozishu-the-android-app-store-for-indie-developers-website-and-native-app/</guid>
+      <pubDate>Mon, 23 Nov 2026 05:53:22 GMT</pubDate>
+      <description>UptoZishu is a free Android app store built for independent developers and for people who like to discover apps beyond the big stores. It has two parts that work together: a website where anyone can browse and read about apps, and a native Android app that downloads them, keeps them up to date and tells you</description>
+      <category>Product</category>
+    </item>
     <item>
       <title>Introducing Zishu OS v1.0.0</title>
       <link>https://zishu-insight.zishuai.cloud/articles/introducing-zishu-os-v100/</link>
